@@ -1,0 +1,74 @@
+.drawer-item {
+    display: flex;
+    border-bottom: 1px solid #e0e0e0;
+    padding: 10px 0;
+    margin-bottom: 10px;
+}
+
+.drawer-item-img {
+    width: 100px; /* 이미지 크기 조정 */
+    height: 100px;
+    object-fit: cover; /* 이미지 비율 유지 */
+    margin-right: 10px;
+}
+
+.drawer-item-content {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.drawer-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+}
+
+.drawer-item-name {
+    font-size: 16px;
+    margin: 5px 0;
+}
+
+.drawer-item-actions {
+    width: 15px;
+    height: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.drawer-item-price {
+    font-size: 14px;
+    color: #888;
+    margin: 5px 0;
+}
+
+.drawer-item-footer {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-start;
+    flex-grow: 1;
+}
+
+.quantity-control {
+    display: flex;
+    align-items: center;
+    margin-top: auto;
+    margin-bottom: 10px; /* 하단과 10px 차이 */
+}
+
+.quantity-control button {
+    margin: 0 5px;
+}
+
+.total-amount {
+    margin-top: 20px;
+    font-weight: bold;
+    text-align: right;
+}

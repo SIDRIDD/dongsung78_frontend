@@ -1,0 +1,110 @@
+.hero-section {
+    position: relative;
+    text-align: center;
+    color: white;
+}
+
+.hero-image-container {
+    margin-top: 50px;
+    position: relative;
+}
+
+.hero-image {
+    margin-top: 30px;
+    width: 80%;
+    height: auto;
+}
+
+.hero-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Noto Sans', sans-serif;
+}
+
+.hero-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-top: 50px;
+}
+
+.hero-button {
+    margin-top: 150px;
+    color: #cccccc;
+    text-decoration: white;
+    font-size: 30px;
+    font-weight: 1000;
+    /*border-bottom: 1px solid white;*/
+    padding-bottom: 2px;
+    transition: color 0.3s, border-bottom-color 30s;
+}
+
+.hero-button:hover {
+    color: #f0f0f0;
+    border-bottom-color: #f0f0f0;
+}
+
+@media (max-width: 1200px) {
+
+    .hero-button {
+        font-size: 20px; /* 작은 화면에서 버튼 글씨 크기 조정 */
+        padding-bottom: 1px;
+        margin-bottom: 80px;
+    }
+
+    .hero-buttons {
+        gap: 20px;
+    }
+}
+
+@media (max-width: 1000px) {
+
+    .hero-button {
+        font-size: 15px; /* 작은 화면에서 버튼 글씨 크기 조정 */
+        padding-bottom: 1px;
+        margin-bottom: 80px;
+    }
+
+    .hero-buttons {
+        gap: 20px;
+    }
+}
+
+@media (max-width: 700px) {
+
+    .hero-button {
+        font-size: 15px; /* 작은 화면에서 버튼 글씨 크기 조정 */
+        padding-bottom: 1px;
+        margin-bottom: 80px;
+    }
+
+    .hero-buttons {
+        gap: 20px;
+    }
+}
+
+@media (max-width: 600px) {
+
+    .hero-button {
+        font-size: 10px; /* 작은 화면에서 버튼 글씨 크기 조정 */
+        padding-bottom: 30px;
+        margin-bottom: 80px;
+    }
+
+    .hero-buttons {
+        gap: 25px;
+    }
+}
+
+@media (max-width: 480px) {
+
+    .hero-button {
+        font-size: 7px; /* 더 작은 화면에서 버튼 글씨 크기 조정 */
+        padding-bottom: 30px;
+    }
+    .hero-buttons {
+        gap: 35px;
+    }
+}

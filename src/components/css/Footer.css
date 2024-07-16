@@ -1,0 +1,46 @@
+.footer {
+    background-color: #000;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+}
+
+.footer-links a {
+    color: #fff;
+    margin: 0 10px;
+    text-decoration: none;
+}
+
+.contact-info {
+    margin-top: 10px;
+    font-size: 10px;
+}
+
+.social-media a {
+    color: #fff;
+    margin: 0 10px;
+    text-decoration: none;
+}
+main{
+    flex:1;
+}
+
+.newsletter {
+    margin-top: 20px;
+}
+
+.newsletter input {
+    padding: 10px;
+    font-size: 14px;
+    width: 200px;
+}
+
+.newsletter button {
+    padding: 10px 20px;
+    font-size: 14px;
+    cursor: pointer;
+    background-color: #e74c3c;
+    color: #fff;
+    border: none;
+    margin-left: 10px;
+}

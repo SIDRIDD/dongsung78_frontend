@@ -1,0 +1,89 @@
+.product-grid {
+    padding: 20px;
+}
+
+.product-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+.product-grid-card {
+    border: 1.5px solid #ccc;
+    border-radius: 8px;
+    overflow: hidden;
+    text-align: center;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out;
+    display: flex; /* Flex 컨테이너로 설정 */
+    flex-direction: column; /* 세로 정렬 */
+    justify-content: space-between; /* 상하로 공간을 분배 */
+
+    /*width: 100%; !* 크기를 유연하게 조정 *!*/
+    width: 300px;
+    height: 650px;
+    flex-grow: 1;
+}
+
+.product-grid-card:hover {
+    transform: scale(1.05);
+}
+
+.product-image {
+    width: 100%;
+    height: auto;
+    margin: 0 auto;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.product-info {
+    padding: 10px;
+
+}
+
+.product-grid-name {
+    font-size: 1.5em;
+    color: black;
+    margin-bottom: 35px;
+}
+
+.product-grid-price {
+    font-size: 1em;
+    color: #888;
+    margin-bottom: 25px;
+
+}
+
+/*.original-price {*/
+/*    text-decoration: line-through;*/
+/*    margin-right: 5px;*/
+/*}*/
+
+/*.sale-price {*/
+/*    color: red;*/
+/*}*/
+
+.product-grid-description {
+    font-size: 0.9em;
+    color: #555;
+    margin-bottom: 20px;
+
+}
+
+.product-grid-button {
+    background-color: #000;
+    color: #fff;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s ease-in-out;
+    margin-top: auto;
+}
+
+.product-button:hover {
+    background-color: #444;
+}

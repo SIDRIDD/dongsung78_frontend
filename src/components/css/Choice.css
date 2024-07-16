@@ -1,0 +1,27 @@
+/* ProductGrid.css */
+.breadcrumb-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.breadcrumb {
+    font-size: 20px;
+    text-align: center;
+    font-family: 'Arial Rounded MT Bold', 'Helvetica Rounded', Arial, sans-serif; /* 둥근 폰트 설정 */
+}
+
+.breadcrumb a {
+    color: black; /* 글씨 색을 검정색으로 설정 */
+    text-decoration: none; /* 밑줄 없애기 */
+    padding: 0 10px;
+}
+
+.breadcrumb a:hover {
+    color: #555; /* 호버 시 색상 변경 */
+}
+
+.breadcrumb a.active {
+    font-weight: bold;
+    color: #000; /* 현재 선택된 항목 하이라이트 */
+}

@@ -1,0 +1,184 @@
+.navbar-dark.bg-custom {
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: white;
+    width: 100%;
+    color: white;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /*box-shadow: 0 5px 10px -5px rgba(255, 255, 255, 0.5); !* 희미한 선 *!*/
+    z-index: 1000; /* 다른 요소 위에 표시 */
+}
+
+
+
+
+/* 로고 스타일 */
+.logo {
+    height: 50px;
+    cursor: pointer;
+}
+
+/* 검색 바 컨테이너 스타일 */
+.search-bar-container {
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+    /*margin-left : 100px;*/
+}
+
+.search-icon {
+    color: black;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.clickable-icon:hover {
+    background-color: #f0f0f0; /* Optional: Adds a hover effect */
+}
+
+.custom-search-input .ant-btn {
+    background-color: black !important;
+    border-color: black !important;
+    color: white !important;
+}
+
+.search-bar {
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+}
+
+.search-input {
+    padding: 5px;
+    font-size: 16px;
+    border: none;
+    background: none;
+    color: #fff;
+    border-bottom: 1px solid #fff;
+    margin-right: 5px;
+}
+
+.search-button {
+    padding: 5px 10px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #fff;
+    color: #000;
+    border: none;
+}
+
+/* 장바구니 아이콘 스타일 */
+.cart-icon {
+    display: flex;
+    align-items: center;
+    color: #fff;
+    font-size: 24px;
+    margin-right: 0px;
+    cursor: pointer;
+}
+
+.cart-count {
+    margin-left: 5px;
+    font-size: 18px;
+}
+
+@media (max-width: 1200px) {
+
+    .App-nav {
+        margin-top: 15px;
+        margin-left: -300px;
+    }
+
+    .App-nav ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        gap: 50px;
+    }
+}
+
+@media (max-width: 1100px) {
+
+    .App-nav {
+        margin-top: 15px;
+        margin-left: -200px;
+    }
+
+    .App-nav ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        gap: 50px;
+    }
+}
+
+@media (max-width: 1000px) {
+
+    .App-nav {
+        margin-top: 15px;
+        margin-left: -100px;
+    }
+
+    .App-nav ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        gap: 50px;
+    }
+}
+
+@media (max-width: 700px) {
+
+    .App-nav {
+        margin-top: 15px;
+        margin-left: -300px;
+    }
+
+    .App-nav ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        gap: 50px;
+    }
+}
+
+@media (max-width: 600px) {
+
+    .App-nav {
+        margin-top: 15px;
+        margin-left: -300px;
+    }
+
+    .App-nav ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        gap: 50px;
+    }
+}
+
+@media (max-width: 480px) {
+
+    .App-nav {
+        margin-top: 15px;
+        margin-left: -300px;
+    }
+
+    .App-nav ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        gap: 50px;
+    }
+}
+
