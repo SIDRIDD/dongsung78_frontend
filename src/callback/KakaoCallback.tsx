@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useOAuthLogin } from '../service/OAuthService';
 
-const NaverCallback: React.FC = () => {
+const KakaoCallback: React.FC = () => {
     const navigate = useNavigate();
     const handleOAuthLogin = useOAuthLogin();
 
@@ -11,13 +11,13 @@ const NaverCallback: React.FC = () => {
         const code = urlParams.get('code');
         const state = urlParams.get('state');
         if (code && state) {
-            handleOAuthLogin('naver', code, state)
+            handleOAuthLogin('kakao', code, state)
                 .then(() => navigate('/dashboard'))
                 .catch(error => console.error('OAuth Login Failed:', error));
         }
     }, [navigate, handleOAuthLogin]);
 
-    return <div>Logging in with Naver...</div>;
+    return <div>Logging in with Kakao...</div>;
 };
 
-export default NaverCallback;
+export default KakaoCallback;
