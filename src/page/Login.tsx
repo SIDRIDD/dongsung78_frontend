@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, {CSSProperties, useEffect, useState} from 'react';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { LoginForm, ProConfigProvider, ProFormCheckbox, ProFormText, setAlpha } from '@ant-design/pro-components';
 import { Space, Tabs, message, theme } from 'antd';
-import type { CSSProperties } from 'react';
 import { GoogleLogin, CredentialResponse } from '@react-oauth/google';
 import KakaoLogin from 'react-kakao-login';
 import { useDispatch } from 'react-redux';
@@ -20,27 +19,32 @@ const LoginPage: React.FC = () => {
 
     const kakaoJavascriptKey = process.env.REACT_APP_KAKAO_JAVASCRIPT_KEY || '';
     const naverClientId = process.env.REACT_APP_NAVER_CLIENT_ID || '';
-    const naverRedirectUri = 'http://localhost:3000'; // 리디렉트 URI 설정
-    const stateString = process.env.REACT_APP_NAVER_CALLBACK_URL || '';
+    const naverRedirectUri = process.env.REACT_APP_NAVER_REDIRECTURL || '';
+    const stateString = process.env.REACT_APP_NAVER_STATE || '';
 
-    const handleOAuthLogin = async (provider: string, code: string) => {
-        try {
-            const response = await axios.get(`http://localhost:8080/auth/oauth?code=${code}&state=${stateString}`);
-            const { token } = response.data;
-            dispatch(login(token));
-
-            message.success('Login Successful');
-            navigate('/');
-        } catch (error) {
-            console.error('OAuth Login Failed:', error);
-            message.error('OAuth Login Failed');
-        }
-    };
+    // const handleOAuthLogin = async (provider: string, code: string) => {
+    //     try {
+    //         const response = await axios.post('http://localhost:8080/auth/oauth', {
+    //             code: code,
+    //             provider: provider,
+    //             redirectUri: naverRedirectUri
+    //         });
+    //
+    //         const { token } = response.data;
+    //         dispatch(login(token));
+    //
+    //         message.success('Login Successful');
+    //         navigate('/');
+    //     } catch (error) {
+    //         console.error('OAuth Login Failed:', error);
+    //         message.error('OAuth Login Failed');
+    //     }
+    // };
 
     const handleGoogleLoginSuccess = (response: CredentialResponse) => {
         const accessToken = response.credential;
         if (accessToken) {
-            handleOAuthLogin('google', accessToken);
+            // handleOAuthLogin('google', accessToken);
         }
     };
 
@@ -51,7 +55,7 @@ const LoginPage: React.FC = () => {
     const handleKakaoSuccess = (response: any) => {
         const accessToken = response.response.access_token;
         if (accessToken) {
-            handleOAuthLogin('kakao', accessToken);
+            // handleOAuthLogin('kakao', accessToken);
         }
     };
 
@@ -60,14 +64,18 @@ const LoginPage: React.FC = () => {
         message.error('Kakao Login Failed');
     };
 
-    useEffect(() => {
-        const urlParams = new URLSearchParams(window.location.search);
-        const code = urlParams.get('code');
-        const state = urlParams.get('state');
-        if (code) {
-            handleOAuthLogin('naver', code);
-        }
-    }, [navigate]);
+    // useEffect(() => {
+    //     const urlParams = new URLSearchParams(window.location.search);
+    //     const code = urlParams.get('code');
+    //     const state = urlParams.get('state');
+    //
+    //     // 로그 추가
+    //     console.log(`code: ${code}, state: ${state}`);
+    //
+    //     if (code && state === stateString) {
+    //         handleOAuthLogin('naver', code);
+    //     }
+    // }, [navigate]);
 
     const iconStyles: CSSProperties = {
         marginInlineStart: '16px',
@@ -78,8 +86,9 @@ const LoginPage: React.FC = () => {
     };
 
     const handleNaverLogin = () => {
-        window.location.href = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${naverClientId}&redirect_uri=${naverRedirectUri}&state=${stateString}`;
+        window.location.href = `https://nid.naver.com/oauth2.0/authorize?client_id=${naverClientId}&response_type=code&redirect_uri=${naverRedirectUri}&state=${stateString}&scope=email`;
     };
+
 
     return (
         <ProConfigProvider hashed={false}>
