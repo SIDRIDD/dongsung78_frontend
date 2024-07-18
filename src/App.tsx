@@ -15,6 +15,7 @@ import ItemDetail from "./page/ItemDetail";
 import QuoteDetail from "./page/QuoteDetail";
 import Login from "./page/Login";
 import NaverCallback from "./callback/NaverCallback";
+import SignUpPage from "./page/SignUpPage";
 
 
 //
@@ -44,6 +45,7 @@ function App() {
                         <Route path="product-detail/:id" element={<ProductPage />} />
                         <Route path="/item-detail/:id" element={<ItemDetail />} />
                         <Route path="/login" element={<Login />} />
+                        <Route path="/signup" element={<SignUpPage />} />
                         <Route path="/oauth2/callback/naver" element={<NaverCallback />} />
                     </Routes>
                     {showAdditionalComponents && (

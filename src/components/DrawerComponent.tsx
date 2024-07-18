@@ -2,6 +2,7 @@ import React from 'react';
 import {Drawer} from 'antd';
 import {useCart} from "../context/CartContext";
 import "./css/DrawerComponent.css";
+import {useSelector} from "react-redux";
 
 interface DrawerComponentProps {
     visible: boolean;
@@ -14,9 +15,11 @@ const DrawerComponent: React.FC<DrawerComponentProps> = ({visible, onClose, item
     const {removeFromCart, updateQuantity, purchaseItems} = useCart();
 
     const totalAmount = items.reduce((acc, item) => acc + (item.price * item.quantity), 0);
-    const userId = "admin";
+    // const userId = "admin";
+    const userId = useSelector((state: any) => state.auth.user?.userId);
 
     const handlePurchase = () => {
+
         const purchaseData = items.map(item => ({
             productId: item.productId,
             userId: userId,

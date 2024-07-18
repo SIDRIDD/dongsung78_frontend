@@ -1,5 +1,7 @@
 import React, {createContext, useState, useContext, ReactNode} from 'react';
 import axios from "axios";
+import store from "../store/store";
+import {useSelector} from "react-redux";
 
 interface Product {
     productId: number;
@@ -17,7 +19,7 @@ interface Product {
 
 interface PurchaseData {
     productId: number;
-    userId: string;
+    userId: number;
     count: number;
 }
 

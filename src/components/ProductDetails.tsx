@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import './css/ProductDetails.css';
 import { useCart } from '../context/CartContext';
+import {useSelector} from "react-redux";
 
 interface ProductDetailsProps {
     productId: number;
@@ -15,14 +16,14 @@ interface ProductDetailsProps {
 
 interface PurchaseData {
     productId: number;
-    userId: string;
+    userId: number;
     count: number;
 }
 
 const ProductDetails: React.FC<ProductDetailsProps> = ({productId, name, description, price, stock, imgUrl  }) => {
     const [quantity, setQuantity] = useState(1);
     const { addToCart, setDrawerVisible, cartItems, purchaseItems } = useCart();
-    const userId = "admin";
+    const userId = useSelector((state: any) => state.auth.user?.userId);
 
     const handleIncrease = () => {
         setQuantity(prevQuantity => prevQuantity + 1);

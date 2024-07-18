@@ -1,18 +1,23 @@
-import React, { CSSProperties, useEffect, useState } from 'react';
-import { LockOutlined, UserOutlined } from '@ant-design/icons';
-import { LoginForm, ProConfigProvider, ProFormCheckbox, ProFormText, setAlpha } from '@ant-design/pro-components';
-import { Space, Tabs, message, theme } from 'antd';
-import { GoogleLogin, CredentialResponse } from '@react-oauth/google';
+import React, {CSSProperties, useEffect, useState} from 'react';
+import {LockOutlined, UserOutlined} from '@ant-design/icons';
+import {LoginForm, ProConfigProvider, ProFormCheckbox, ProFormText, setAlpha} from '@ant-design/pro-components';
+import {Space, Tabs, message, theme, Button} from 'antd';
+import {GoogleLogin, CredentialResponse} from '@react-oauth/google';
 import KakaoLogin from 'react-kakao-login';
-import { useDispatch } from 'react-redux';
-import { login } from '../store/authSlice';
-import { useNavigate } from 'react-router-dom';
+import {useDispatch} from 'react-redux';
+import {login} from '../store/authSlice';
+import {useNavigate} from 'react-router-dom';
 import axios from 'axios';
 
 type LoginType = 'oauth' | 'account';
 
+interface LoginFormValues {
+    userName: string;
+    password: string;
+}
+
 const LoginPage: React.FC = () => {
-    const { token } = theme.useToken();
+    const {token} = theme.useToken();
     const [loginType, setLoginType] = useState<LoginType>('account');
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -30,7 +35,7 @@ const LoginPage: React.FC = () => {
                 redirectUri: naverRedirectUri
             });
 
-            const { token } = response.data;
+            const {token} = response.data;
             dispatch(login(token));
 
             message.success('Login Successful');
@@ -40,6 +45,23 @@ const LoginPage: React.FC = () => {
             message.error('OAuth Login Failed');
         }
     };
+
+    const onFinish = async (values: LoginFormValues) => {
+        try {
+            const response = await axios.post('http://localhost:8080/api/user/login', values);
+            console.log('Login successful:', response.data);
+
+            const {token, email, name, userId} = response.data;
+            dispatch(login({token, user: {email, name, userId}}));
+            navigate('/');
+            // 로그인 성공 시 추가 동작
+        } catch (error) {
+            console.error('Login failed:', error);
+            message.error('존재하지 않는 ID입니다.');
+            // 로그인 실패 시 추가 동작
+        }
+    };
+
 
     const handleGoogleLoginSuccess = (response: CredentialResponse) => {
         const accessToken = response.credential;
@@ -91,55 +113,76 @@ const LoginPage: React.FC = () => {
 
     return (
         <ProConfigProvider hashed={false}>
-            <div style={{ backgroundColor: token.colorBgContainer, marginTop: '100px' }}>
+            <div style={{backgroundColor: token.colorBgContainer, marginTop: '100px'}}>
+                {/*<LoginForm*/}
+                {/*    onFinish={onFinish}*/}
+                {/*    submitter={loginType === 'oauth' ? false : {*/}
+                {/*        searchConfig: {*/}
+                {/*            submitText: '로그인',*/}
+                {/*        },*/}
+                {/*    }}*/}
+                {/*    actions={<Space></Space>}*/}
+                {/*>*/}
                 <LoginForm
+                    onFinish={onFinish}
                     submitter={loginType === 'oauth' ? false : {
                         searchConfig: {
                             submitText: '로그인',
                         },
                     }}
-                    actions={<Space></Space>}
+                    actions={
+                        <Space style={{justifyContent: 'space-between', width: '100%'}}>
+                            <Button type="link" onClick={() => navigate('/signup')}>
+                                회원가입
+                            </Button>
+                        </Space>
+                    }
                 >
                     <Tabs
                         centered
                         activeKey={loginType}
                         onChange={(activeKey) => setLoginType(activeKey as LoginType)}
                     >
-                        <Tabs.TabPane key={'account'} tab={'로그인'} />
-                        <Tabs.TabPane key={'oauth'} tab={'소셜 로그인'} />
+                        <Tabs.TabPane key={'account'} tab={'로그인'}/>
+                        <Tabs.TabPane key={'oauth'} tab={'소셜 로그인'}/>
                     </Tabs>
                     {loginType === 'account' && (
                         <>
                             <ProFormText
-                                name="username"
+                                name="userName"
                                 fieldProps={{
                                     size: 'large',
-                                    prefix: <UserOutlined className={'prefixIcon'} />,
+                                    prefix: <UserOutlined className={'prefixIcon'}/>,
                                 }}
                                 placeholder={'Username'}
-                                rules={[{ required: true, message: 'Please enter your username!' }]}
+                                rules={[{required: true, message: 'Please enter your username!'}]}
                             />
                             <ProFormText.Password
                                 name="password"
                                 fieldProps={{
                                     size: 'large',
-                                    prefix: <LockOutlined className={'prefixIcon'} />,
+                                    prefix: <LockOutlined className={'prefixIcon'}/>,
                                 }}
                                 placeholder={'Password'}
-                                rules={[{ required: true, message: 'Please enter your password!' }]}
+                                rules={[{required: true, message: 'Please enter your password!'}]}
                             />
                         </>
                     )}
                     {loginType === 'oauth' && (
                         <>
-                            <Space direction="vertical" style={{ width: '100%', justifyContent: 'center', alignItems: 'center', marginBlock: 24 }}>
-                                <GoogleLogin onSuccess={handleGoogleLoginSuccess} onError={handleGoogleLoginFailure} />
+                            <Space direction="vertical" style={{
+                                width: '100%',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                marginBlock: 24
+                            }}>
+                                <GoogleLogin onSuccess={handleGoogleLoginSuccess} onError={handleGoogleLoginFailure}/>
                                 <KakaoLogin
                                     token={kakaoJavascriptKey}
                                     onSuccess={handleKakaoSuccess}
                                     onFail={handleKakaoFailure}
                                     onLogout={() => console.log('Kakao Logout')}
-                                    render={({ onClick }) => (
+                                    render={({onClick}) => (
                                         <button
                                             onClick={onClick}
                                             style={{
@@ -156,7 +199,7 @@ const LoginPage: React.FC = () => {
                                             <img
                                                 src={`${process.env.PUBLIC_URL}/img/kakao_login.png`}
                                                 alt="Kakao Login"
-                                                style={{ height: '100%' }}  // 이미지 높이를 버튼 높이에 맞춤
+                                                style={{height: '100%'}}  // 이미지 높이를 버튼 높이에 맞춤
                                             />
                                         </button>
                                     )}
@@ -176,18 +219,18 @@ const LoginPage: React.FC = () => {
                                     <img
                                         src={`${process.env.PUBLIC_URL}/img/naver_login.png`}
                                         alt="Naver Login"
-                                        style={{ height: '100%' }}  // 이미지 높이를 버튼 높이에 맞춤
+                                        style={{height: '100%'}}  // 이미지 높이를 버튼 높이에 맞춤
                                     />
                                 </button>
                             </Space>
                         </>
                     )}
                     {loginType !== 'oauth' && (
-                        <div style={{ marginBlockEnd: 24 }}>
+                        <div style={{marginBlockEnd: 24}}>
                             <ProFormCheckbox noStyle name="autoLogin">
                                 자동 로그인
                             </ProFormCheckbox>
-                            <a style={{ float: 'right' }}>비밀번호 찾기</a>
+                            <a style={{float: 'right'}}>비밀번호 찾기</a>
                         </div>
                     )}
                 </LoginForm>
