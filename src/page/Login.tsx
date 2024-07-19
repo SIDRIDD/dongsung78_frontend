@@ -48,20 +48,17 @@ const LoginPage: React.FC = () => {
 
     const onFinish = async (values: LoginFormValues) => {
         try {
-            const response = await axios.post('http://localhost:8080/api/user/login', values);
+            const response = await axios.post('http://localhost:8080/api/user/login', values, { withCredentials: true });
             console.log('Login successful:', response.data);
 
-            const {token, email, name, userId} = response.data;
-            dispatch(login({token, user: {email, name, userId}}));
+            const { token, email, userId } = response.data;
+            dispatch(login({ token, user: { email, userId } }));
             navigate('/');
-            // 로그인 성공 시 추가 동작
         } catch (error) {
             console.error('Login failed:', error);
             message.error('존재하지 않는 ID입니다.');
-            // 로그인 실패 시 추가 동작
         }
     };
-
 
     const handleGoogleLoginSuccess = (response: CredentialResponse) => {
         const accessToken = response.credential;

@@ -1,7 +1,6 @@
 import React, {createContext, useState, useContext, ReactNode} from 'react';
 import axios from "axios";
-import store from "../store/store";
-import {useSelector} from "react-redux";
+
 
 interface Product {
     productId: number;
@@ -67,6 +66,7 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
             )
         );
     };
+
 
     const addToCart = (product: Product) => {
         setCartItems(prevItems => {

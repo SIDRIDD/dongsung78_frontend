@@ -15,7 +15,6 @@ const initialState: AuthState = {
 
 interface User {
     email: string;
-    name: string;
     userId: number;
 }
 
