@@ -15,7 +15,7 @@ const initialState: AuthState = {
 
 interface User {
     email: string;
-    userId: number;
+    userName: string;
 }
 
 const authSlice = createSlice({

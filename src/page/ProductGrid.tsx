@@ -93,7 +93,7 @@ const ProductGrid: React.FC = () => {
                 total={total}
                 pageSize={pageSize}
                 onChange={handlePageChange}
-                style={{textAlign: 'center', marginTop: '20px'}}
+                style={{textAlign: 'center', marginTop: '20px' }}
             />
         </div>
     );

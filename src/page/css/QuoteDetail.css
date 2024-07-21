@@ -1,0 +1,85 @@
+/* src/Post.css */
+.post-container {
+    max-width: 800px; /* 카드의 너비를 넓혔습니다. */
+    margin: 0 auto;
+    padding: 20px;
+    margin-top: 150px;
+}
+
+.post-title {
+    text-align: left; /* 제목을 왼쪽으로 정렬합니다. */
+}
+
+.post-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    justify-content: flex-start; /* 아이디와 날짜를 왼쪽으로 정렬합니다. */
+    margin-top: 15px;
+}
+
+.post-header .post-id {
+    display: block;
+    font-size: 16px;
+}
+
+.post-header .post-date {
+    display: block;
+    font-size: 14px;
+    color: gray;
+    text-align: left;
+    /*align-items: flex-start;*/
+    /*justify-content: flex-start;*/
+}
+
+.post-reactions {
+    margin-top: 50px;
+}
+
+/* src/CommentInput.css */
+.comment-container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+}
+
+.comment-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.file-info {
+    margin-left: 10px;
+    font-size: 12px;
+    color: gray;
+}
+
+.char-count {
+    margin-left: auto;
+    font-size: 12px;
+    color: gray;
+}
+
+.comment-footer button {
+    margin-left: 10px;
+}
+
+.comment-list{
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    text-align: left;
+}
+
+
+.comment-username {
+    text-align: left;
+    font-weight: bold;
+}
+
+.comment-content {
+    text-align: left;
+}
+
