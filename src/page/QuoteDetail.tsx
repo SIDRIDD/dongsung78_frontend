@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import Cookies from 'js-cookie';
 import {useParams} from 'react-router-dom';
 import {Card, Typography, Space, Button, Layout, Breadcrumb, theme, Avatar, Input, Upload, List, message} from 'antd';
 import axios from 'axios';
@@ -14,6 +15,8 @@ import {
 import './css/QuoteDetail.css'
 import {useSelector} from "react-redux";
 import {RootState} from "../store/store";
+import {sensitiveHeaders} from "http2";
+import {Cookie} from "@mui/icons-material";
 
 const {Title, Text, Paragraph} = Typography;
 
@@ -32,14 +35,21 @@ interface Comment {
     content: string;
 }
 
+interface RefreshComment {
+    id: number;
+    username: string;
+    content: string;
+}
+
 const QuoteDetail: React.FC = () => {
-    const { id } = useParams<{ id: string }>();
+    const {id} = useParams<{ id: string }>();
     const [data, setData] = useState<DataItem | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
-    const { TextArea } = Input;
+    const {TextArea} = Input;
     const [comment, setComment] = useState<string>('');
     const [fileList, setFileList] = useState<any[]>([]);
     const [comments, setComments] = useState<Comment[]>([]);
+    const {token} = theme.useToken();
 
     const userName = useSelector((state: RootState) => state.auth.user?.userName);
 
@@ -53,17 +63,27 @@ const QuoteDetail: React.FC = () => {
         setComment(e.target.value);
     };
 
-    const handleUploadChange = ({ fileList }: any) => {
+    const handleUploadChange = ({fileList}: any) => {
         setFileList(fileList);
     };
 
     const handleSubmit = async () => {
         try {
+            const authToken = Cookies.get('token');
+            console.log('submitting comment : ', {content: comment, userName: userName})
+            console.log('JWT Token: ', authToken)
             const response = await axios.post(`http://localhost:8080/api/contact/get/${id}/comments`, {
-                content: comment,
-                userName: userName // 여기에 실제 사용자 이름을 입력합니다.
-            });
+                    content: comment,
+                    userName: userName // 여기에 실제 사용자 이름을 입력합니다.
+                }, {
+                    withCredentials: true
+                    // } headers: {
+                    //         'Authorization': `Bearer ${authToken}`
+                    //     }
+                }
+            );
             const newComment = response.data;
+            console.log('response 확인: ', newComment)
             setComments([...comments, {
                 id: newComment.id,
                 username: newComment.username, // newComment.user.username에서 수정
@@ -129,32 +149,32 @@ const QuoteDetail: React.FC = () => {
                 <Title level={3} className="post-title">{data.title}</Title>
                 <Space direction="vertical" size="middle" className="post-header">
                     <Space align="center">
-                        <Avatar size="large" icon={<UserOutlined />} />
+                        <Avatar size="large" icon={<UserOutlined/>}/>
                         <div>
                             <Text className="post-id">{data.userName}</Text>
                             <Text className="post-date">7일 전</Text>
                         </div>
                     </Space>
                 </Space>
-                <Paragraph style={{ marginTop: '20px', textAlign: 'left' }}>
+                <Paragraph style={{marginTop: '20px', textAlign: 'left'}}>
                     {data.description}
                 </Paragraph>
                 <div className="post-reactions">
                     <Space size="middle">
                         <Space>
-                            <LikeOutlined />
+                            <LikeOutlined/>
                             <Text>좋아요 3</Text>
                         </Space>
                         <Space>
-                            <SmileOutlined />
+                            <SmileOutlined/>
                             <Text>재밌어요 0</Text>
                         </Space>
                         <Space>
-                            <BulbOutlined />
+                            <BulbOutlined/>
                             <Text>도움돼요 2</Text>
                         </Space>
                         <Space>
-                            <FrownOutlined />
+                            <FrownOutlined/>
                             <Text>힘내요 0</Text>
                         </Space>
                     </Space>
@@ -165,7 +185,7 @@ const QuoteDetail: React.FC = () => {
                     value={comment}
                     onChange={handleCommentChange}
                     placeholder="“댓글 작성"
-                    autoSize={{ minRows: 3, maxRows: 5 }}
+                    autoSize={{minRows: 3, maxRows: 5}}
                 />
                 <div className="comment-footer">
                     <Upload
@@ -175,7 +195,7 @@ const QuoteDetail: React.FC = () => {
                         maxCount={1}
                         accept=".jpg,.png,.gif"
                     >
-                        <Button icon={<UploadOutlined />}>이미지첨부</Button>
+                        <Button icon={<UploadOutlined/>}>이미지첨부</Button>
                     </Upload>
                     <span className="file-info">최대 1개 (jpg, png, gif만 가능)</span>
                     <span className="char-count">{comment.length}/1000자</span>
@@ -192,7 +212,7 @@ const QuoteDetail: React.FC = () => {
                         actions={[<span key="comment-list-reply-to-0">대댓글달기</span>]}
                     >
                         <List.Item.Meta
-                            avatar={<Avatar icon={<UserOutlined />} />}
+                            avatar={<Avatar icon={<UserOutlined/>}/>}
                             title={<Text className="comment-username">{comment.username}</Text>}
                             description={<Text className="comment-content">{comment.content}</Text>}
                         />
