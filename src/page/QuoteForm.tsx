@@ -1,17 +1,38 @@
 import React from 'react';
-import { Button, Input, Form, Card, Typography, Space } from 'antd';
+import {Button, Input, Form, Card, Typography, Space, message} from 'antd';
 import axios from 'axios';
+import {useSelector} from "react-redux";
 
 const { Title } = Typography;
 
 const QuoteForm: React.FC = () => {
+
+    const userName = useSelector((state: any) => state.auth.user?.userName);
+
+    const userCheck = async () => {
+        if(!userName){
+            message.error('로그아웃 상태입니다.\n 댓글을 등록하려면 로그인이 필요합니다.');
+            return false;
+        }
+        return true;
+    }
+
     const handleFormSubmit = async (values: { title: string; description: string }) => {
         try {
-            await axios.post('/api/quotes', values);
+            userCheck();
+            await axios.post('http://localhost:8080/api/contact/save', {
+                userName : userName,
+                title : values.title,
+                description : values.description
+            }, {
+                withCredentials : true
+            });
             // 성공적으로 제출된 후 목록 페이지로 이동
             window.location.href = '/quote-contact';
+            message.success('등록되었습니다.');
         } catch (error) {
             console.error('Failed to submit data:', error);
+            message.error('등록에 실패하였습니다.');
         }
     };
 

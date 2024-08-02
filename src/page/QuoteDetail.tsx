@@ -209,7 +209,7 @@ const QuoteDetail: React.FC = () => {
                 dataSource={comments}
                 renderItem={comment => (
                     <List.Item
-                        actions={[<span key="comment-list-reply-to-0">대댓글달기</span>]}
+                        // actions={[<span key="comment-list-reply-to-0">대댓글달기</span>]}
                     >
                         <List.Item.Meta
                             avatar={<Avatar icon={<UserOutlined/>}/>}

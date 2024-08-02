@@ -56,7 +56,6 @@ const LoginPage: React.FC = () => {
             navigate('/');
         } catch (error) {
             console.error('Login failed:', error);
-            message.error('존재하지 않는 ID입니다.');
         }
     };
 
@@ -128,11 +127,13 @@ const LoginPage: React.FC = () => {
                         },
                     }}
                     actions={
-                        <Space style={{justifyContent: 'space-between', width: '100%'}}>
-                            <Button type="link" onClick={() => navigate('/signup')}>
-                                회원가입
-                            </Button>
-                        </Space>
+                        loginType === 'account' ? (
+                            <Space style={{justifyContent: 'space-between', width: '100%'}}>
+                                <Button type="link" onClick={() => navigate('/signup')}>
+                                    회원가입
+                                </Button>
+                            </Space>
+                        ) : null  // OAuth 로그인 타입일 때 회원가입 버튼을 숨깁니다.
                     }
                 >
                     <Tabs
