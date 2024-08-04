@@ -17,6 +17,7 @@ import {useSelector} from "react-redux";
 import {RootState} from "../store/store";
 import {sensitiveHeaders} from "http2";
 import {Cookie} from "@mui/icons-material";
+import {warning} from "@ant-design/icons/es/utils";
 
 const {Title, Text, Paragraph} = Typography;
 
@@ -68,34 +69,40 @@ const QuoteDetail: React.FC = () => {
     };
 
     const handleSubmit = async () => {
-        try {
-            const authToken = Cookies.get('token');
-            console.log('submitting comment : ', {content: comment, userName: userName})
-            console.log('JWT Token: ', authToken)
-            const response = await axios.post(`http://localhost:8080/api/contact/get/${id}/comments`, {
-                    content: comment,
-                    userName: userName // 여기에 실제 사용자 이름을 입력합니다.
-                }, {
-                    withCredentials: true
-                    // } headers: {
-                    //         'Authorization': `Bearer ${authToken}`
-                    //     }
+            try {
+                const authToken = Cookies.get('token');
+
+                if(!userName) {
+                    message.warning('로그인이 필요합니다.');
+                    return;
                 }
-            );
-            const newComment = response.data;
-            console.log('response 확인: ', newComment)
-            setComments([...comments, {
-                id: newComment.id,
-                username: newComment.username, // newComment.user.username에서 수정
-                content: newComment.content
-            }]);
-            setComment('');
-            setFileList([]);
-            message.success("등록되었습니다.");
-        } catch (error) {
-            console.error('Failed to submit comment:', error);
-            message.error("등록에 실패했습니다.");
-        }
+
+                console.log('submitting comment : ', {content: comment, userName: userName})
+                console.log('JWT Token: ', authToken)
+                const response = await axios.post(`http://localhost:8080/api/contact/get/${id}/comments`, {
+                        content: comment,
+                        userName: userName // 여기에 실제 사용자 이름을 입력합니다.
+                    }, {
+                        withCredentials: true
+                        // } headers: {
+                        //         'Authorization': `Bearer ${authToken}`
+                        //     }
+                    }
+                );
+                const newComment = response.data;
+                console.log('response 확인: ', newComment)
+                setComments([...comments, {
+                    id: newComment.id,
+                    username: newComment.username, // newComment.user.username에서 수정
+                    content: newComment.content
+                }]);
+                setComment('');
+                setFileList([]);
+                message.success("등록되었습니다.");
+            } catch (error) {
+                console.error('Failed to submit comment:', error);
+                message.error("등록에 실패했습니다.");
+            }
     };
 
 

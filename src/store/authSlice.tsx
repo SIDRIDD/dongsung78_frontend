@@ -32,6 +32,7 @@ const authSlice = createSlice({
             console.log('Logged out'); // 디버깅 로그 추가
             state.isLoggedIn = false;
             state.token = null;
+            state.user = null;
         }
     },
 });

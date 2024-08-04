@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { List, Space, Card, Typography, Button } from 'antd';
+import {List, Space, Card, Typography, Button, message} from 'antd';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import Cookies from "js-cookie";
+import {useSelector} from "react-redux";
+import {RootState} from "../store/store";
 
 type PaginationPosition = 'top' | 'bottom' | 'both';
 type PaginationAlign = 'start' | 'center' | 'end';
@@ -26,6 +29,8 @@ const QuoteContact: React.FC = () => {
     const [data, setData] = useState<DataItem[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
     const navigate = useNavigate();
+    const userName = useSelector((state: RootState) => state.auth.user?.userName);
+
 
     useEffect(() => {
         // 데이터베이스에서 데이터를 가져오는 함수
@@ -43,7 +48,13 @@ const QuoteContact: React.FC = () => {
     }, []);
 
     const handleShowForm = () => {
-        navigate('/quote-form');
+
+        if(userName) {
+            navigate('/quote-form');
+        } else {
+            navigate('/login');
+            message.warning('문의 글 작성을 위해 로그인이 필요합니다.');
+        }
     };
 
     const handleItemClick = (id: number) => {
