@@ -35,6 +35,7 @@ const QuoteContact: React.FC = () => {
     useEffect(() => {
         // 데이터베이스에서 데이터를 가져오는 함수
         const fetchData = async () => {
+            console.log('userName: ', userName);
             setLoading(true);
             try {
                 const response = await axios.get< {content:DataItem[]}>(`http://localhost:8080/api/contact/getall`);

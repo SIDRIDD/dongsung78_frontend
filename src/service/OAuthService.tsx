@@ -8,29 +8,35 @@ export const useOAuthLogin = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
+    const naverRedirectUri = process.env.REACT_APP_NAVER_CALLBACK_URL || '';
+    const kakaoRedirectUri = process.env.REACT_APP_KAKAO_REDIRECT_URL || '';
+
     const handleOAuthLogin = async (provider: string, code: string, state: string) => {
         let loginProvider = '';
+        let redirectUri = '';
 
         try {
             switch (provider) {
                 case 'naver':
                     loginProvider = provider;
+                    redirectUri = naverRedirectUri;
                     break;
                 case 'kakao':
                     loginProvider = provider;
-                    break;
-                case 'google':
-                    loginProvider = provider;
+                    redirectUri = kakaoRedirectUri;
                     break;
                 default:
                     throw new Error('Unsupported provider: ' + provider);
             }
-
-            const response = await axios.post(`http://localhost:8080/auth/oauth/${loginProvider}`, {
+            console.log('콜백 이후loginProvider');
+            console.log(`loginProvider : ${loginProvider}`);
+            console.log(`RedirectUri : ${redirectUri}`);
+            const response = await axios.post(`http://localhost:8080/auth/api/oauth/${loginProvider}`, {
                 code: code,
-                redirectUri: process.env.REACT_APP_NAVER_REDIRECTURL
+                redirectUri: redirectUri
             });
 
+            console.log('response 확인:', response.data);
             const { token } = response.data;
             dispatch(login(token));
 

@@ -13,6 +13,7 @@ import {useSelector, useDispatch} from 'react-redux';
 import {RootState, AppDispatch} from '../store/store';
 import {login, logout} from '../store/authSlice';
 import axios from "axios";
+import Cookies from "js-cookie";
 
 const Header: React.FC = () => {
     const [searchVisible, setSearchVisible] = useState<boolean>(false);
@@ -47,24 +48,26 @@ const Header: React.FC = () => {
 
     useEffect(() => {
         const checkLoginStatus = async () => {
-            try {
-                const response = await axios.get('http://localhost:8080/api/user/check', {
-                    withCredentials: true // 쿠키를 포함
-                });
-                console.log("/check 동작");
+            if (Cookies.get('token')) {
+                try {
+                    const response = await axios.get('http://localhost:8080/api/user/check', {
+                        withCredentials: true // 쿠키를 포함
+                    });
+                    console.log("/check 로컬 로그인 동작");
 
-                if (response.status === 200) {
-                    const data = response.data;
-                    console.log("Authenticated:", data);
-                    // 토큰과 사용자 정보를 Redux 상태로 업데이트
-                    dispatch(login({token: data.token, user: {email: data.email, userName: data.userName}}));
-                } else {
-                    console.log("Not authenticated or invalid token");
+                    if (response.status === 200) {
+                        const data = response.data;
+                        console.log("Authenticated:", data);
+                        // 토큰과 사용자 정보를 Redux 상태로 업데이트
+                        dispatch(login({token: data.token, user: {email: data.email, userName: data.userName}}));
+                    } else {
+                        console.log("Not authenticated or invalid token");
+                    }
+                } catch (error) {
+                    console.error("Failed to fetch:", error);
                 }
-            } catch (error) {
-                console.error("Failed to fetch:", error);
             }
-        };
+        }
 
         checkLoginStatus();
     }, [dispatch]);

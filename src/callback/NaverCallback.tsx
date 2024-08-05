@@ -1,21 +1,29 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useOAuthLogin } from '../service/OAuthService';
+import {login} from "../store/authSlice";
+import {useDispatch} from "react-redux";
+import {Cookie} from "@mui/icons-material";
+import Cookies from "js-cookie";
+
 
 const NaverCallback: React.FC = () => {
+    const dispatch = useDispatch();
     const navigate = useNavigate();
-    const handleOAuthLogin = useOAuthLogin();
 
     useEffect(() => {
-        const urlParams = new URLSearchParams(window.location.search);
-        const code = urlParams.get('code');
-        const state = urlParams.get('state');
-        if (code && state) {
-            handleOAuthLogin('naver', code, state)
-                .then(() => navigate('/dashboard'))
-                .catch(error => console.error('OAuth Login Failed:', error));
+        const accessToken = Cookies.get('accessToken');
+        const email = Cookies.get('email');
+        const userName = Cookies.get('userName');
+
+        console.log('email: ', email);
+        console.log('userName : ', userName);
+
+        if (accessToken && email && userName) {
+            dispatch(login({ token: accessToken, user: { email, userName } }));
+            navigate('/'); // 원하는 페이지로 이동
         }
-    }, [navigate, handleOAuthLogin]);
+    }, [dispatch, navigate]);
 
     return <div>Logging in with Naver...</div>;
 };

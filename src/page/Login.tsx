@@ -4,10 +4,11 @@ import {LoginForm, ProConfigProvider, ProFormCheckbox, ProFormText, setAlpha} fr
 import {Space, Tabs, message, theme, Button} from 'antd';
 import {GoogleLogin, CredentialResponse} from '@react-oauth/google';
 import KakaoLogin from 'react-kakao-login';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {login} from '../store/authSlice';
 import {useNavigate} from 'react-router-dom';
 import axios from 'axios';
+import {RootState} from "../store/store";
 
 type LoginType = 'oauth' | 'account';
 
@@ -26,20 +27,33 @@ const LoginPage: React.FC = () => {
     const naverClientId = process.env.REACT_APP_NAVER_CLIENT_ID || '';
     const naverRedirectUri = process.env.REACT_APP_NAVER_CALLBACK_URL || '';
     const stateString = process.env.REACT_APP_NAVER_STATE || '';
+    const kakaoRedirectUri = process.env.REACT_APP_KAKAO_REDIRECT_URL || '';
 
     const handleOAuthLogin = async (provider: string, code: string) => {
+        let redirectUri = '';
+        if (provider === 'naver') {
+            redirectUri = naverRedirectUri;
+        } else if (provider === 'kakao') {
+            redirectUri = kakaoRedirectUri;  // Kakao용 redirect URI를 설정
+        }
         try {
-            const response = await axios.post(`/api/oauth/${provider}`, {
+            console.log('Login.tsx 의 provider');
+            const response = await axios.post(`http://localhost:8080/api/oauth/${provider}`,{
                 code: code,
                 provider: provider,
-                redirectUri: naverRedirectUri
-            });
+                redirectUri: redirectUri
+            }
+        )
+            console.log('Login successful:', response.data);
 
-            const {token} = response.data;
-            dispatch(login(token));
+            const { token, email, userName } = response.data;
+            dispatch(login({ token, user: { email, userName } }));
 
-            message.success('Login Successful');
-            navigate('/');
+            // const {token} = response.data;
+            // dispatch(login(token));
+            //
+            // message.success('Login Successful');
+            // navigate('/');
         } catch (error) {
             console.error('OAuth Login Failed:', error);
             message.error('OAuth Login Failed');
@@ -48,6 +62,7 @@ const LoginPage: React.FC = () => {
 
     const onFinish = async (values: LoginFormValues) => {
         try {
+            console.log('values: ', values);
             const response = await axios.post('http://localhost:8080/api/user/login', values, { withCredentials: true });
             console.log('Login successful:', response.data);
 
@@ -57,17 +72,6 @@ const LoginPage: React.FC = () => {
         } catch (error) {
             console.error('Login failed:', error);
         }
-    };
-
-    const handleGoogleLoginSuccess = (response: CredentialResponse) => {
-        const accessToken = response.credential;
-        if (accessToken) {
-            handleOAuthLogin('google', accessToken);
-        }
-    };
-
-    const handleGoogleLoginFailure = () => {
-        message.error('Google Login Failed');
     };
 
     const handleKakaoSuccess = (response: any) => {
@@ -82,18 +86,18 @@ const LoginPage: React.FC = () => {
         message.error('Kakao Login Failed');
     };
 
-    useEffect(() => {
-        const urlParams = new URLSearchParams(window.location.search);
-        const code = urlParams.get('code');
-        const state = urlParams.get('state');
-
-        // 로그 추가
-        console.log(`code: ${code}, state: ${state}`);
-
-        if (code && state === stateString) {
-            handleOAuthLogin('naver', code);
-        }
-    }, [navigate]);
+    // useEffect(() => {
+    //     const urlParams = new URLSearchParams(window.location.search);
+    //     const code = urlParams.get('code');
+    //     const state = urlParams.get('state');
+    //
+    //     // 로그 추가
+    //     console.log(`code: ${code}, state: ${state}`);
+    //
+    //     if (code && state === stateString) {
+    //         handleOAuthLogin('naver', code);
+    //     }
+    // }, [navigate]);
 
     const iconStyles: CSSProperties = {
         marginInlineStart: '16px',
@@ -168,13 +172,12 @@ const LoginPage: React.FC = () => {
                     )}
                     {loginType === 'oauth' && (
                         <>
-                            <Space direction="vertical" style={{
+                            <Space direction="horizontal" style={{
                                 width: '100%',
                                 justifyContent: 'center',
                                 alignItems: 'center',
                                 marginBlock: 24
                             }}>
-                                <GoogleLogin onSuccess={handleGoogleLoginSuccess} onError={handleGoogleLoginFailure}/>
                                 <KakaoLogin
                                     token={kakaoJavascriptKey}
                                     onSuccess={handleKakaoSuccess}
@@ -182,6 +185,7 @@ const LoginPage: React.FC = () => {
                                     onLogout={() => console.log('Kakao Logout')}
                                     render={({onClick}) => (
                                         <button
+                                            type="button"
                                             onClick={onClick}
                                             style={{
                                                 borderStyle: 'none',
@@ -191,13 +195,16 @@ const LoginPage: React.FC = () => {
                                                 display: 'flex',
                                                 alignItems: 'center',
                                                 justifyContent: 'center',
-                                                marginBottom: '10px'  // 버튼 간격 추가
+                                                marginBottom: '10px',  // 버튼 간격 추가
+                                                marginTop: '10px',
+                                                marginLeft: '20px'
                                             }}
                                         >
                                             <img
                                                 src={`${process.env.PUBLIC_URL}/img/kakao_login.png`}
                                                 alt="Kakao Login"
-                                                style={{height: '100%'}}  // 이미지 높이를 버튼 높이에 맞춤
+                                                style={{height: '100%',
+                                                    objectFit: 'contain'}}  // 이미지 높이를 버튼 높이에 맞춤
                                             />
                                         </button>
                                     )}
@@ -217,7 +224,8 @@ const LoginPage: React.FC = () => {
                                     <img
                                         src={`${process.env.PUBLIC_URL}/img/naver_login.png`}
                                         alt="Naver Login"
-                                        style={{height: '100%'}}  // 이미지 높이를 버튼 높이에 맞춤
+                                        style={{height: '100%',
+                                            objectFit: 'contain'}}  // 이미지 높이를 버튼 높이에 맞춤
                                     />
                                 </button>
                             </Space>
