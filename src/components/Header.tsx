@@ -48,7 +48,9 @@ const Header: React.FC = () => {
 
     useEffect(() => {
         const checkLoginStatus = async () => {
-            if (Cookies.get('token')) {
+            const token = Cookies.get('token');
+            const accessToken = Cookies.get('accessToken')
+            if (token || accessToken) {
                 try {
                     const response = await axios.get('http://localhost:8080/api/user/check', {
                         withCredentials: true // 쿠키를 포함

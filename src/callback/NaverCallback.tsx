@@ -12,16 +12,22 @@ const NaverCallback: React.FC = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        const accessToken = Cookies.get('accessToken');
-        const email = Cookies.get('email');
-        const userName = Cookies.get('userName');
+        const urlParams = new URLSearchParams(window.location.search);
+        const token = urlParams.get('token');
+        const email = urlParams.get('email');
+        const userName = urlParams.get('userName');
+        console.log('token : ', token);
+        // const accessToken = Cookies.get('accessToken');
+        // const email = Cookies.get('email');
+        // const userName = Cookies.get('userName');
 
         console.log('email: ', email);
         console.log('userName : ', userName);
 
-        if (accessToken && email && userName) {
-            dispatch(login({ token: accessToken, user: { email, userName } }));
+        if (token && email && userName) {
+            dispatch(login({ token: token, user: { email, userName } }));
             navigate('/'); // 원하는 페이지로 이동
+            console.log("here!! email, userName : ", email, userName);
         }
     }, [dispatch, navigate]);
 

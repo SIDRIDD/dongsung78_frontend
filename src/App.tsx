@@ -46,7 +46,7 @@ function App() {
                         <Route path="/item-detail/:id" element={<ItemDetail />} />
                         <Route path="/login" element={<Login />} />
                         <Route path="/signup" element={<SignUpPage />} />
-                        <Route path="/oauth/redirect" element={<NaverCallback />} />
+                        <Route path="/" element={<NaverCallback />} />
                     </Routes>
                     {showAdditionalComponents && (
                         <>

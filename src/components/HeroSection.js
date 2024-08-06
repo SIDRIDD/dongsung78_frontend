@@ -1,8 +1,31 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import './css/HeroSection.css';
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
+import {login} from "../store/authSlice";
+import {useDispatch} from "react-redux";
+import Cookies from "js-cookie";
 
 function HeroSection() {
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const token = urlParams.get('token');
+        const email = urlParams.get('email');
+        const userName = urlParams.get('userName');
+
+        console.log('token : ', token);
+        console.log('email: ', email);
+        console.log('userName : ', userName);
+
+        if (email && userName) {
+            dispatch(login({ token, user: { email, userName }}));
+            navigate('/'); // 원하는 페이지로 이동
+            console.log("here!! email, userName : ", email, userName);
+        }
+    }, [dispatch, navigate]);
+
     return (
         <section className="hero-section">
             <div className="hero-image-container">
