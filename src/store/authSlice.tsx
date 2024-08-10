@@ -15,16 +15,15 @@ const authSlice = createSlice({
     name: 'auth',
     initialState,
     reducers: {
-        login: (state, action: PayloadAction<{ token: string}>) => {
-            console.log('Logged in with token:', action.payload.token); // 디버깅 로그 추가
+        login: (state) => {
+            console.log('Logged in'); // 디버깅 로그
             state.isLoggedIn = true;
-            state.token = action.payload.token;
         },
         logout: (state) => {
-            console.log('Logged out'); // 디버깅 로그 추가
+            console.log('Logged out'); // 디버깅 로그
             state.isLoggedIn = false;
-            state.token = null;
-        }
+            // 필요한 경우, 쿠키에서 토큰 삭제 로직 추가
+        },
     },
 });
 

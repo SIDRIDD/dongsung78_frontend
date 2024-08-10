@@ -9,22 +9,22 @@ function HeroSection() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    useEffect(() => {
-        const urlParams = new URLSearchParams(window.location.search);
-        const token = urlParams.get('token');
-        const email = urlParams.get('email');
-        const userName = urlParams.get('userName');
-
-        console.log('token : ', token);
-        console.log('email: ', email);
-        console.log('userName : ', userName);
-
-        if (email && userName) {
-            dispatch(login({ token, user: { email, userName }}));
-            navigate('/'); // 원하는 페이지로 이동
-            console.log("here!! email, userName : ", email, userName);
-        }
-    }, [dispatch, navigate]);
+    // useEffect(() => {
+    //     const urlParams = new URLSearchParams(window.location.search);
+    //     const token = urlParams.get('token');
+    //     const email = urlParams.get('email');
+    //     const userName = urlParams.get('userName');
+    //
+    //     console.log('token : ', token);
+    //     console.log('email: ', email);
+    //     console.log('userName : ', userName);
+    //
+    //     if (email && userName) {
+    //         dispatch(login({ token, user: { email, userName }}));
+    //         navigate('/'); // 원하는 페이지로 이동
+    //         console.log("here!! email, userName : ", email, userName);
+    //     }
+    // }, [dispatch, navigate]);
 
     return (
         <section className="hero-section">

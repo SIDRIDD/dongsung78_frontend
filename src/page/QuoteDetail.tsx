@@ -81,7 +81,6 @@ const QuoteDetail: React.FC = () => {
                     }
                 );
                 const newComment = response.data;
-                console.log('response 확인: ', newComment)
                 setComments([...comments, {
                     id: newComment.id,
                     username: newComment.username, // newComment.user.username에서 수정
@@ -101,7 +100,7 @@ const QuoteDetail: React.FC = () => {
         const fetchData = async () => {
             setLoading(true);
             try {
-                const response = await axios.get<DataItem>(`http://localhost:8080/api/contact/get/${id}`);
+                const response = await axios.get<DataItem>(`http://localhost:8080/api/contact/get?contact_id=${id}`);
                 setData(response.data);
                 setComments(response.data.comments.map((comment: any) => ({
                     id: comment.id,

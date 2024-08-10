@@ -20,7 +20,7 @@ const Header: React.FC = () => {
     const {cartItems, drawerVisible, setDrawerVisible} = useCart();
     const navigate = useNavigate();
     const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
-    const dispatch: AppDispatch = useDispatch();
+    const dispatch = useDispatch();
 
 
     const toggleSearch = () => {
@@ -47,31 +47,26 @@ const Header: React.FC = () => {
     };
 
     useEffect(() => {
+        console.log('header 훅');
         const checkLoginStatus = async () => {
-            const accessToken = Cookies.get('accessToken')
-            if (isLoggedIn || accessToken) {
-                try {
-                    const response = await axios.get('http://localhost:8080/api/user/check', {
-                        withCredentials: true // 쿠키를 포함
-                    });
-                    console.log("/check 로컬 로그인 동작");
+            try {
+                const response = await axios.get('http://localhost:8080/api/user/refresh', {
+                    withCredentials: true, // 쿠키 포함
+                });
 
-                    if (response.status === 200) {
-                        const data = response.data;
-                        console.log("Authenticated:", data);
-                        // 토큰과 사용자 정보를 Redux 상태로 업데이트
-                        dispatch(login({token: data.token}));
-                    } else {
-                        console.log("Not authenticated or invalid token");
-                    }
-                } catch (error) {
-                    console.error("Failed to fetch:", error);
+                if (response.status === 200) {
+                    dispatch(login());
+                } else {
+                   dispatch((logout()));
                 }
+            } catch (error) {
+                console.error("Failed to verify login status:", error);
+                // dispatch(logout());
             }
         }
 
         checkLoginStatus();
-    }, [dispatch]);
+    }, [dispatch, isLoggedIn]);
 
 
     console.log('Is Logged In:', isLoggedIn); // 디버깅을 위한 로그 추가

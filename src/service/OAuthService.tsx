@@ -37,8 +37,7 @@ export const useOAuthLogin = () => {
             });
 
             console.log('response 확인:', response.data);
-            const { token } = response.data;
-            dispatch(login(token));
+            dispatch(login());
 
             message.success('Login Successful');
             navigate('/');

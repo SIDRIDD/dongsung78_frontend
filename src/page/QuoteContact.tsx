@@ -37,6 +37,7 @@ const QuoteContact: React.FC = () => {
             setLoading(true);
             try {
                 const response = await axios.get< {content:DataItem[]}>(`http://localhost:8080/api/contact/getall`);
+                console.log('response.data.content : ', response.data.content);
                 setData(response.data.content);
             } catch (error) {
                 console.error('Failed to fetch data:', error);
