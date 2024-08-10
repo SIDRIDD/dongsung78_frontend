@@ -47,7 +47,7 @@ const LoginPage: React.FC = () => {
             console.log('Login successful:', response.data);
 
             const { token, email, userName } = response.data;
-            dispatch(login({ token, user: { email, userName } }));
+            dispatch(login({ token }));
 
             // const {token} = response.data;
             // dispatch(login(token));
@@ -66,8 +66,8 @@ const LoginPage: React.FC = () => {
             const response = await axios.post('http://localhost:8080/api/user/login', values, { withCredentials: true });
             console.log('Login successful:', response.data);
 
-            const { token, email, userName } = response.data;
-            dispatch(login({ token, user: { email, userName } }));
+            const { token } = response.data;
+            dispatch(login({ token }));
             navigate('/');
         } catch (error) {
             console.error('Login failed:', error);

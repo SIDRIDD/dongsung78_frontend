@@ -25,7 +25,7 @@ const NaverCallback: React.FC = () => {
         console.log('userName : ', userName);
 
         if (token && email && userName) {
-            dispatch(login({ token: token, user: { email, userName } }));
+            dispatch(login({ token: token }));
             navigate('/'); // 원하는 페이지로 이동
             console.log("here!! email, userName : ", email, userName);
         }

@@ -51,9 +51,7 @@ const QuoteDetail: React.FC = () => {
     const [fileList, setFileList] = useState<any[]>([]);
     const [comments, setComments] = useState<Comment[]>([]);
     const {token} = theme.useToken();
-
-    const userName = useSelector((state: RootState) => state.auth.user?.userName);
-
+    const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
 
     const {
         token: {colorBgContainer, borderRadiusLG},
@@ -70,23 +68,16 @@ const QuoteDetail: React.FC = () => {
 
     const handleSubmit = async () => {
             try {
-                const authToken = Cookies.get('token');
-
-                if(!userName) {
+                if(!isLoggedIn) {
                     message.warning('로그인이 필요합니다.');
                     return;
                 }
 
-                console.log('submitting comment : ', {content: comment, userName: userName})
-                console.log('JWT Token: ', authToken)
+                console.log('JWT Token: ', isLoggedIn)
                 const response = await axios.post(`http://localhost:8080/api/contact/get/${id}/comments`, {
                         content: comment,
-                        userName: userName // 여기에 실제 사용자 이름을 입력합니다.
                     }, {
                         withCredentials: true
-                        // } headers: {
-                        //         'Authorization': `Bearer ${authToken}`
-                        //     }
                     }
                 );
                 const newComment = response.data;

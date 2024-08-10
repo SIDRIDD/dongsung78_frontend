@@ -17,14 +17,12 @@ interface ProductDetailsProps {
 
 interface PurchaseData {
     productId: number;
-    userName: string;
     count: number;
 }
 
 const ProductDetails: React.FC<ProductDetailsProps> = ({productId, name, description, price, stock, imgUrl  }) => {
     const [quantity, setQuantity] = useState(1);
     const { addToCart, setDrawerVisible, cartItems, purchaseItems } = useCart();
-    const userName = useSelector((state: any) => state.auth.user?.userName);
 
     const handleIncrease = () => {
         setQuantity(prevQuantity => prevQuantity + 1);
@@ -43,7 +41,6 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({productId, name, descrip
     const handleBuyNow = () => {
         const purchaseData: PurchaseData[] = cartItems.map(item => ({
             productId: item.productId,
-            userName: userName,
             count: item.quantity,
         }));
         purchaseItems(purchaseData); // 필요한 데이터만 전송

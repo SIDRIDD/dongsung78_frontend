@@ -4,6 +4,8 @@ import {useCart} from "../context/CartContext";
 import "./css/DrawerComponent.css";
 import {useSelector} from "react-redux";
 import {useNavigate} from 'react-router-dom';
+import Cookies from "js-cookie";
+import {RootState} from "../store/store";
 
 interface DrawerComponentProps {
     visible: boolean;
@@ -17,11 +19,11 @@ const DrawerComponent: React.FC<DrawerComponentProps> = ({visible, onClose, item
     const navigate = useNavigate();
     const totalAmount = items.reduce((acc, item) => acc + (item.price * item.quantity), 0);
     // const userId = "admin";
-    const userName = useSelector((state: any) => state.auth.user?.userName);
+    const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
 
     const handlePurchase = () => {
 
-        if(!userName){
+        if(!isLoggedIn){
             message.warning('상품 구매를 위해 로그인이 필요합니다.');
             onClose();
             navigate('/login');
@@ -30,7 +32,6 @@ const DrawerComponent: React.FC<DrawerComponentProps> = ({visible, onClose, item
 
         const purchaseData = items.map(item => ({
             productId: item.productId,
-            userName: userName,
             count: item.quantity,
         }));
         purchaseItems(purchaseData);

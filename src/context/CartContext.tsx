@@ -18,7 +18,6 @@ interface Product {
 
 interface PurchaseData {
     productId: number;
-    userName: string;
     count: number;
 }
 

@@ -29,13 +29,11 @@ const QuoteContact: React.FC = () => {
     const [data, setData] = useState<DataItem[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
     const navigate = useNavigate();
-    const userName = useSelector((state: RootState) => state.auth.user?.userName);
-
+    const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
 
     useEffect(() => {
         // 데이터베이스에서 데이터를 가져오는 함수
         const fetchData = async () => {
-            console.log('userName: ', userName);
             setLoading(true);
             try {
                 const response = await axios.get< {content:DataItem[]}>(`http://localhost:8080/api/contact/getall`);
@@ -50,7 +48,7 @@ const QuoteContact: React.FC = () => {
 
     const handleShowForm = () => {
 
-        if(userName) {
+        if(isLoggedIn) {
             navigate('/quote-form');
         } else {
             navigate('/login');

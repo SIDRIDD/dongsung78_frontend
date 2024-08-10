@@ -48,9 +48,8 @@ const Header: React.FC = () => {
 
     useEffect(() => {
         const checkLoginStatus = async () => {
-            const token = Cookies.get('token');
             const accessToken = Cookies.get('accessToken')
-            if (token || accessToken) {
+            if (isLoggedIn || accessToken) {
                 try {
                     const response = await axios.get('http://localhost:8080/api/user/check', {
                         withCredentials: true // 쿠키를 포함
@@ -61,7 +60,7 @@ const Header: React.FC = () => {
                         const data = response.data;
                         console.log("Authenticated:", data);
                         // 토큰과 사용자 정보를 Redux 상태로 업데이트
-                        dispatch(login({token: data.token, user: {email: data.email, userName: data.userName}}));
+                        dispatch(login({token: data.token}));
                     } else {
                         console.log("Not authenticated or invalid token");
                     }
