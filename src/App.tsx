@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import './App.css';
 import Header from './components/Header';
 import HeroSection from './components/HeroSection';
@@ -16,6 +16,10 @@ import QuoteDetail from "./page/QuoteDetail";
 import Login from "./page/Login";
 import NaverCallback from "./callback/NaverCallback";
 import SignUpPage from "./page/SignUpPage";
+import {useDispatch, useSelector} from "react-redux";
+import {RootState} from "./store/store";
+import axios from "axios";
+import {login, logout} from "./store/authSlice";
 
 
 //
@@ -30,6 +34,20 @@ import SignUpPage from "./page/SignUpPage";
 function App() {
     const location = useLocation();
     const showAdditionalComponents = location.pathname === '/';
+    const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        axios.get('http://localhost:8080/api/user/check', {withCredentials: true})
+            .then(response => {
+                if(response.status === 200){
+                    dispatch(login());
+                }
+            })
+            .catch(() => {
+                dispatch(logout());
+            })
+    }, [dispatch]);
 
     return (
         <div className="App">

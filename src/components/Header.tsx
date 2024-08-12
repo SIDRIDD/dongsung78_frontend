@@ -46,29 +46,6 @@ const Header: React.FC = () => {
         navigate('/');
     };
 
-    useEffect(() => {
-        console.log('header 훅');
-        const checkLoginStatus = async () => {
-            try {
-                const response = await axios.get('http://localhost:8080/api/user/refresh', {
-                    withCredentials: true, // 쿠키 포함
-                });
-
-                if (response.status === 200) {
-                    dispatch(login());
-                } else {
-                   dispatch((logout()));
-                }
-            } catch (error) {
-                console.error("Failed to verify login status:", error);
-                // dispatch(logout());
-            }
-        }
-
-        checkLoginStatus();
-    }, [dispatch, isLoggedIn]);
-
-
     console.log('Is Logged In:', isLoggedIn); // 디버깅을 위한 로그 추가
 
     return (
