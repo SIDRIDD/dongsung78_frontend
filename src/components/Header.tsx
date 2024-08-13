@@ -21,7 +21,7 @@ const Header: React.FC = () => {
     const navigate = useNavigate();
     const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
     const dispatch = useDispatch();
-
+    const cartKinds = sessionStorage.getItem('cartKinds');
 
     const toggleSearch = () => {
         setSearchVisible(!searchVisible);
@@ -42,6 +42,7 @@ const Header: React.FC = () => {
     };
 
     const handleLogout = () => {
+        sessionStorage.setItem('cartKinds', '0');
         dispatch(logout());
         navigate('/');
     };
@@ -66,7 +67,7 @@ const Header: React.FC = () => {
                     <div className="cart-icon">
                         <span role="img" aria-label="cart" onClick={toggleDrawer}>🛒</span>
                         <span className="cart-count d-flex align-items-center ms-auto"
-                              style={{color: 'black'}}>{cartItems.length}</span>
+                              style={{color: 'black'}}>{cartKinds}</span>
                     </div>
                     {isLoggedIn ? (
                         <Button onClick={handleLogout} style={{

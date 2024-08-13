@@ -23,7 +23,7 @@ const LoginPage: React.FC = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const kakaoJavascriptKey = process.env.REACT_APP_KAKAO_JAVASCRIPT_KEY || '';
+    const kakaoResttKey = process.env.REACT_APP_KAKAO_REST_KEY || '';
     const naverClientId = process.env.REACT_APP_NAVER_CLIENT_ID || '';
     const naverRedirectUri = process.env.REACT_APP_NAVER_CALLBACK_URL || '';
     const stateString = process.env.REACT_APP_NAVER_STATE || '';
@@ -74,9 +74,9 @@ const LoginPage: React.FC = () => {
 
     const handleKakaoSuccess = (response: any) => {
         const accessToken = response.response.access_token;
-        if (accessToken) {
-            handleOAuthLogin('kakao', accessToken);
-        }
+        // if (accessToken) {
+        //     handleOAuthLogin('kakao', accessToken);
+        // }
     };
 
     const handleKakaoFailure = (error: any) => {
@@ -108,6 +108,10 @@ const LoginPage: React.FC = () => {
     const handleNaverLogin = () => {
         window.location.href = `https://nid.naver.com/oauth2.0/authorize?client_id=${naverClientId}&response_type=code&redirect_uri=${naverRedirectUri}&state=${stateString}&scope=email`;
     };
+
+    const handleKakaoLogin = () => {
+        window.location.href = `https://kauth.kakao.com/oauth/authorize?client_id=${kakaoResttKey}&redirect_uri=${kakaoRedirectUri}&response_type=code`
+    }
 
     return (
         <ProConfigProvider hashed={false}>
@@ -176,37 +180,56 @@ const LoginPage: React.FC = () => {
                                 alignItems: 'center',
                                 marginBlock: 24
                             }}>
-                                <KakaoLogin
-                                    token={kakaoJavascriptKey}
-                                    onSuccess={handleKakaoSuccess}
-                                    onFail={handleKakaoFailure}
-                                    onLogout={() => console.log('Kakao Logout')}
-                                    render={({onClick}) => (
-                                        <button
-                                            type="button"
-                                            onClick={onClick}
-                                            style={{
-                                                borderStyle: 'none',
-                                                backgroundColor: 'white',
-                                                width: '190px',  // 구글, 카카오와 비슷한 너비
-                                                height: '40px',  // 구글, 카카오와 비슷한 높이
-                                                display: 'flex',
-                                                alignItems: 'center',
-                                                justifyContent: 'center',
-                                                marginBottom: '10px',  // 버튼 간격 추가
-                                                marginTop: '10px',
-                                                marginLeft: '20px'
-                                            }}
-                                        >
-                                            <img
-                                                src={`${process.env.PUBLIC_URL}/img/kakao_login.png`}
-                                                alt="Kakao Login"
-                                                style={{height: '100%',
-                                                    objectFit: 'contain'}}  // 이미지 높이를 버튼 높이에 맞춤
-                                            />
-                                        </button>
-                                    )}
-                                />
+                                {/*<KakaoLogin*/}
+                                {/*    token={kakaoResttKey}*/}
+                                {/*    onSuccess={handleKakaoSuccess}*/}
+                                {/*    onFail={handleKakaoFailure}*/}
+                                {/*    onLogout={() => console.log('Kakao Logout')}*/}
+                                {/*    render={({onClick}) => (*/}
+                                {/*        <button*/}
+                                {/*            type="button"*/}
+                                {/*            onClick={onClick}*/}
+                                {/*            style={{*/}
+                                {/*                borderStyle: 'none',*/}
+                                {/*                backgroundColor: 'white',*/}
+                                {/*                width: '190px',  // 구글, 카카오와 비슷한 너비*/}
+                                {/*                height: '40px',  // 구글, 카카오와 비슷한 높이*/}
+                                {/*                display: 'flex',*/}
+                                {/*                alignItems: 'center',*/}
+                                {/*                justifyContent: 'center',*/}
+                                {/*                marginBottom: '10px',  // 버튼 간격 추가*/}
+                                {/*                marginTop: '10px',*/}
+                                {/*                marginLeft: '20px'*/}
+                                {/*            }}*/}
+                                {/*        >*/}
+                                {/*            <img*/}
+                                {/*                src={`${process.env.PUBLIC_URL}/img/kakao_login.png`}*/}
+                                {/*                alt="Kakao Login"*/}
+                                {/*                style={{height: '100%',*/}
+                                {/*                    objectFit: 'contain'}}  // 이미지 높이를 버튼 높이에 맞춤*/}
+                                {/*            />*/}
+                                {/*        </button>*/}
+                                {/*    )}*/}
+                                {/*/>*/}
+                                <button
+                                    onClick={handleKakaoLogin}
+                                    style={{
+                                        borderStyle: 'none',
+                                        backgroundColor: 'white',
+                                        width: '190px',  // 구글, 카카오와 비슷한 너비
+                                        height: '40px',  // 구글, 카카오와 비슷한 높이
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                    }}
+                                >
+                                    <img
+                                        src={`${process.env.PUBLIC_URL}/img/kakao_login.png`}
+                                        alt="Naver Login"
+                                        style={{height: '100%',
+                                            objectFit: 'contain'}}  // 이미지 높이를 버튼 높이에 맞춤
+                                    />
+                                </button>
                                 <button
                                     onClick={handleNaverLogin}
                                     style={{

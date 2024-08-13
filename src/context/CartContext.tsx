@@ -54,7 +54,6 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
     const [cartItems, setCartItems] = useState<Product[]>([]);
     const [drawerVisible, setDrawerVisible] = useState<boolean>(false);
 
-
     const removeFromCart = (name: string) => {
         setCartItems(prevItems => prevItems.filter(item => item.name !== name));
     };
@@ -76,8 +75,12 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
                         ? { ...item, quantity: item.quantity + product.quantity }
                         : item
                 );
+            } else {
+                const currentCartKinds = parseInt(sessionStorage.getItem('cartKinds') || '0', 10);
+                sessionStorage.setItem('cartKinds', JSON.stringify(currentCartKinds + 1));
+                return [...prevItems, product];
+
             }
-            return [...prevItems, product];
         });
         setDrawerVisible(true);
     };

@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import './App.css';
 import Header from './components/Header';
 import HeroSection from './components/HeroSection';
@@ -6,10 +6,10 @@ import FeaturedProducts from './components/FeaturedProducts';
 import CustomerReviews from './components/CustomerReviews';
 import Footer from './components/Footer';
 import ProductGrid from './page/ProductGrid';
-import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
+import {BrowserRouter as Router, Route, Routes, useLocation} from 'react-router-dom';
 import QuoteContact from "./page/QuoteContact";
 import ProductPage from "./page/ProductPage";
-import { CartProvider } from './context/CartContext';
+import {CartProvider, useCart} from './context/CartContext';
 import QuoteForm from "./page/QuoteForm";
 import ItemDetail from "./page/ItemDetail";
 import QuoteDetail from "./page/QuoteDetail";
@@ -20,6 +20,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "./store/store";
 import axios from "axios";
 import {login, logout} from "./store/authSlice";
+import KakaoId from "./components/KakaoId";
 
 
 //
@@ -40,7 +41,7 @@ function App() {
     useEffect(() => {
         axios.get('http://localhost:8080/api/user/check', {withCredentials: true})
             .then(response => {
-                if(response.status === 200){
+                if (response.status === 200) {
                     dispatch(login());
                 }
             })
@@ -52,28 +53,29 @@ function App() {
     return (
         <div className="App">
             <CartProvider>
-                <Header />
+                <Header/>
                 <main>
                     <Routes>
-                        <Route path="/" element={<HeroSection />} />
-                        <Route path="/product-grid/:category" element={<ProductGrid />} />
-                        <Route path="/quote-contact" element={<QuoteContact />} />
-                        <Route path="/quote-form" element={<QuoteForm />} />
-                        <Route path="/quote-detail/:id" element={<QuoteDetail />} />
-                        <Route path="product-detail/:id" element={<ProductPage />} />
-                        <Route path="/item-detail/:id" element={<ItemDetail />} />
-                        <Route path="/login" element={<Login />} />
-                        <Route path="/signup" element={<SignUpPage />} />
-                        <Route path="/" element={<NaverCallback />} />
+                        <Route path="/" element={<HeroSection/>}/>
+                        <Route path="/product-grid/:category" element={<ProductGrid/>}/>
+                        <Route path="/quote-contact" element={<QuoteContact/>}/>
+                        <Route path="/quote-form" element={<QuoteForm/>}/>
+                        <Route path="/quote-detail/:id" element={<QuoteDetail/>}/>
+                        <Route path="product-detail/:id" element={<ProductPage/>}/>
+                        <Route path="/item-detail/:id" element={<ItemDetail/>}/>
+                        <Route path="/login" element={<Login/>}/>
+                        <Route path="/signup" element={<SignUpPage/>}/>
+                        <Route path="/" element={<NaverCallback/>}/>
+                        <Route path="/kakaoid" element={<KakaoId />}/>
                     </Routes>
                     {showAdditionalComponents && (
                         <>
-                            <FeaturedProducts />
-                            <CustomerReviews />
+                            <FeaturedProducts/>
+                            <CustomerReviews/>
                         </>
                     )}
                 </main>
-                <Footer />
+                <Footer/>
             </ CartProvider>
         </div>
     );
@@ -82,7 +84,7 @@ function App() {
 export default function AppWrapper() {
     return (
         <Router>
-            <App />
+                <App/>
         </Router>
     );
 }
