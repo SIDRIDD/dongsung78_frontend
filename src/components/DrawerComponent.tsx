@@ -29,12 +29,16 @@ const DrawerComponent: React.FC<DrawerComponentProps> = ({visible, onClose, item
             navigate('/login');
             return;
         }
+        console.log('items 확인 : ', items);
+        onClose();
+        navigate('/delivery', {state: { items }});
 
-        const purchaseData = items.map(item => ({
-            productId: item.productId,
-            count: item.quantity,
-        }));
-        purchaseItems(purchaseData);
+        // const purchaseData = items.map(item => ({
+        //     productId: item.productId,
+        //     count: item.quantity,
+        // }));
+        // purchaseItems(purchaseData);
+        // sessionStorage.setItem('cartKinds', '0');
     };
 
     return (

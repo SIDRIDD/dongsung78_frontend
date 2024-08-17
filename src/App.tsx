@@ -21,6 +21,7 @@ import {RootState} from "./store/store";
 import axios from "axios";
 import {login, logout} from "./store/authSlice";
 import KakaoId from "./components/KakaoId";
+import Delivery from "./components/Delivery";
 
 
 //
@@ -67,6 +68,7 @@ function App() {
                         <Route path="/signup" element={<SignUpPage/>}/>
                         <Route path="/" element={<NaverCallback/>}/>
                         <Route path="/kakaoid" element={<KakaoId />}/>
+                        <Route path="/delivery" element={<Delivery />}/>
                     </Routes>
                     {showAdditionalComponents && (
                         <>

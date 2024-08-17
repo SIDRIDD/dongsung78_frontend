@@ -81,7 +81,7 @@ const ProductGrid: React.FC = () => {
                                 {/*    <p className="product-price">${product.price}</p>*/}
                                 {/*)}*/}
                                 <p className="product-grid-description">{product.description}</p>
-                                <button className="product-grid-button">구매하기</button>
+                                <button className="product-grid-button">상세 보기</button>
                             </div>
                         </div>
                     </Link>

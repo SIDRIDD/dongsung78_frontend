@@ -30,8 +30,8 @@ const KakaoId: React.FC = () => {
 
     const callApi = async (data: FormValues) => {
         try {
-            await axios.get(`http://localhost:8080/oauth/kakao/token?id=${data.username}`,
-                {withCredentials: true});
+            // await axios.get(`http://localhost:8080/oauth/kakao/token?id=${data.username}`);
+            window.location.href = `http://localhost:8080/oauth/kakao/token?id=${data.username}`;
             message.success('카카오 로그인!');
         } catch (error: any) {
             message.error('카카오 로그인 실패..');

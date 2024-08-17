@@ -87,7 +87,9 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
 
     const purchaseItems = async (purchaseData: PurchaseData[]) => {
         try {
-            const response = await axios.post('http://localhost:8080/api/order/save', purchaseData);
+            console.log('purchaseData : ', purchaseData);
+            const response = await axios.post('http://localhost:8080/api/order/save', purchaseData
+            , {withCredentials: true});
             console.log(response.data); // 성공 메시지 출력
             // 성공적으로 구매가 완료된 후 장바구니를 비웁니다.
             setCartItems([]);
