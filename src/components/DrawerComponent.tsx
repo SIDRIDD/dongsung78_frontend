@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Drawer, message} from 'antd';
 import {useCart} from "../context/CartContext";
 import "./css/DrawerComponent.css";
@@ -40,6 +40,10 @@ const DrawerComponent: React.FC<DrawerComponentProps> = ({visible, onClose, item
         // purchaseItems(purchaseData);
         // sessionStorage.setItem('cartKinds', '0');
     };
+
+    useEffect(() => {
+        sessionStorage.setItem('cartKinds', items.length.toString());
+    })
 
     return (
         <Drawer title="장바구니" onClose={onClose} open={visible}>

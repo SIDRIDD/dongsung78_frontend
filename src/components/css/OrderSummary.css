@@ -90,3 +90,18 @@
 .order-summary-button:hover {
     background-color: #0056b3;
 }
+
+.order-summary-button-general{
+    margin-top: 10px;
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    font-size: 16px;
+}
+.order-summary-button-general:hover {
+    background-color: #0056b3;
+}

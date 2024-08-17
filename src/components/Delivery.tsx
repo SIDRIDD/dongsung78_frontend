@@ -13,8 +13,24 @@ const ShippingInfoForm: React.FC = () => {
 
     const [requestValue, setRequestValue] = useState('');
 
+    const [shippingInfo, setShippingInfo] = useState({
+        name: '',
+        phone: '',
+        address: {
+            city: '',
+            extraAddress: '',
+            zipCode: ''
+        },
+        request: ''
+    });
+
+
+
+    // Handle input change for address fields
+
+
     const onFinish = (values: any) => {
-        console.log('Success:', values);
+
     };
 
     const onFinishFailed = (errorInfo: any) => {
@@ -24,15 +40,35 @@ const ShippingInfoForm: React.FC = () => {
     const handleSelectChange = (value: string) => {
         if (value === 'custom') {
             setIsCustom(true);
-            setRequestValue('');  // "직접 입력"을 선택하면 기존 값을 지우고 Input 필드를 활성화
+            setRequestValue('');
         } else {
             setIsCustom(false);
-            setRequestValue(value);  // 선택된 값을 상태로 저장
+            setRequestValue(value);
+
+            setShippingInfo(prevState => ({
+                ...prevState,
+                request: value
+            }));
+
+            console.log('shippingInfo: ', shippingInfo);
         }
     };
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setRequestValue(e.target.value);  // Input 필드에 입력된 값을 상태에 저장
+    const handleInputChange = (field: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
+        setShippingInfo(prevState => ({
+            ...prevState,
+            [field]: e.target.value
+        }));
+    };
+
+    const handleAddressChange = (field: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
+        setShippingInfo(prevState => ({
+            ...prevState,
+            address: {
+                ...prevState.address,
+                [field]: e.target.value
+            }
+        }));
     };
 
     const handleDropdownVisibleChange = (open: boolean) => {
@@ -70,7 +106,10 @@ const ShippingInfoForm: React.FC = () => {
                         name="name"
                         rules={[{required: true, message: '이름을 입력해 주세요.'}]}
                     >
-                        <Input placeholder="이름을 입력해 주세요."/>
+                        <Input
+                            placeholder="이름을 입력해 주세요."
+                            onChange={handleInputChange('name')}
+                        />
                     </Form.Item>
 
                     <Form.Item
@@ -78,22 +117,40 @@ const ShippingInfoForm: React.FC = () => {
                         name="phone"
                         rules={[{required: true, message: '연락처를 입력해 주세요.'}]}
                     >
-                        <Input placeholder="'-'없이 입력해 주세요."/>
+                        <Input
+                            placeholder="'-'없이 입력해 주세요."
+                            onChange={handleInputChange('phone')}
+                        />
                     </Form.Item>
 
-                    <Form.Item
-                        label="주소"
-                        name="address"
-                        rules={[{required: true, message: '주소를 입력해 주세요.'}]}
-                    >
-                        <Input.Group compact>
-                            <Input placeholder="주소를 입력해 주세요."/>
-                            {/*<Button type="primary">주소찾기</Button>*/}
-                        </Input.Group>
-                    </Form.Item>
-
-                    <Form.Item name="detailedAddress">
-                        <Input placeholder="상세 주소를 입력해 주세요."/>
+                    <Form.Item label="주소" required>
+                        <Form.Item
+                            name={['address', 'city']}
+                            rules={[{ required: true, message: '시를 입력해 주세요.' }]}
+                        >
+                            <Input
+                                placeholder="시를 입력하시오. 예) 강남구"
+                                onChange={handleAddressChange('city')}
+                            />
+                        </Form.Item>
+                        <Form.Item
+                            name={['address', 'extraAddress']}
+                            rules={[{ required: true, message: '도로명 주소를 입력해 주세요.' }]}
+                        >
+                            <Input
+                                placeholder="도로명 주소를 입력하시오. 예) 대치로 11-1"
+                                onChange={handleAddressChange('extraAddress')}
+                            />
+                        </Form.Item>
+                        <Form.Item
+                            name={['address', 'zipCode']}
+                            rules={[{ required: true, message: '우편번호를 입력해 주세요.' }]}
+                        >
+                            <Input
+                                placeholder="우편번호를 입력하시오. 예) 10283"
+                                onChange={handleAddressChange('zipCode')}
+                            />
+                        </Form.Item>
                     </Form.Item>
 
                     <Form.Item
@@ -118,7 +175,13 @@ const ShippingInfoForm: React.FC = () => {
                             <Input
                                 placeholder="요청사항을 입력해 주세요."
                                 value={requestValue}
-                                onChange={handleInputChange}
+                                onChange={(e) => {
+                                    setRequestValue(e.target.value);
+                                    setShippingInfo(prevState => ({
+                                        ...prevState,
+                                        request: e.target.value
+                                    }));
+                                }}
                                 style={{ marginTop: '10px', width: '100%' }}
                             />
                         )}
@@ -132,7 +195,7 @@ const ShippingInfoForm: React.FC = () => {
                     {/*</Form.Item>*/}
                 </Form>
 
-                <OrderSummary items={items} shippingCost={0} discount={126000}/>
+                <OrderSummary items={items} shippingCost={0} discount={126000} shippingInfo={shippingInfo}/>
             </div>
         </div>
     );

@@ -65,7 +65,7 @@ const ProductGrid: React.FC = () => {
             <Choice/>
             <div className="product-list">
                 {products.map(product => (
-                    <Link key={product.id} to={`/product-detail/${product.id}`} style={{ textDecoration: 'none' }}>
+                    <Link key={product.id} to={`/product-detail/${product.id}`} style={{textDecoration: 'none'}}>
                         <div key={product.id} className="product-grid-card">
                             <img src={`${process.env.PUBLIC_URL}/${product.imageUrl}`}
                                  alt={product.name} className="product-image"/>
@@ -88,13 +88,15 @@ const ProductGrid: React.FC = () => {
 
                 ))}
             </div>
-            <Pagination
-                current={currentPage}
-                total={total}
-                pageSize={pageSize}
-                onChange={handlePageChange}
-                style={{textAlign: 'center', marginTop: '20px' }}
-            />
+            <div style={{display: 'flex', justifyContent: 'center', marginTop: '20px'}}>
+                <Pagination
+                    current={currentPage}
+                    total={total}
+                    pageSize={pageSize}
+                    onChange={handlePageChange}
+                    style={{textAlign: 'center', marginTop: '20px'}}
+                />
+            </div>
         </div>
     );
 };

@@ -1,55 +1,61 @@
 import React, { useState, useEffect } from 'react';
-import {List, Space, Card, Typography, Button, message} from 'antd';
+import { List, Space, Card, Typography, Button, message, Pagination } from 'antd';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Cookies from "js-cookie";
-import {useSelector} from "react-redux";
-import {RootState} from "../store/store";
-
-type PaginationPosition = 'top' | 'bottom' | 'both';
-type PaginationAlign = 'start' | 'center' | 'end';
+import { useSelector } from "react-redux";
+import { RootState } from "../store/store";
 
 interface DataItem {
     id: number;
     title: string;
     description?: string;
-    status:string;
-
+    status: string;
     userId: string;
 }
 
 const { Title } = Typography;
 
-const positionOptions: PaginationPosition[] = ['top', 'bottom', 'both'];
-const alignOptions: PaginationAlign[] = ['start', 'center', 'end'];
-
 const QuoteContact: React.FC = () => {
-    const [position, setPosition] = useState<PaginationPosition>('bottom');
-    const [align, setAlign] = useState<PaginationAlign>('center');
     const [data, setData] = useState<DataItem[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
+    const [currentPage, setCurrentPage] = useState<number>(1);
+    const [totalItems, setTotalItems] = useState<number>(0);
+    const pageSize = 10; // 한 페이지당 표시할 항목 수
     const navigate = useNavigate();
     const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
 
+    const fetchData = async (page: number) => {
+        setLoading(true);
+        try {
+            const response = await axios.get<{ content: DataItem[], totalElements: number }>(
+                `http://localhost:8080/api/contact/getall`,
+                {
+                    params: {
+                        page: page - 1, // API는 0부터 시작하므로 page-1
+                        size: pageSize
+                    }
+                }
+            );
+            setData(response.data.content);
+            setTotalItems(response.data.totalElements);
+        } catch (error) {
+            console.error('Failed to fetch data:', error);
+        }
+        setLoading(false);
+    };
+
     useEffect(() => {
-        // 데이터베이스에서 데이터를 가져오는 함수
-        const fetchData = async () => {
-            setLoading(true);
-            try {
-                const response = await axios.get< {content:DataItem[]}>(`http://localhost:8080/api/contact/getall`);
-                console.log('response.data.content : ', response.data.content);
-                setData(response.data.content);
-            } catch (error) {
-                console.error('Failed to fetch data:', error);
-            }
-            setLoading(false);
-        };
-        fetchData();
-    }, []);
+        fetchData(currentPage);
+    }, [currentPage]);
+
+    const handlePageChange = (page: number) => {
+        setCurrentPage(page);
+        window.scrollTo(0, 0); // 페이지 변경 시 상단으로 스크롤
+    };
 
     const handleShowForm = () => {
-
-        if(isLoggedIn) {
+        if (isLoggedIn) {
             navigate('/quote-form');
         } else {
             navigate('/login');
@@ -67,28 +73,33 @@ const QuoteContact: React.FC = () => {
                 title={<Title level={2} style={{ margin: 0 }}>견적 문의</Title>}
                 size="small"
                 style={{ height: '100%' }}
-
             >
-                <div style={{ display: 'flex', justifyContent: 'flex-end', marginRight: '100px'}}>
+                <div style={{ display: 'flex', justifyContent: 'flex-end', marginRight: '100px' }}>
                     <Button type="primary" onClick={handleShowForm}>
                         문의 글 작성하기
                     </Button>
                 </div>
                 <List
                     loading={loading}
-                    pagination={{ position, align }}
                     style={{ width: '50%', margin: '0 auto', textAlign: 'left' }}
-                    //dataSource={data.filter(item => item.status === 'ACTIVE')} // ACTIVE 상태인 아이템만 표시
                     dataSource={data}
-                    renderItem={(data) => (
-                        <List.Item >
+                    renderItem={(item) => (
+                        <List.Item>
                             <List.Item.Meta
-                                title={<a onClick={() => handleItemClick(data.id)}>{data.title}</a>}
-                                description={data.description}
+                                title={<a onClick={() => handleItemClick(item.id)}>{item.title}</a>}
+                                description={item.description}
                             />
                         </List.Item>
                     )}
                 />
+                <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
+                    <Pagination
+                        current={currentPage}
+                        total={totalItems}
+                        pageSize={pageSize}
+                        onChange={handlePageChange}
+                    />
+                </div>
             </Card>
         </Space>
     );
