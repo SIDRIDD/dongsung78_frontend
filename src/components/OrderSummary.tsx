@@ -47,7 +47,7 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({ items, shippingCost, discou
     const totalAmount = items.reduce((acc, item) => acc + (item.price * item.quantity), 0);
 
 
-    const getPurchaseData = (): PurchaseData[] => {
+    const getPurchaseData = (shippingInfo: OrderSummaryProps['shippingInfo']): PurchaseData[] => {
         console.log('getPurchaseData 부분에서 shippingInfo: ', shippingInfo);
         return items.map(item => ({
             productId: item.productId, // Assuming items have an id field. Replace with the actual field if different
@@ -99,17 +99,18 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({ items, shippingCost, discou
                 name: '주문명: 결제 테스트',
                 amount: totalAmount,  // 최종 결제 금액
                 buyer_email: 'customer@example.com',  // 구매자 이메일 (필요시 수정)
-                buyer_name: '홍길동',  // 구매자 이름 (필요시 수정)
-                buyer_tel: '010-1234-5678',  // 구매자 연락처 (필요시 수정)
-                buyer_addr: '서울특별시 강남구 역삼동',  // 구매자 주소 (필요시 수정)
+                // buyer_name: '홍길동',  // 구매자 이름 (필요시 수정)
+                // buyer_tel: '010-1234-5678',  // 구매자 연락처 (필요시 수정)
+                // buyer_addr: '서울특별시 강남구 역삼동',  // 구매자 주소 (필요시 수정)
                 buyer_postcode: '01181',
                 m_redirect_url: 'http://localhost:3000/',  // 결제 후 리디렉션될 페이지
             }
 
             IMP.request_pay(paymentData, (rsp: any) => {
                 if (rsp.success) {
-                    const purchaseData = getPurchaseData();
+                    const purchaseData = getPurchaseData(shippingInfo);
                     purchaseItems(purchaseData);
+                    sessionStorage.setItem('cartKinds', '0');
                     alert('결제가 완료되었습니다.');
                     // 결제 성공 처리 로직
                 } else {

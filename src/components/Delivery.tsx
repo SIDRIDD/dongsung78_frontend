@@ -165,10 +165,10 @@ const ShippingInfoForm: React.FC = () => {
                             value={isCustom ? 'custom' : requestValue}  // "직접 입력" 시 "custom"으로 설정
                             allowClear
                         >
-                            <Option value="none">선택 안함</Option>
-                            <Option value="leaveAtDoor">문 앞에 두고 가세요.</Option>
-                            <Option value="callBefore">배송 전에 연락 주세요.</Option>
-                            <Option value="custom">직접 입력</Option>
+                            <Option value="요청사항 없음.">선택 안함</Option>
+                            <Option value="문 앞에 두고 가세요.">문 앞에 두고 가세요.</Option>
+                            <Option value="배송 전에 연락 주세요.">배송 전에 연락 주세요.</Option>
+                            <Option value="직접 입력">직접 입력</Option>
                         </Select>
 
                         {isCustom && (  // "직접 입력"이 선택되었을 때만 Input 필드를 렌더링
