@@ -54,11 +54,8 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({productId, name, descrip
                 <span className="details-price">{price.toLocaleString()} 원</span>
             </div>
             <div className="product-details-shipping">
-                <span>배송비 2,500원</span>
+                <span>무료 배송</span>
             </div>
-            {/*<div className="product-delivery">*/}
-            {/*    <span>토요일 7/6 도착 예정</span>*/}
-            {/*</div>*/}
             <div className="product-details-quantity">
                 <button className="quantity-details-button" onClick={handleDecrease}>-</button>
                 <span className="details-quantity">{quantity}</span>

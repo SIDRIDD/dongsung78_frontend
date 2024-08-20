@@ -42,10 +42,16 @@ const Header: React.FC = () => {
     };
 
     const handleLogout = () => {
+        sessionStorage.clear();
         sessionStorage.setItem('cartKinds', '0');
         dispatch(logout());
         navigate('/');
     };
+
+    const handleLogin = () => {
+        sessionStorage.setItem('cartKinds', '0');
+        navigate('/login');
+    }
 
     console.log('Is Logged In:', isLoggedIn); // 디버깅을 위한 로그 추가
 
@@ -79,7 +85,7 @@ const Header: React.FC = () => {
                             Logout
                         </Button>
                     ) : (
-                        <Button onClick={() => navigate('/login')} style={{
+                        <Button onClick={handleLogin} style={{
                             color: 'black',
                             backgroundColor: 'transparent',
                             border: 'none',

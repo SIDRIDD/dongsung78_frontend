@@ -11,8 +11,8 @@ interface OrderSummaryProps {
         name: string;
         phone: string;
         address: {
-            city: string;
-            extraAddress: string;
+            roadAddress  : string;
+            detailAddress: string;
             zipCode: string;
         };
         request: string;
@@ -32,9 +32,9 @@ interface PurchaseData {
 
     phoneNumber: string;
 
-    city: string;
+    roadAddress: string;
 
-    street: string;
+    detailAddress: string;
 
     zipCode: string;
 
@@ -54,8 +54,8 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({ items, shippingCost, discou
             count: item.quantity,
             userName: shippingInfo.name,
             phoneNumber: shippingInfo.phone,
-            city: shippingInfo.address.city,
-            street: shippingInfo.address.extraAddress,
+            roadAddress: shippingInfo.address.roadAddress,
+            detailAddress: shippingInfo.address.detailAddress,
             zipCode: shippingInfo.address.zipCode,
             request: shippingInfo.request
         }));
@@ -87,6 +87,10 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({ items, shippingCost, discou
 
 
     const handlePayment = () => {
+        if(!shippingInfo.address.detailAddress){
+            alert('상세 주소를 입력해 주세요.');
+            return;
+        }
         // 포트원 SDK 로드 확인
         if (window.IMP) {
             const { IMP } = window;
@@ -124,6 +128,10 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({ items, shippingCost, discou
     };
 
     const handleGeneralPayment = () => {
+        if(!shippingInfo.address.detailAddress){
+            alert('상세 주소를 입력해 주세요.');
+            return;
+        }
         // 포트원 SDK 로드 확인
         if (window.IMP) {
             const { IMP } = window;

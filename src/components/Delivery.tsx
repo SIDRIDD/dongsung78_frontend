@@ -1,56 +1,95 @@
-import React, {useState} from 'react';
-import {Form, Input, Button, Checkbox, Select} from 'antd';
+import React, {useEffect, useState} from 'react';
+import {Form, Input, Button, Select, Modal} from 'antd';
 import OrderSummary from "./OrderSummary";
 import {useLocation} from 'react-router-dom';
+import DaumPostcode from 'react-daum-postcode';
+import {Checkbox} from 'antd';
+import type {CheckboxProps} from 'antd';
+import axios from "axios";
 
 const {Option} = Select;
 
 const ShippingInfoForm: React.FC = () => {
     const [form] = Form.useForm();
     const location = useLocation();
-    const {items} = location.state || {items: []}; // 전달된 items 데이터 받기
+    const {items} = location.state || {items: []};
     const [isCustom, setIsCustom] = useState(false);
-
     const [requestValue, setRequestValue] = useState('');
 
     const [shippingInfo, setShippingInfo] = useState({
         name: '',
         phone: '',
         address: {
-            city: '',
-            extraAddress: '',
+            roadAddress: '',
+            detailAddress: '',
             zipCode: ''
         },
         request: ''
     });
 
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [postcodeKey, setPostcodeKey] = useState(0);
 
+    useEffect(() => {
+        form.setFieldsValue({
+            name: shippingInfo.name,
+            phone: shippingInfo.phone,
+            address: {
+                roadAddress: shippingInfo.address.roadAddress,
+                detailAddress: shippingInfo.address.detailAddress,
+                zipCode: shippingInfo.address.zipCode,
+            },
+            request: shippingInfo.request,
+        });
+    }, [shippingInfo, form]);
 
-    // Handle input change for address fields
+    const onChange: CheckboxProps['onChange'] = async (e) => {
+        console.log(`checked = ${e.target.checked}`);
+        if (e.target.checked === true) {
+            if (shippingInfo == null) {
+                const response = await axios.get(`http://localhost:8080/api/user/delivery-info`, {
+                    withCredentials: true
+                })
 
-
-    const onFinish = (values: any) => {
-
-    };
-
-    const onFinishFailed = (errorInfo: any) => {
-        console.log('Failed:', errorInfo);
+                setShippingInfo(prevState => ({
+                    ...prevState,
+                    address: {
+                        roadAddress: response.data.roadAddress,
+                        detailAddress: response.data.detailAddress,
+                        zipCode: response.data.zipCode
+                    },
+                }))
+            } else {
+                form.setFieldsValue({
+                    address: {
+                        roadAddress: shippingInfo.address.roadAddress,
+                        detailAddress: shippingInfo.address.detailAddress,
+                        zipCode: shippingInfo.address.zipCode
+                    }
+                })
+            }
+        } else {
+            form.setFieldsValue({
+                address: {
+                    roadAddress: '',
+                    detailAddress: '',
+                    zipCode: ''
+                }
+            })
+        }
     };
 
     const handleSelectChange = (value: string) => {
-        if (value === 'custom') {
+        if (value === '직접 입력') {
             setIsCustom(true);
             setRequestValue('');
         } else {
             setIsCustom(false);
             setRequestValue(value);
-
             setShippingInfo(prevState => ({
                 ...prevState,
                 request: value
             }));
-
-            console.log('shippingInfo: ', shippingInfo);
         }
     };
 
@@ -73,8 +112,47 @@ const ShippingInfoForm: React.FC = () => {
 
     const handleDropdownVisibleChange = (open: boolean) => {
         if (open && !isCustom) {
-            setRequestValue('');  // 드롭다운이 열릴 때 값 초기화 (단, isCustom이 false일 때만)
+            setRequestValue('');
         }
+    };
+
+    const handleComplete = (data: any) => {
+        let roadAddress = '';
+        let zipcode = '';
+
+        if (data.addressType === 'R') {
+            roadAddress = data.roadAddress;
+            zipcode = data.zonecode; // zonecode를 사용해 우편번호를 설정합니다.
+        }
+
+        setShippingInfo(prevState => ({
+            ...prevState,
+            address: {
+                ...prevState.address,
+                roadAddress: roadAddress,
+                zipCode: zipcode
+            }
+        }));
+
+        handleCloseModal();
+    };
+
+    const handleOpenModal = () => {
+        setPostcodeKey(prevKey => prevKey + 1); // key 증가
+        setIsModalVisible(true);
+    };
+
+    // 모달이 닫힐 때 key를 초기화
+    const handleCloseModal = () => {
+        form.setFieldsValue({
+            address: {
+                roadAddress: shippingInfo.address.roadAddress,
+                detailAddress: '',
+                zipCode: shippingInfo.address.zipCode
+            }
+        });
+        setIsModalVisible(false);
+        setPostcodeKey(0); // key 초기화
     };
 
     return (
@@ -87,7 +165,7 @@ const ShippingInfoForm: React.FC = () => {
         }}>
             <div style={{
                 display: 'flex',
-                gap: '20px', // 컴포넌트 사이의 간격을 줄입니다
+                gap: '20px',
                 justifyContent: 'center',
                 alignItems: 'flex-start',
                 maxWidth: '900px',
@@ -97,10 +175,16 @@ const ShippingInfoForm: React.FC = () => {
                     form={form}
                     name="shippingInfo"
                     layout="vertical"
-                    onFinish={onFinish}
-                    onFinishFailed={onFinishFailed}
+                    onFinish={() => {
+                    }}
+                    onFinishFailed={() => {
+                    }}
                     style={{marginLeft: '100px', width: '300px'}}
                 >
+                    <Form.Item
+                        label="[배송지 정보 입력]"
+                    >
+                    </Form.Item>
                     <Form.Item
                         label="이름"
                         name="name"
@@ -124,31 +208,41 @@ const ShippingInfoForm: React.FC = () => {
                     </Form.Item>
 
                     <Form.Item label="주소" required>
+
+                        <Checkbox onChange={onChange} style={{alignItems: 'left', justifyItems: 'left'}}>이전 배송지 정보
+                            불러오기</Checkbox>
+                        <Button type="primary" onClick={handleOpenModal} style={{marginLeft: '10px', marginBottom: '10px'}}>
+                            주소 검색
+                        </Button>
+
                         <Form.Item
-                            name={['address', 'city']}
-                            rules={[{ required: true, message: '시를 입력해 주세요.' }]}
+                            name={['address', 'roadAddress']}
+                            rules={[{required: true, message: '도로명 주소를 입력해 주세요.'}]}
                         >
                             <Input
-                                placeholder="시를 입력하시오. 예) 강남구"
-                                onChange={handleAddressChange('city')}
+                                placeholder="도로명 주소를 입력하세요. 예) 강남구 대치로 11길 11"
+                                onChange={handleAddressChange('roadAddress')}
+                                value={shippingInfo.address.roadAddress}
                             />
                         </Form.Item>
                         <Form.Item
-                            name={['address', 'extraAddress']}
-                            rules={[{ required: true, message: '도로명 주소를 입력해 주세요.' }]}
+                            name={['address', 'detailAddress']}
+                            rules={[{required: true, message: '상세 주소를 입력하세요.'}]}
                         >
                             <Input
-                                placeholder="도로명 주소를 입력하시오. 예) 대치로 11-1"
-                                onChange={handleAddressChange('extraAddress')}
+                                placeholder="상세 주소, 예시) 1111동 1111호"
+                                onChange={handleAddressChange('detailAddress')}
+                                value={shippingInfo.address.detailAddress}
                             />
                         </Form.Item>
                         <Form.Item
                             name={['address', 'zipCode']}
-                            rules={[{ required: true, message: '우편번호를 입력해 주세요.' }]}
+                            rules={[{required: true, message: '우편번호를 입력해 주세요.'}]}
                         >
                             <Input
-                                placeholder="우편번호를 입력하시오. 예) 10283"
+                                placeholder="우편번호를 입력하세요. 예) 10283"
                                 onChange={handleAddressChange('zipCode')}
+                                value={shippingInfo.address.zipCode}
                             />
                         </Form.Item>
                     </Form.Item>
@@ -159,10 +253,10 @@ const ShippingInfoForm: React.FC = () => {
                     >
                         <Select
                             placeholder="배송시 요청사항을 선택해 주세요."
-                            style={{ width: '100%' }}
-                            onChange={handleSelectChange}  // Select 값 변경 시 호출
+                            style={{width: '100%'}}
+                            onChange={handleSelectChange}
                             onDropdownVisibleChange={handleDropdownVisibleChange}
-                            value={isCustom ? 'custom' : requestValue}  // "직접 입력" 시 "custom"으로 설정
+                            value={isCustom ? '직접 입력' : requestValue}
                             allowClear
                         >
                             <Option value="요청사항 없음.">선택 안함</Option>
@@ -171,7 +265,7 @@ const ShippingInfoForm: React.FC = () => {
                             <Option value="직접 입력">직접 입력</Option>
                         </Select>
 
-                        {isCustom && (  // "직접 입력"이 선택되었을 때만 Input 필드를 렌더링
+                        {isCustom && (
                             <Input
                                 placeholder="요청사항을 입력해 주세요."
                                 value={requestValue}
@@ -182,21 +276,25 @@ const ShippingInfoForm: React.FC = () => {
                                         request: e.target.value
                                     }));
                                 }}
-                                style={{ marginTop: '10px', width: '100%' }}
+                                style={{marginTop: '10px', width: '100%'}}
                             />
                         )}
                     </Form.Item>
-
-
-                    {/*<Form.Item>*/}
-                    {/*    <Button type="primary" htmlType="submit">*/}
-                    {/*        제출*/}
-                    {/*    </Button>*/}
-                    {/*</Form.Item>*/}
                 </Form>
 
                 <OrderSummary items={items} shippingCost={0} discount={126000} shippingInfo={shippingInfo}/>
             </div>
+
+            {/* Daum Postcode 모달 */}
+            <Modal
+                title="주소 검색"
+                visible={isModalVisible}
+                onCancel={handleCloseModal} // 모달이 닫힐 때 key 초기화
+                footer={null}
+                destroyOnClose={true}
+            >
+                <DaumPostcode key={postcodeKey} onComplete={handleComplete}/>
+            </Modal>
         </div>
     );
 };

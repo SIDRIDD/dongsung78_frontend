@@ -68,6 +68,7 @@ const LoginPage: React.FC = () => {
             dispatch(login());
             navigate('/');
         } catch (error) {
+            message.warning('ID 혹은 비밀번호를 확인해주세요.');
             console.error('Login failed:', error);
         }
     };
