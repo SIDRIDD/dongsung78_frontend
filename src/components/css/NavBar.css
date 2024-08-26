@@ -1,0 +1,49 @@
+.nav-container {
+    background-color: white;
+    border-bottom: 1px solid #ddd;
+    padding: 0 20px;
+    max-width: 65%;
+    margin: 0 auto;
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.nav-menu {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    height: 50px;
+}
+
+.nav-item {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.category {
+    margin-right: 20px;
+}
+
+.category-button {
+    background-color: #009dff;
+    border: none;
+}
+
+.price-check {
+    background-color: #36b200;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+}
+
+.price-check:hover {
+    background-color: #2e8b00;
+    color: white;
+}
+
+.parent-container {
+    overflow: visible; /* 부모 컨테이너의 overflow를 visible로 설정 */
+    position: static; /* 부모 컨테이너의 position을 static으로 설정 */
+}

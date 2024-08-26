@@ -3,6 +3,7 @@
     text-align: center;
     color: white;
     width: 100%;
+    border-bottom: 1px solid #ddd;
 }
 
 .hero-image-container {
@@ -13,9 +14,9 @@
 }
 
 .hero-image {
-    margin-top: 30px;
-    width: 100%;
-    height: auto;
+    margin-top: 5px;
+    width: auto;
+    height: 150px;
     object-fit: cover;
 }
 

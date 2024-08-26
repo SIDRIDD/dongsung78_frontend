@@ -22,6 +22,7 @@ import axios from "axios";
 import {login, logout} from "./store/authSlice";
 import KakaoId from "./components/KakaoId";
 import Delivery from "./components/Delivery";
+import NavBar from "./components/NavBar";
 
 
 //
@@ -58,6 +59,7 @@ function App() {
                 <main>
                     <Routes>
                         <Route path="/" element={<HeroSection/>}/>
+                        <Route path= "/nav" element={<NavBar/>}/>
                         <Route path="/product-grid/:category" element={<ProductGrid/>}/>
                         <Route path="/quote-contact" element={<QuoteContact/>}/>
                         <Route path="/quote-form" element={<QuoteForm/>}/>
@@ -72,6 +74,7 @@ function App() {
                     </Routes>
                     {showAdditionalComponents && (
                         <>
+                            <NavBar />
                             <FeaturedProducts/>
                             <CustomerReviews/>
                         </>
