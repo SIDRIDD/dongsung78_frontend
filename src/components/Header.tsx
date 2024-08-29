@@ -58,10 +58,10 @@ const Header: React.FC = () => {
 
     return (
         <Navbar expand="lg" className="navbar-dark bg-custom w-100 py-1" style={{ fontSize: '0.7rem', justifyContent: 'center', alignItems: 'center', borderBottom: '1px solid #ddd' }}>
-            <Container style={{ padding: 0, maxWidth: '65%', display: 'flex', justifyContent: 'center' }}>
+            <Container style={{display: 'flex', justifyContent: 'center'}}>
                 <Nav className="me-auto">
-                    <Nav.Link as={Link} to="/" style={{ color: '#666', marginRight: '15px' }}>홈</Nav.Link>
-                    <Nav.Link as={Link} to={"/quote-contact"} style={{ color: '#666', marginRight: '15px' }}>견적문의</Nav.Link>
+                    <Nav.Link as={Link} to="/" style={{ color: '#666' }}>홈</Nav.Link>
+                    <Nav.Link as={Link} to={"/quote-contact"} style={{ color: '#666' }}>견적문의</Nav.Link>
                 </Nav>
                 <Nav className="ms-auto">
                     <Nav.Link as={Link} to="/login" style={{ color: '#666', marginRight: '15px' }}>

@@ -22,6 +22,8 @@ import axios from "axios";
 import {login, logout} from "./store/authSlice";
 import KakaoId from "./components/KakaoId";
 import Delivery from "./components/Delivery";
+import NavBar_old from "./components/NavBar_old";
+import Sidebar from "./components/SideBar";
 import NavBar from "./components/NavBar";
 
 
@@ -56,30 +58,36 @@ function App() {
         <div className="App">
             <CartProvider>
                 <Header/>
-                <main>
-                    <Routes>
-                        <Route path="/" element={<HeroSection/>}/>
-                        <Route path= "/nav" element={<NavBar/>}/>
-                        <Route path="/product-grid/:category" element={<ProductGrid/>}/>
-                        <Route path="/quote-contact" element={<QuoteContact/>}/>
-                        <Route path="/quote-form" element={<QuoteForm/>}/>
-                        <Route path="/quote-detail/:id" element={<QuoteDetail/>}/>
-                        <Route path="product-detail/:id" element={<ProductPage/>}/>
-                        <Route path="/item-detail/:id" element={<ItemDetail/>}/>
-                        <Route path="/login" element={<Login/>}/>
-                        <Route path="/signup" element={<SignUpPage/>}/>
-                        <Route path="/" element={<NaverCallback/>}/>
-                        <Route path="/kakaoid" element={<KakaoId />}/>
-                        <Route path="/delivery" element={<Delivery />}/>
-                    </Routes>
-                    {showAdditionalComponents && (
-                        <>
-                            <NavBar />
-                            <FeaturedProducts/>
-                            <CustomerReviews/>
-                        </>
-                    )}
-                </main>
+                <div className="App_sub">
+                    <HeroSection/>
+                    <NavBar/>
+                    <Sidebar/>
+                    <div className="main-content">
+                    <main>
+                        <Routes>
+                            <Route path="/" element={<HeroSection/>}/>
+                            <Route path="/product-grid/:category" element={<ProductGrid/>}/>
+                            <Route path="/quote-contact" element={<QuoteContact/>}/>
+                            <Route path="/quote-form" element={<QuoteForm/>}/>
+                            <Route path="/quote-detail/:id" element={<QuoteDetail/>}/>
+                            <Route path="product-detail/:id" element={<ProductPage/>}/>
+                            <Route path="/item-detail/:id" element={<ItemDetail/>}/>
+                            <Route path="/login" element={<Login/>}/>
+                            <Route path="/signup" element={<SignUpPage/>}/>
+                            <Route path="/" element={<NaverCallback/>}/>
+                            <Route path="/kakaoid" element={<KakaoId/>}/>
+                            <Route path="/delivery" element={<Delivery/>}/>
+                        </Routes>
+                        {showAdditionalComponents && (
+                            <>
+                                {/*<NavBar_old/>*/}
+                                {/*<FeaturedProducts/>*/}
+                                {/*<CustomerReviews/>*/}
+                            </>
+                        )}
+                    </main>
+                    </div>
+                </div>
                 <Footer/>
             </ CartProvider>
         </div>
@@ -89,7 +97,7 @@ function App() {
 export default function AppWrapper() {
     return (
         <Router>
-                <App/>
+            <App/>
         </Router>
     );
 }

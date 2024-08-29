@@ -2,12 +2,12 @@
     background-color: white;
     border-bottom: 1px solid #ddd;
     padding: 0 20px;
-    max-width: 65%;
     margin: 0 auto;
     position: -webkit-sticky;
     position: sticky;
     top: 0;
     z-index: 1000;
+    heigh : 53px;
 }
 
 .nav-menu {

@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { login } from "../store/authSlice";
 import { useDispatch } from "react-redux";
 import Cookies from "js-cookie";
-import NavBar from "./NavBar";
+import NavBar_old from "./NavBar_old";
 
 function HeroSection() {
     const dispatch = useDispatch();
@@ -47,7 +47,7 @@ function HeroSection() {
     return (
         <section className="hero-section">
             <div className="hero-image-container">
-                <img src={`${process.env.PUBLIC_URL}/img/chalkboard_green.png`} alt="Banner" className="hero-image" />
+                <img src={`${process.env.PUBLIC_URL}/img/logo`} alt="Banner" className="hero-image" />
                 {/*<div className="hero-text">*/}
                 {/*    <div className="hero-buttons">*/}
                 {/*        <Link to="/product-grid/1" className="hero-button">지금 쇼핑하기</Link>*/}

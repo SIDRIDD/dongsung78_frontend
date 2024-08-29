@@ -1,65 +1,79 @@
-import React, {useEffect, useState} from 'react';
-import {Menu, Button, MenuProps, Space} from 'antd';
-import { MenuOutlined } from '@ant-design/icons';
-import './css/NavBar.css';
-import {useNavigate} from "react-router-dom";
+import React, {useState} from 'react';
+import {AppstoreOutlined, MailOutlined, SettingOutlined} from '@ant-design/icons';
+import type {MenuProps} from 'antd';
+import {Button, Menu} from 'antd';
 
-interface Category {
-    name: string;
-}
+type MenuItem = Required<MenuProps>['items'][number];
 
-const NavBar = () => {
-    const [menuItems, setMenuItems] = useState<MenuProps['items']>([]);
-    const navigate = useNavigate();
+const items: MenuItem[] = [
+    {
+        label: 'Navigation One',
+        key: 'mail',
+    },
+    {
+        label: 'Navigation Two',
+        key: 'app',
+        disabled: true,
+    },
+    {
+        label: 'Navigation Three - Submenu',
+        key: 'SubMenu',
+        children: [
+            {
+                type: 'group',
+                label: 'Item 1',
+                children: [
+                    {label: 'Option 1', key: 'setting:1'},
+                    {label: 'Option 2', key: 'setting:2'},
+                ],
+            },
+            {
+                type: 'group',
+                label: 'Item 2',
+                children: [
+                    {label: 'Option 3', key: 'setting:3'},
+                    {label: 'Option 4', key: 'setting:4'},
+                ],
+            },
+        ],
+    },
+    {
+        key: 'alipay',
+        label: (
+            <a href="https://ant.design" target="_blank" rel="noopener noreferrer">
+                Navigation Four - Link
+            </a>
+        ),
+    },
+];
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await fetch('http://localhost:8080/api/category/get');
-                const data: Category[] = await response.json();
+const NavBar: React.FC = () => {
+    const [current, setCurrent] = useState('mail');
 
-                const items: MenuProps['items'] = data.map((item, index) => ({
-                    key: String(index + 1),
-                    label: (
-                        <span
-                            onClick={() => {
-                                navigate(`/product-grid/${index + 1}`);
-                            }}
-                        >
-                            <Space className="custom-dropdown-menu">
-                                {item.name}
-                            </Space>
-                        </span>
-                    ),
-                }));
-
-                setMenuItems(items);
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            }
-        };
-
-        fetchData();
-    }, [navigate]);
+    const onClick: MenuProps['onClick'] = (e) => {
+        console.log('click ', e);
+        setCurrent(e.key);
+    };
 
     return (
-        <div className="nav-container">
-            <Menu mode="horizontal" className="nav-menu">
-                <Menu.Item key="category" className="nav-item category">
-                    <Button type="primary" icon={<MenuOutlined />} className="category-button">
-                        CATEGORY
-                    </Button>
-                </Menu.Item>
-                <Menu.Item key="customInquiry" className="nav-item">
-                    칠판
-                </Menu.Item>
-                <Menu.Item key="sizeCustomInquiry" className="nav-item">
-                    책걸상
-                </Menu.Item>
-                <Menu.Item key="productQA" className="nav-item">
-                    기타 용품
-                </Menu.Item>
-            </Menu>
+        <div style={{alignItems: 'center', display: 'flex'}}>
+            <div style={{marginRight: '20px', width: '256px', display: 'flex', justifyContent: 'center'}}>
+                <img src={`${process.env.PUBLIC_URL}/img/logo_minisize.png`} alt="Product"/>
+            </div>
+            <div style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                padding: '10px 20px',
+                backgroundColor: '#fff'
+            }}>
+                <Button type="link" style={{color: 'black'}}>맞춤도안제작문의</Button>
+                <Button type="link" style={{color: 'black'}}>사이즈맞춤제작문의</Button>
+                <Button type="link" style={{color: 'black'}}>상품 Q&A</Button>
+                <Button type="link" style={{color: 'black'}}>개인결제창</Button>
+                <Button type="link" style={{color: 'black'}}>화물배송비조회</Button>
+                <Button type="link" style={{color: 'black'}}>칠판수리/원자재</Button>
+            </div>
         </div>
     );
 };
