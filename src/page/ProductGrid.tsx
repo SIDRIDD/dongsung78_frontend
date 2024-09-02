@@ -35,7 +35,8 @@ const ProductGrid: React.FC = () => {
 
     const fetchProducts = async (page: number) => {
         try {
-            const response = await axios.get(`http://localhost:8080/api/product/get?categoryId=${category}&page=${page - 1}&size=${pageSize}`);
+            // const response = await axios.get(`http://localhost:8080/api/product/get?categoryId=${category}&page=${page - 1}&size=${pageSize}`);
+            const response = await axios.get(`http://localhost:8080/api/product/get?categoryId=1&page=${page - 1}&size=${pageSize}`);
             setProducts(response.data.content);
             setTotal(response.data.totalElements); // 총 제품 수 설정
 
@@ -48,9 +49,9 @@ const ProductGrid: React.FC = () => {
         setCurrentPage(1); // 카테고리가 변경될 때 현재 페이지를 1로 설정
     }, [category]);
 
-    useEffect(() => {
-        fetchProducts(currentPage); // 현재 페이지의 제품을 불러옴
-    }, [category, currentPage]);
+    // useEffect(() => {
+    //     fetchProducts(currentPage); // 현재 페이지의 제품을 불러옴
+    // }, [category, currentPage]);
 
     const categoryName = products.length > 0 ? products[0].categoryName : '';
 
@@ -62,7 +63,7 @@ const ProductGrid: React.FC = () => {
     return (
         <div className="product-grid" style={{marginTop: '100px'}}>
             {/*<h2>{categoryName}</h2>*/}
-            <Choice/>
+            {/*<Choice/>*/}
             <div className="product-list">
                 {products.map(product => (
                     <Link key={product.id} to={`/product-detail/${product.id}`} style={{textDecoration: 'none'}}>

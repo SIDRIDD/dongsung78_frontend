@@ -7,23 +7,23 @@ type MenuItem = Required<MenuProps>['items'][number];
 
 const items: MenuItem[] = [
     {
-        key: 'sub1',
+        key: '1',
         label: '분필 칠판'
     },
     {
-        key: 'sub2',
+        key: '2',
         label: '화이트 보드'
     },
     {
-        key: 'sub3',
+        key: '3',
         label: '물백묵 칠판'
     },
     {
-        key: 'sub4',
+        key: '4',
         label: '스탠드 칠판'
     },
     {
-        key: 'sub5',
+        key: '5',
         label: '게시판 | 계획표',
         children: [
             {
@@ -42,11 +42,11 @@ const items: MenuItem[] = [
         ],
     },
     {
-        key: 'sub6',
+        key: '6',
         label: '책걸상'
     },
     {
-        key: 'sub7',
+        key: '7',
         label: '분필 | 지우개',
         children: [
             {key: '1', label: '분필'},
@@ -56,7 +56,7 @@ const items: MenuItem[] = [
         ],
     },
     {
-        key: 'sub8',
+        key: '8',
         label: '강의대 | 교체 상판',
         children: [
             {key: '1', label: '강의대'},
@@ -65,11 +65,16 @@ const items: MenuItem[] = [
     },
 ];
 
+interface SideBarProps {
+    onSelectMenu: (key: string) => void;
+}
 
-const SideBar: React.FC = () => {
+const SideBar: React.FC<SideBarProps> = ({ onSelectMenu }) => {
     const onClick: MenuProps['onClick'] = (e) => {
         console.log('click', e);
+        onSelectMenu(e.key);
     };
+
     return (
         <Menu onClick={onClick} style={{width: 256, alignItems: 'flex-start'}} mode="vertical" items={items}/>
     );

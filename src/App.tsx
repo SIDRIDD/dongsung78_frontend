@@ -25,6 +25,8 @@ import Delivery from "./components/Delivery";
 import NavBar_old from "./components/NavBar_old";
 import Sidebar from "./components/SideBar";
 import NavBar from "./components/NavBar";
+import Content from "./components/Content";
+import MainPage from "./components/MainPage";
 
 
 //
@@ -41,6 +43,7 @@ function App() {
     const showAdditionalComponents = location.pathname === '/';
     const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
     const dispatch = useDispatch();
+    const [selectedMenuKey, setSelectedMenuKey] = useState<string>('');
 
     useEffect(() => {
         axios.get('http://localhost:8080/api/user/check', {withCredentials: true})
@@ -61,7 +64,8 @@ function App() {
                 <div className="App_sub">
                     <HeroSection/>
                     <NavBar/>
-                    <Sidebar/>
+                    <MainPage />
+                    {/*<Sidebar onSelectMenu={setSelectedMenuKey}/>*/}
                     <div className="main-content">
                     <main>
                         <Routes>
