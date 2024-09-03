@@ -45,17 +45,17 @@ function App() {
     const dispatch = useDispatch();
     const [selectedMenuKey, setSelectedMenuKey] = useState<string>('');
 
-    useEffect(() => {
-        axios.get('http://localhost:8080/api/user/check', {withCredentials: true})
-            .then(response => {
-                if (response.status === 200) {
-                    dispatch(login());
-                }
-            })
-            .catch(() => {
-                dispatch(logout());
-            })
-    }, [dispatch]);
+    // useEffect(() => {
+    //     axios.get('http://localhost:8080/api/user/check', {withCredentials: true})
+    //         .then(response => {
+    //             if (response.status === 200) {
+    //                 dispatch(login());
+    //             }
+    //         })
+    //         .catch(() => {
+    //             dispatch(logout());
+    //         })
+    // }, [dispatch]);
 
     return (
         <div className="App">

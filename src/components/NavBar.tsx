@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {AppstoreOutlined, MailOutlined, SettingOutlined} from '@ant-design/icons';
 import type {MenuProps} from 'antd';
 import {Button, Menu} from 'antd';
+import {useNavigate} from "react-router-dom";
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -49,6 +50,7 @@ const items: MenuItem[] = [
 
 const NavBar: React.FC = () => {
     const [current, setCurrent] = useState('mail');
+    const navigate = useNavigate();
 
     const onClick: MenuProps['onClick'] = (e) => {
         console.log('click ', e);
@@ -58,7 +60,10 @@ const NavBar: React.FC = () => {
     return (
         <div style={{alignItems: 'center', display: 'flex'}}>
             <div style={{marginRight: '20px', width: '256px', display: 'flex', justifyContent: 'center'}}>
-                <img src={`${process.env.PUBLIC_URL}/img/logo_minisize.png`} alt="Product"/>
+                <a>
+                    <img onClick={() => navigate('/')} src={`${process.env.PUBLIC_URL}/img/logo_minisize.png`}
+                         alt="Product"/>
+                </a>
             </div>
             <div style={{
                 display: 'flex',

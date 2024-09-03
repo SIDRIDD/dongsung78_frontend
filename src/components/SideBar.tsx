@@ -24,43 +24,41 @@ const items: MenuItem[] = [
     },
     {
         key: '5',
-        label: '게시판 | 계획표',
+        label: '게시판 | 오선 칠판 | 계획표',
         children: [
             {
-                key: '5-1',
+                key: '5',
                 label: '게시판'
             },
             {
-                key: '5-2',
-                label: '오선 칠판 | 월 계획표',
-                type: 'group',
-                children: [
-                    {key: '1', label: '오선 칠판'},
-                    {key: '2', label: '월 계획표'},
-                ],
+                key: '6',
+                label: '오선 칠판'
             },
-        ],
-    },
-    {
-        key: '6',
-        label: '책걸상'
-    },
-    {
-        key: '7',
-        label: '분필 | 지우개',
-        children: [
-            {key: '1', label: '분필'},
-            {key: '2', label: '지우개'},
-            {key: '3', label: '지우개 털이'},
-            {key: '4', label: '물백묵 리필잉크'},
+            {
+                key: '7',
+                label: '월 계획표'
+            }
         ],
     },
     {
         key: '8',
+        label: '책걸상'
+    },
+    {
+        key: '9',
+        label: '분필 | 지우개',
+        children: [
+            {key: '9', label: '분필'},
+            {key: '10', label: '지우개'},
+            {key: '11', label: '지우개 털이'},
+        ],
+    },
+    {
+        key: '12',
         label: '강의대 | 교체 상판',
         children: [
-            {key: '1', label: '강의대'},
-            {key: '2', label: '교체 상판'}
+            {key: '12', label: '강의대'},
+            {key: '13', label: '교체 상판'}
         ],
     },
 ];
@@ -71,7 +69,6 @@ interface SideBarProps {
 
 const SideBar: React.FC<SideBarProps> = ({ onSelectMenu }) => {
     const onClick: MenuProps['onClick'] = (e) => {
-        console.log('click', e);
         onSelectMenu(e.key);
     };
 

@@ -42,7 +42,7 @@ const QuoteForm: React.FC = () => {
     return (
         <Space direction="vertical" size="large" style={{ display: 'flex', marginTop: '150px' }}>
             <Card
-                title={<Title level={2} style={{ margin: 0 }}>문의 글 작성하기</Title>}
+                title={<Title level={2} style={{ margin: 0}}>문의 글 작성하기</Title>}
                 size="small"
                 style={{ height: '100%' }}
             >

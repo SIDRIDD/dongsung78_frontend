@@ -1,36 +1,63 @@
 import React from 'react';
-import ProductGrid from "../page/ProductGrid";
-import {useNavigate} from "react-router-dom";
+import Board from '../product/Board'; // Board 컴포넌트 임포트
+import { useSelector } from 'react-redux';
+import { RootState } from '../store/store';
+import QuoteContact from "../page/QuoteContact";
+import QuoteDetail from "../page/QuoteDetail";
 
-// 임의의 컴포넌트 예시
-const ProductPage = () => <div>상품 페이지</div>;
-const NoticeBoard = () => <div>게시판</div>;
-const ChalkBoard = () => <div>분필 칠판</div>;
 
-const WhiteBoard = () => <div>화이트 칠판</div>
-
-interface ContentProps {
-    selectedMenuKey: string;
-}
-
-const Content: React.FC<ContentProps> = ({ selectedMenuKey }) => {
-    const navigate = useNavigate();
+const Content: React.FC = () => {
+    const selectedMenuKey = useSelector((state: RootState) => state.menu.selectedMenuKey);
     let content;
 
     switch (selectedMenuKey) {
         case '1':
-            // content = <ProductGrid />;
-            content = <ChalkBoard />;
+            content = <Board categoryId="1" />; // Board 컴포넌트로 categoryId 전달
             break;
         case '2':
-            content = <WhiteBoard />;
+            content = <Board categoryId="2" />; // WhiteBoard를 렌더링하는 대신 Board 사용
             break;
-        case '5-1':
-            content = <NoticeBoard />;
+        case '3':
+            content = <Board categoryId="3" />; // 물백묵 칠판
             break;
-        // 추가적인 case로 컴포넌트를 매핑
+        case '4':
+            content = <Board categoryId="4" />; // 스탠드 칠판
+            break;
+        case '5':
+            content = <Board categoryId="5" />; // 게시판
+            break;
+        case '6':
+            content = <Board categoryId="6" />; // 오선 칠판
+            break;
+        case '7':
+            content = <Board categoryId="7" />; // 월 계획표
+            break;
+        case '8':
+            content = <Board categoryId="8" />; // 책걸상
+            break;
+        case '9':
+            content = <Board categoryId="9" />; // 분필
+            break;
+        case '10':
+            content = <Board categoryId="10" />; // 지우개
+            break;
+        case '11':
+            content = <Board categoryId="11" />; // 지우개 털이
+            break;
+        case '12':
+            content = <Board categoryId="12" />; // 강의대
+            break;
+        case '13':
+            content = <Board categoryId="13" />; // 교체 상판
+            break;
+        case '100':
+            content = <QuoteContact/>;
+            break;
+        case '101':
+            content = <QuoteDetail/>;
+            break;
         default:
-            content = <div>콘텐츠를 선택하세요</div>;
+            content = <Board categoryId="1" />;
     }
 
     return (

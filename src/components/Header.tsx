@@ -4,7 +4,6 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import ProductDropDown from './ProductDropDown';
 import {Button, Input} from 'antd';
 import {Link, useNavigate} from 'react-router-dom';
 import DrawerComponent from './DrawerComponent';
@@ -14,6 +13,7 @@ import {RootState, AppDispatch} from '../store/store';
 import {login, logout} from '../store/authSlice';
 import axios from "axios";
 import Cookies from "js-cookie";
+import {setSelectedMenuKey} from "../store/MenuSlice";
 
 const Header: React.FC = () => {
     const [searchVisible, setSearchVisible] = useState<boolean>(false);
@@ -54,6 +54,11 @@ const Header: React.FC = () => {
         navigate('/login');
     }
 
+    const handleNavigate = (key: string) => {
+        dispatch(setSelectedMenuKey(key)); // Redux 상태 업데이트
+        navigate(key); // 페이지 이동
+    };
+
     console.log('Is Logged In:', isLoggedIn); // 디버깅을 위한 로그 추가
 
     return (
@@ -61,7 +66,7 @@ const Header: React.FC = () => {
             <Container style={{display: 'flex', justifyContent: 'center'}}>
                 <Nav className="me-auto">
                     <Nav.Link as={Link} to="/" style={{ color: '#666' }}>홈</Nav.Link>
-                    <Nav.Link as={Link} to={"/quote-contact"} style={{ color: '#666' }}>견적문의</Nav.Link>
+                    <Nav.Link onClick={() => handleNavigate('100')} style={{ color: '#666' }}>견적문의</Nav.Link>
                 </Nav>
                 <Nav className="ms-auto">
                     <Nav.Link as={Link} to="/login" style={{ color: '#666', marginRight: '15px' }}>

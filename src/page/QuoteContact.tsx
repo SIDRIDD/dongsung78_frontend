@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { List, Space, Card, Typography, Button, message, Pagination } from 'antd';
+import {List, Space, Card, Typography, Button, message, Pagination, Table} from 'antd';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Cookies from "js-cookie";
-import { useSelector } from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import { RootState } from "../store/store";
+import {setSelectedMenuKey} from "../store/MenuSlice";
+
 
 interface DataItem {
     id: number;
@@ -12,6 +14,10 @@ interface DataItem {
     description?: string;
     status: string;
     userId: string;
+
+    userName: string;
+
+    time: string;
 }
 
 const { Title } = Typography;
@@ -24,6 +30,8 @@ const QuoteContact: React.FC = () => {
     const pageSize = 10; // 한 페이지당 표시할 항목 수
     const navigate = useNavigate();
     const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
+    const dispatch = useDispatch();
+    const contentKeyValue = 101;
 
     const fetchData = async (page: number) => {
         setLoading(true);
@@ -67,32 +75,49 @@ const QuoteContact: React.FC = () => {
         navigate(`/quote-detail/${id}`);
     };
 
+    const columns = [
+        {
+            title: '제목',
+            dataIndex: 'title',
+            key: 'title',
+            render: (text: string, item: DataItem) => <a onClick={() => handleItemClick(item.id)}>{text}</a>,
+        },
+        // 필요시 description이나 다른 데이터 필드에 대한 열을 추가할 수 있습니다.
+        {
+            title: '작성자',
+            dataIndex: 'userName',
+            key: 'userName',
+        },
+        {
+            title: '작성일자',
+            dataIndex: 'time',
+            key: 'time',
+        },
+    ];
+
     return (
-        <Space direction="vertical" size="large" style={{ display: 'flex', marginTop: '150px' }}>
+        <Space direction="vertical" size="large" style={{ display: 'flex'}}>
             <Card
-                title={<Title level={2} style={{ margin: 0 }}>견적 문의</Title>}
+                title={<Title level={2} style={{ display: 'flex' }}>견적 문의</Title>}
                 size="small"
-                style={{ height: '100%' }}
+                style={{ height: '100%', border: '1px solid transparent' }}
             >
-                <div style={{ display: 'flex', justifyContent: 'flex-end', marginRight: '100px' }}>
+                <Table
+                    columns={columns}
+                    dataSource={data}
+                    size="small"
+                    loading={loading}
+                    rowKey="id"
+                    pagination={false} // 필요시 pagination 추가 가능
+                    style={{ width: '100%', margin: '0 auto', textAlign: 'left' }}
+                />
+                <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '10px'}}>
                     <Button type="primary" onClick={handleShowForm}>
                         문의 글 작성하기
                     </Button>
                 </div>
-                <List
-                    loading={loading}
-                    style={{ width: '50%', margin: '0 auto', textAlign: 'left' }}
-                    dataSource={data}
-                    renderItem={(item) => (
-                        <List.Item>
-                            <List.Item.Meta
-                                title={<a onClick={() => handleItemClick(item.id)}>{item.title}</a>}
-                                description={item.description}
-                            />
-                        </List.Item>
-                    )}
-                />
-                <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
+
+                <div style={{ display: 'flex', justifyContent: 'center' }}>
                     <Pagination
                         current={currentPage}
                         total={totalItems}

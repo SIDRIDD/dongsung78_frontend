@@ -1,15 +1,21 @@
 import React, { useState } from 'react';
-import Sidebar from './SideBar'; // SideBar 경로에 맞게 수정
-import Content from './Content'; // Content 경로에 맞게 수정
+import Sidebar from './SideBar';
+import Content from './Content';
+import {useDispatch} from "react-redux";
+import { setSelectedMenuKey } from '../store/MenuSlice';
 
 const MainPage: React.FC = () => {
-    const [selectedMenuKey, setSelectedMenuKey] = useState<string>(''); // 선택된 메뉴 상태
+    const dispatch = useDispatch();
+
+    const handleMenuSelect = (key: string) => {
+        dispatch(setSelectedMenuKey(key));
+    };
 
     return (
         <div style={{ display: 'flex' }}>
-            <Sidebar onSelectMenu={setSelectedMenuKey} /> {/* SideBar 컴포넌트 */}
+            <Sidebar onSelectMenu={handleMenuSelect} /> {/* SideBar 컴포넌트 */}
             <div style={{ flex: 1, padding: '16px' }}>
-                <Content selectedMenuKey={selectedMenuKey} /> {/* Content 컴포넌트 */}
+                <Content /> {/* Content 컴포넌트 */}
             </div>
         </div>
     );
