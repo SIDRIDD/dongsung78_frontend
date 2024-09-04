@@ -64,32 +64,32 @@ function App() {
                 <div className="App_sub">
                     <HeroSection/>
                     <NavBar/>
-                    <MainPage />
                     {/*<Sidebar onSelectMenu={setSelectedMenuKey}/>*/}
                     <div className="main-content">
-                    <main>
-                        <Routes>
-                            <Route path="/" element={<HeroSection/>}/>
-                            <Route path="/product-grid/:category" element={<ProductGrid/>}/>
-                            <Route path="/quote-contact" element={<QuoteContact/>}/>
-                            <Route path="/quote-form" element={<QuoteForm/>}/>
-                            <Route path="/quote-detail/:id" element={<QuoteDetail/>}/>
-                            <Route path="product-detail/:id" element={<ProductPage/>}/>
-                            <Route path="/item-detail/:id" element={<ItemDetail/>}/>
-                            <Route path="/login" element={<Login/>}/>
-                            <Route path="/signup" element={<SignUpPage/>}/>
-                            <Route path="/" element={<NaverCallback/>}/>
-                            <Route path="/kakaoid" element={<KakaoId/>}/>
-                            <Route path="/delivery" element={<Delivery/>}/>
-                        </Routes>
-                        {showAdditionalComponents && (
-                            <>
-                                {/*<NavBar_old/>*/}
-                                {/*<FeaturedProducts/>*/}
-                                {/*<CustomerReviews/>*/}
-                            </>
-                        )}
-                    </main>
+                        <main>
+                            <Routes>
+                                <Route path="/" element={<MainPage/>}>
+                                    <Route path="/product-grid/:category" element={<ProductGrid/>}/>
+                                    <Route path="/quote-contact" element={<QuoteContact/>}/>
+                                    <Route path="/quote-form" element={<QuoteForm/>}/>
+                                    {/*<Route path="/quote-detail" element={<QuoteDetail />}/>*/}
+                                    <Route path="product-detail/:id" element={<ProductPage/>}/>
+                                    <Route path="/item-detail/:id" element={<ItemDetail/>}/>
+                                    <Route path="/login" element={<Login/>}/>
+                                    <Route path="/signup" element={<SignUpPage/>}/>
+                                    <Route path="/" element={<NaverCallback/>}/>
+                                    <Route path="/kakaoid" element={<KakaoId/>}/>
+                                    <Route path="/delivery" element={<Delivery/>}/>
+                                </Route>
+                            </Routes>
+                            {showAdditionalComponents && (
+                                <>
+                                    {/*<NavBar_old/>*/}
+                                    {/*<FeaturedProducts/>*/}
+                                    {/*<CustomerReviews/>*/}
+                                </>
+                            )}
+                        </main>
                     </div>
                 </div>
                 <Footer/>

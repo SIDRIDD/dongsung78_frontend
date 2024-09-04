@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import Board from '../product/Board'; // Board 컴포넌트 임포트
 import { useSelector } from 'react-redux';
 import { RootState } from '../store/store';
@@ -8,6 +8,7 @@ import QuoteDetail from "../page/QuoteDetail";
 
 const Content: React.FC = () => {
     const selectedMenuKey = useSelector((state: RootState) => state.menu.selectedMenuKey);
+    const selectedItemId = useSelector((state: RootState) => state.menu.selectedItemId);
     let content;
 
     switch (selectedMenuKey) {
@@ -54,7 +55,8 @@ const Content: React.FC = () => {
             content = <QuoteContact/>;
             break;
         case '101':
-            content = <QuoteDetail/>;
+            console.log('selectedMenuKey: ' + selectedMenuKey);
+            content = <QuoteDetail itemId={selectedItemId} />;
             break;
         default:
             content = <Board categoryId="1" />;

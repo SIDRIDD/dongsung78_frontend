@@ -2,10 +2,12 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface MenuState {
     selectedMenuKey: string;
+    selectedItemId: number;
 }
 
 const initialState: MenuState = {
     selectedMenuKey: '',
+    selectedItemId: 1,
 };
 
 const menuSlice = createSlice({
@@ -15,9 +17,12 @@ const menuSlice = createSlice({
         setSelectedMenuKey: (state, action: PayloadAction<string>) => {
             state.selectedMenuKey = action.payload;
         },
+        setSelectedItemId: (state, action: PayloadAction<number>) => {
+            state.selectedItemId = action.payload;
+        },
     },
 });
 
-export const { setSelectedMenuKey } = menuSlice.actions;
+export const { setSelectedMenuKey, setSelectedItemId } = menuSlice.actions;
 
 export default menuSlice.reducer;

@@ -56,7 +56,7 @@ const Header: React.FC = () => {
 
     const handleNavigate = (key: string) => {
         dispatch(setSelectedMenuKey(key)); // Redux 상태 업데이트
-        navigate(key); // 페이지 이동
+        navigate('/quote-contact'); // 페이지 이동
     };
 
     console.log('Is Logged In:', isLoggedIn); // 디버깅을 위한 로그 추가

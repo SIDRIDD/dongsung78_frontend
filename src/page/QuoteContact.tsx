@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import Cookies from "js-cookie";
 import {useDispatch, useSelector} from "react-redux";
 import { RootState } from "../store/store";
-import {setSelectedMenuKey} from "../store/MenuSlice";
+import {setSelectedItemId, setSelectedMenuKey} from "../store/MenuSlice";
 
 
 interface DataItem {
@@ -72,7 +72,10 @@ const QuoteContact: React.FC = () => {
     };
 
     const handleItemClick = (id: number) => {
-        navigate(`/quote-detail/${id}`);
+        console.log('Contact.handleItemClick  id: ' + id);
+        dispatch(setSelectedItemId(id));
+        dispatch(setSelectedMenuKey('101'));
+        // navigate(`/quote-detail/${id}`);
     };
 
     const columns = [

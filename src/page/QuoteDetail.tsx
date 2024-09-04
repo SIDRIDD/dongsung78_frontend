@@ -42,8 +42,11 @@ interface RefreshComment {
     content: string;
 }
 
-const QuoteDetail: React.FC = () => {
-    const {id} = useParams<{ id: string }>();
+interface QuoteDetailProps {
+    itemId: number;
+}
+
+const QuoteDetail: React.FC<QuoteDetailProps> = ({ itemId }) => {
     const [data, setData] = useState<DataItem | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
     const {TextArea} = Input;
@@ -74,7 +77,7 @@ const QuoteDetail: React.FC = () => {
                 }
 
                 console.log('JWT Token: ', isLoggedIn)
-                const response = await axios.post(`http://localhost:8080/api/contact/get/${id}/comments`, {
+                const response = await axios.post(`http://localhost:8080/api/contact/get/${itemId}/comments`, {
                         content: comment,
                     }, {
                         withCredentials: true
@@ -100,7 +103,7 @@ const QuoteDetail: React.FC = () => {
         const fetchData = async () => {
             setLoading(true);
             try {
-                const response = await axios.get<DataItem>(`http://localhost:8080/api/contact/get?contact_id=${id}`);
+                const response = await axios.get<DataItem>(`http://localhost:8080/api/contact/get?contact_id=${itemId}`);
                 setData(response.data);
                 setComments(response.data.comments.map((comment: any) => ({
                     id: comment.id,
@@ -113,7 +116,7 @@ const QuoteDetail: React.FC = () => {
             setLoading(false);
         };
         fetchData();
-    }, [id]);
+    }, [itemId]);
 
     if (loading || !data) {
         return <div>Loading...</div>;

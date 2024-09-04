@@ -30,13 +30,12 @@ const ProductGrid: React.FC = () => {
     const [products, setProducts] = useState<Product[]>([]);
     const [total, setTotal] = useState(0); // 총 제품 수를 저장할 상태
     const [currentPage, setCurrentPage] = useState(1); // 현재 페이지를 저장할 상태
-    const pageSize = 15; // 한 페이지당 표시할 제품 수
+    const pageSize = 16; // 한 페이지당 표시할 제품 수
 
 
     const fetchProducts = async (page: number) => {
         try {
-            // const response = await axios.get(`http://localhost:8080/api/product/get?categoryId=${category}&page=${page - 1}&size=${pageSize}`);
-            const response = await axios.get(`http://localhost:8080/api/product/get?categoryId=1&page=${page - 1}&size=${pageSize}`);
+            const response = await axios.get(`http://localhost:8080/api/product/get?categoryId=${category}&page=${page - 1}&size=${pageSize}`);
             setProducts(response.data.content);
             setTotal(response.data.totalElements); // 총 제품 수 설정
 
@@ -49,9 +48,9 @@ const ProductGrid: React.FC = () => {
         setCurrentPage(1); // 카테고리가 변경될 때 현재 페이지를 1로 설정
     }, [category]);
 
-    // useEffect(() => {
-    //     fetchProducts(currentPage); // 현재 페이지의 제품을 불러옴
-    // }, [category, currentPage]);
+    useEffect(() => {
+        fetchProducts(currentPage); // 현재 페이지의 제품을 불러옴
+    }, [category, currentPage]);
 
     const categoryName = products.length > 0 ? products[0].categoryName : '';
 
