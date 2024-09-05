@@ -40,13 +40,13 @@ const QuoteForm: React.FC = () => {
     };
 
     return (
-        <Space direction="vertical" size="large" style={{ display: 'flex', marginTop: '150px' }}>
+        <Space direction="vertical" size="large" style={{ display: 'flex', border: 'none' }}>
             <Card
                 title={<Title level={2} style={{ margin: 0}}>문의 글 작성하기</Title>}
                 size="small"
-                style={{ height: '100%' }}
+                style={{ height: '100%', border: 'none' }}
             >
-                <Form onFinish={handleFormSubmit} style={{ marginTop: '20px' }}>
+                <Form onFinish={handleFormSubmit}>
                     <Form.Item
                         name="title"
                         rules={[{ required: true, message: 'Please input the title!' }]}

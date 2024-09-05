@@ -46,7 +46,8 @@ interface QuoteDetailProps {
     itemId: number;
 }
 
-const QuoteDetail: React.FC<QuoteDetailProps> = ({ itemId }) => {
+const QuoteDetail: React.FC = () => {
+    const {itemId} = useParams();
     const [data, setData] = useState<DataItem | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
     const {TextArea} = Input;
@@ -124,26 +125,6 @@ const QuoteDetail: React.FC<QuoteDetailProps> = ({ itemId }) => {
 
 
     return (
-        // <div
-        //     className="modal show"
-        //     style={{ display: 'block', position: 'initial', marginTop: '150px'}}
-        // >
-        //     <Modal.Dialog>
-        //         <Modal.Header>
-        //             <Modal.Title>{data.title}</Modal.Title>
-        //         </Modal.Header>
-        //
-        //         <Modal.Body>
-        //             <p>{data.description}</p>
-        //         </Modal.Body>
-        //
-        //         {/*<Modal.Footer>*/}
-        //         {/*    <Button variant="secondary">Close</Button>*/}
-        //         {/*    <Button variant="primary">Save changes</Button>*/}
-        //         {/*</Modal.Footer>*/}
-        //     </Modal.Dialog>
-        // </div>
-
         <div>
             <Card className="post-container">
                 <Title level={3} className="post-title">{data.title}</Title>

@@ -45,17 +45,17 @@ function App() {
     const dispatch = useDispatch();
     const [selectedMenuKey, setSelectedMenuKey] = useState<string>('');
 
-    // useEffect(() => {
-    //     axios.get('http://localhost:8080/api/user/check', {withCredentials: true})
-    //         .then(response => {
-    //             if (response.status === 200) {
-    //                 dispatch(login());
-    //             }
-    //         })
-    //         .catch(() => {
-    //             dispatch(logout());
-    //         })
-    // }, [dispatch]);
+    useEffect(() => {
+        axios.get('http://localhost:8080/api/user/check', {withCredentials: true})
+            .then(response => {
+                if (response.status === 200) {
+                    dispatch(login());
+                }
+            })
+            .catch(() => {
+                dispatch(logout());
+            })
+    }, [dispatch]);
 
     return (
         <div className="App">
@@ -64,31 +64,23 @@ function App() {
                 <div className="App_sub">
                     <HeroSection/>
                     <NavBar/>
-                    {/*<Sidebar onSelectMenu={setSelectedMenuKey}/>*/}
                     <div className="main-content">
                         <main>
                             <Routes>
                                 <Route path="/" element={<MainPage/>}>
                                     <Route path="/product-grid/:category" element={<ProductGrid/>}/>
+                                    <Route path="/product-grid/:category/:productId" element={<ProductPage/>}/>
                                     <Route path="/quote-contact" element={<QuoteContact/>}/>
                                     <Route path="/quote-form" element={<QuoteForm/>}/>
-                                    {/*<Route path="/quote-detail" element={<QuoteDetail />}/>*/}
-                                    <Route path="product-detail/:id" element={<ProductPage/>}/>
+                                    <Route path="/quote-detail/:itemId" element={<QuoteDetail />}/>
                                     <Route path="/item-detail/:id" element={<ItemDetail/>}/>
                                     <Route path="/login" element={<Login/>}/>
                                     <Route path="/signup" element={<SignUpPage/>}/>
-                                    <Route path="/" element={<NaverCallback/>}/>
+                                    {/*<Route path="/" element={<NaverCallback/>}/>*/}
                                     <Route path="/kakaoid" element={<KakaoId/>}/>
                                     <Route path="/delivery" element={<Delivery/>}/>
                                 </Route>
                             </Routes>
-                            {showAdditionalComponents && (
-                                <>
-                                    {/*<NavBar_old/>*/}
-                                    {/*<FeaturedProducts/>*/}
-                                    {/*<CustomerReviews/>*/}
-                                </>
-                            )}
                         </main>
                     </div>
                 </div>

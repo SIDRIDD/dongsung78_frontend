@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import {List, Space, Card, Typography, Button, message, Pagination, Table} from 'antd';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import {useLocation, useNavigate} from 'react-router-dom';
 import Cookies from "js-cookie";
 import {useDispatch, useSelector} from "react-redux";
 import { RootState } from "../store/store";
@@ -29,6 +29,7 @@ const QuoteContact: React.FC = () => {
     const [totalItems, setTotalItems] = useState<number>(0);
     const pageSize = 10; // 한 페이지당 표시할 항목 수
     const navigate = useNavigate();
+    const location = useLocation();
     const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
     const dispatch = useDispatch();
     const contentKeyValue = 101;
@@ -66,16 +67,13 @@ const QuoteContact: React.FC = () => {
         if (isLoggedIn) {
             navigate('/quote-form');
         } else {
-            navigate('/login');
+            navigate('/login', { state: { from: location } });
             message.warning('문의 글 작성을 위해 로그인이 필요합니다.');
         }
     };
 
     const handleItemClick = (id: number) => {
-        console.log('Contact.handleItemClick  id: ' + id);
-        dispatch(setSelectedItemId(id));
-        dispatch(setSelectedMenuKey('101'));
-        // navigate(`/quote-detail/${id}`);
+        navigate(`/quote-detail/${id}`);
     };
 
     const columns = [

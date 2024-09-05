@@ -24,13 +24,13 @@ interface Product {
 }
 
 const ProductPage: React.FC = () => {
-    const {id} = useParams<{ id: string }>();
+    const {productId} = useParams<{ productId: string }>();
     const [product, setProduct] = useState<Product | null>(null);
 
     useEffect(() => {
         const fetchProduct = async () => {
             try {
-                const response = await axios.get(`http://localhost:8080/api/product/getone/${id}`)
+                const response = await axios.get(`http://localhost:8080/api/product/getone/${productId}`)
                 setProduct(response.data);
             } catch (error) {
                 console.error('Error fetching product', error);
@@ -38,7 +38,7 @@ const ProductPage: React.FC = () => {
         };
 
         fetchProduct();
-    }, [id]);
+    }, [productId]);
 
     if (!product) {
         return <div>Loading...</div>;

@@ -1,0 +1,9 @@
+/* CSS 파일에 추가 (e.g., styles.css) */
+.ant-menu-item a,
+.ant-menu-submenu-title a {
+    color: black !important; /* 기본 텍스트 색상을 검정으로 설정 */
+}
+
+.ant-menu-item-selected a {
+    color: black !important; /* 선택된 메뉴 항목도 검정색으로 유지 */
+}

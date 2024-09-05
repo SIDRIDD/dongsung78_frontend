@@ -6,7 +6,7 @@ import {GoogleLogin, CredentialResponse} from '@react-oauth/google';
 import KakaoLogin from 'react-kakao-login';
 import {useDispatch, useSelector} from 'react-redux';
 import {login} from '../store/authSlice';
-import {useNavigate} from 'react-router-dom';
+import {useLocation, useNavigate} from 'react-router-dom';
 import axios from 'axios';
 import {RootState} from "../store/store";
 
@@ -21,6 +21,7 @@ const LoginPage: React.FC = () => {
     const {token} = theme.useToken();
     const [loginType, setLoginType] = useState<LoginType>('account');
     const dispatch = useDispatch();
+    const location = useLocation();
     const navigate = useNavigate();
 
     const kakaoResttKey = process.env.REACT_APP_KAKAO_REST_KEY || '';
@@ -38,12 +39,12 @@ const LoginPage: React.FC = () => {
         }
         try {
             console.log('Login.tsx 의 provider');
-            const response = await axios.post(`http://localhost:8080/api/oauth/${provider}`,{
-                code: code,
-                provider: provider,
-                redirectUri: redirectUri
-            }
-        )
+            const response = await axios.post(`http://localhost:8080/api/oauth/${provider}`, {
+                    code: code,
+                    provider: provider,
+                    redirectUri: redirectUri
+                }
+            )
             console.log('Login successful:', response.data);
 
             dispatch(login());
@@ -62,11 +63,12 @@ const LoginPage: React.FC = () => {
     const onFinish = async (values: LoginFormValues) => {
         try {
             console.log('values: ', values);
-            const response = await axios.post('http://localhost:8080/api/user/login', values, { withCredentials: true });
+            const response = await axios.post('http://localhost:8080/api/user/login', values, {withCredentials: true});
             console.log('Login successful:', response.data);
 
             dispatch(login());
-            navigate('/');
+            const previousPath = location.state?.from?.pathname || '/product-grid/1';
+            navigate(previousPath);
         } catch (error) {
             message.warning('ID 혹은 비밀번호를 확인해주세요.');
             console.error('Login failed:', error);
@@ -116,7 +118,7 @@ const LoginPage: React.FC = () => {
 
     return (
         <ProConfigProvider hashed={false}>
-            <div style={{backgroundColor: token.colorBgContainer, marginTop: '100px'}}>
+            <div style={{backgroundColor: token.colorBgContainer}}>
                 {/*<LoginForm*/}
                 {/*    onFinish={onFinish}*/}
                 {/*    submitter={loginType === 'oauth' ? false : {*/}
@@ -135,7 +137,7 @@ const LoginPage: React.FC = () => {
                     }}
                     actions={
                         loginType === 'account' ? (
-                            <Space style={{justifyContent: 'space-between', width: '100%'}}>
+                            <Space style={{justifyContent: 'center', width: '100%'}}>
                                 <Button type="link" onClick={() => navigate('/signup')}>
                                     회원가입
                                 </Button>
@@ -227,8 +229,10 @@ const LoginPage: React.FC = () => {
                                     <img
                                         src={`${process.env.PUBLIC_URL}/img/kakao_login.png`}
                                         alt="Naver Login"
-                                        style={{height: '100%',
-                                            objectFit: 'contain'}}  // 이미지 높이를 버튼 높이에 맞춤
+                                        style={{
+                                            height: '100%',
+                                            objectFit: 'contain'
+                                        }}  // 이미지 높이를 버튼 높이에 맞춤
                                     />
                                 </button>
                                 <button
@@ -246,8 +250,10 @@ const LoginPage: React.FC = () => {
                                     <img
                                         src={`${process.env.PUBLIC_URL}/img/naver_login.png`}
                                         alt="Naver Login"
-                                        style={{height: '100%',
-                                            objectFit: 'contain'}}  // 이미지 높이를 버튼 높이에 맞춤
+                                        style={{
+                                            height: '100%',
+                                            objectFit: 'contain'
+                                        }}  // 이미지 높이를 버튼 높이에 맞춤
                                     />
                                 </button>
                             </Space>

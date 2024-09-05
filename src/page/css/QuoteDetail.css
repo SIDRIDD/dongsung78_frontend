@@ -1,9 +1,6 @@
 /* src/Post.css */
 .post-container {
     max-width: 800px; /* 카드의 너비를 넓혔습니다. */
-    margin: 0 auto;
-    padding: 20px;
-    margin-top: 150px;
 }
 
 .post-title {
@@ -39,8 +36,7 @@
 /* src/CommentInput.css */
 .comment-container {
     max-width: 800px;
-    margin: 20px auto;
-    padding: 20px;
+    margin-top: 10px;
 }
 
 .comment-footer {
@@ -68,8 +64,8 @@
 
 .comment-list{
     max-width: 800px;
-    margin: 20px auto;
-    padding: 20px;
+    /*margin: 20px auto;*/
+    /*padding: 20px;*/
     text-align: left;
 }
 

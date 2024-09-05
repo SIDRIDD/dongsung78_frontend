@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {AppstoreOutlined, MailOutlined, SettingOutlined} from '@ant-design/icons';
 import type {MenuProps} from 'antd';
 import {Button, Menu} from 'antd';
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -57,23 +57,27 @@ const NavBar: React.FC = () => {
         setCurrent(e.key);
     };
 
+    const hadleQoute = () => {
+        navigate('quote-contact');
+    }
+
     return (
-        <div style={{alignItems: 'center', display: 'flex'}}>
-            <div style={{marginRight: '20px', width: '256px', display: 'flex', justifyContent: 'center'}}>
+        <div style={{alignItems: 'center', display: 'flex', position: 'sticky', top:0, zIndex: 100}}>
+            <div style={{marginRight: '20px', width: '256px', height: '100%', display: 'flex', justifyContent: 'center', backgroundColor: 'white'}}>
                 <a>
-                    <img onClick={() => navigate('/')} src={`${process.env.PUBLIC_URL}/img/logo_minisize.png`}
+                    <img onClick={() => navigate('/product-grid/1')} src={`${process.env.PUBLIC_URL}/img/logo_minisize.png`}
                          alt="Product"/>
                 </a>
             </div>
             <div style={{
                 display: 'flex',
                 justifyContent: 'space-between',
-                alignItems: 'center',
+                alignItems: 'flex-start',
                 padding: '10px 20px',
                 backgroundColor: '#fff'
             }}>
-                <Button type="link" style={{color: 'black'}}>맞춤도안제작문의</Button>
-                <Button type="link" style={{color: 'black'}}>사이즈맞춤제작문의</Button>
+                <Button onClick={hadleQoute}type="link" style={{color: 'black'}}>견적 문의 게시판</Button>
+                <Button type="link" style={{color: 'black'}}>시공 사진</Button>
                 <Button type="link" style={{color: 'black'}}>상품 Q&A</Button>
                 <Button type="link" style={{color: 'black'}}>개인결제창</Button>
                 <Button type="link" style={{color: 'black'}}>화물배송비조회</Button>

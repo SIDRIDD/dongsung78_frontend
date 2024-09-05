@@ -56,7 +56,7 @@ const Content: React.FC = () => {
             break;
         case '101':
             console.log('selectedMenuKey: ' + selectedMenuKey);
-            content = <QuoteDetail itemId={selectedItemId} />;
+            // content = <QuoteDetail itemId={selectedItemId} />;
             break;
         default:
             content = <Board categoryId="1" />;

@@ -3,7 +3,7 @@ import {Drawer, message} from 'antd';
 import {useCart} from "../context/CartContext";
 import "./css/DrawerComponent.css";
 import {useSelector} from "react-redux";
-import {useNavigate} from 'react-router-dom';
+import {useLocation, useNavigate} from 'react-router-dom';
 import Cookies from "js-cookie";
 import {RootState} from "../store/store";
 
@@ -17,6 +17,7 @@ interface DrawerComponentProps {
 const DrawerComponent: React.FC<DrawerComponentProps> = ({visible, onClose, items}) => {
     const {removeFromCart, updateQuantity, purchaseItems} = useCart();
     const navigate = useNavigate();
+    const location = useLocation();
     const totalAmount = items.reduce((acc, item) => acc + (item.price * item.quantity), 0);
     // const userId = "admin";
     const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
@@ -26,7 +27,7 @@ const DrawerComponent: React.FC<DrawerComponentProps> = ({visible, onClose, item
         if(!isLoggedIn){
             message.warning('상품 구매를 위해 로그인이 필요합니다.');
             onClose();
-            navigate('/login');
+            navigate('/login', { state: { from: location } });
             return;
         }
         console.log('items 확인 : ', items);

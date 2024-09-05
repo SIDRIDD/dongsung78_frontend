@@ -46,7 +46,7 @@ const Header: React.FC = () => {
         sessionStorage.clear();
         sessionStorage.setItem('cartKinds', '0');
         dispatch(logout());
-        navigate('/');
+        navigate('/product-grid/1');
     };
 
     const handleLogin = () => {
@@ -65,7 +65,7 @@ const Header: React.FC = () => {
         <Navbar expand="lg" className="navbar-dark bg-custom w-100 py-1" style={{ fontSize: '0.7rem', justifyContent: 'center', alignItems: 'center', borderBottom: '1px solid #ddd' }}>
             <Container style={{display: 'flex', justifyContent: 'center'}}>
                 <Nav className="me-auto">
-                    <Nav.Link as={Link} to="/" style={{ color: '#666' }}>홈</Nav.Link>
+                    <Nav.Link as={Link} to="/product-grid/1" style={{ color: '#666' }}>홈</Nav.Link>
                     <Nav.Link onClick={() => handleNavigate('100')} style={{ color: '#666' }}>견적문의</Nav.Link>
                 </Nav>
                 <Nav className="ms-auto">

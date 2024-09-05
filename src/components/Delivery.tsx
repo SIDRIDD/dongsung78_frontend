@@ -158,14 +158,12 @@ const ShippingInfoForm: React.FC = () => {
     return (
         <div style={{
             display: 'flex',
-            justifyContent: 'center',
+            justifyContent: 'flex-start',
             alignItems: 'center',
             flexDirection: 'column',
-            minHeight: '100vh',
         }}>
             <div style={{
                 display: 'flex',
-                gap: '20px',
                 justifyContent: 'center',
                 alignItems: 'flex-start',
                 maxWidth: '900px',
@@ -179,16 +177,14 @@ const ShippingInfoForm: React.FC = () => {
                     }}
                     onFinishFailed={() => {
                     }}
-                    style={{marginLeft: '100px', width: '300px'}}
+                    style={{width: '300px'}}
                 >
-                    <Form.Item
-                        label="[배송지 정보 입력]"
-                    >
-                    </Form.Item>
+                    <span style={{fontSize: '20px'}}>[배송지 정보 입력]</span>
                     <Form.Item
                         label="이름"
                         name="name"
                         rules={[{required: true, message: '이름을 입력해 주세요.'}]}
+                        style={{ marginTop: '10px' }}
                     >
                         <Input
                             placeholder="이름을 입력해 주세요."

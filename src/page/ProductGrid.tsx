@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Link, useParams} from 'react-router-dom';
+import {Link, useNavigate, useParams} from 'react-router-dom';
 import './css/ProductGrid.css';
 import axios from 'axios';
 import {Pagination} from "antd";
@@ -27,10 +27,13 @@ interface Product {
 
 const ProductGrid: React.FC = () => {
     const {category} = useParams<{ category: string }>();
+    const [loading, setLoading] = useState<boolean>(true);
+    const [error, setError] = useState<string | null>(null);
     const [products, setProducts] = useState<Product[]>([]);
     const [total, setTotal] = useState(0); // 총 제품 수를 저장할 상태
     const [currentPage, setCurrentPage] = useState(1); // 현재 페이지를 저장할 상태
     const pageSize = 16; // 한 페이지당 표시할 제품 수
+    const navigate = useNavigate();
 
 
     const fetchProducts = async (page: number) => {
@@ -59,42 +62,78 @@ const ProductGrid: React.FC = () => {
         window.scrollTo(0, 0); // 페이지 상단으로 스크롤
     };
 
+//     return (
+//         <div className="product-grid" style={{marginTop: '100px'}}>
+//             {/*<h2>{categoryName}</h2>*/}
+//             {/*<Choice/>*/}
+//             <div className="product-list">
+//                 {products.map(product => (
+//                     <Link key={product.id} to={`/product-detail/${product.id}`} style={{textDecoration: 'none'}}>
+//                         <div key={product.id} className="product-grid-card">
+//                             <img src={`${process.env.PUBLIC_URL}/${product.imageUrl}`}
+//                                  alt={product.name} className="product-image"/>
+//                             <div className="product-info">
+//                                 <h3 className="product-grid-name">{product.name}</h3>
+//                                 <p className="product-grid-price">{product.price.toLocaleString()} 원</p>
+//                                 {/*{product.salePrice ? (*/}
+//                                 {/*    <p className="product-price">*/}
+//                                 {/*        <span className="original-price">${product.price}</span>*/}
+//                                 {/*        <span className="sale-price">${product.salePrice}</span>*/}
+//                                 {/*    </p>*/}
+//                                 {/*) : (*/}
+//                                 {/*    <p className="product-price">${product.price}</p>*/}
+//                                 {/*)}*/}
+//                                 <p className="product-grid-description">{product.description}</p>
+//                                 {/*<button className="product-grid-button">상세 보기</button>*/}
+//                             </div>
+//                         </div>
+//                     </Link>
+//
+//                 ))}
+//             </div>
+//             <div style={{display: 'flex', justifyContent: 'center', marginTop: '20px'}}>
+//                 <Pagination
+//                     current={currentPage}
+//                     total={total}
+//                     pageSize={pageSize}
+//                     onChange={handlePageChange}
+//                     style={{textAlign: 'center', marginTop: '20px'}}
+//                 />
+//             </div>
+//         </div>
+//     );
+    function handleProduct(productId: number) {
+        navigate(`/product-grid/${category}/${productId}`);
+    }
+
+// };
     return (
-        <div className="product-grid" style={{marginTop: '100px'}}>
-            {/*<h2>{categoryName}</h2>*/}
-            {/*<Choice/>*/}
-            <div className="product-list">
-                {products.map(product => (
-                    <Link key={product.id} to={`/product-detail/${product.id}`} style={{textDecoration: 'none'}}>
-                        <div key={product.id} className="product-grid-card">
-                            <img src={`${process.env.PUBLIC_URL}/${product.imageUrl}`}
-                                 alt={product.name} className="product-image"/>
+        <div>
+            {error && <div>{error}</div>}
+            <div className="product-grid">
+                {loading && !products.length ? (
+                    <div>Loading...</div> // 첫 로드 시에만 로딩 메시지를 표시합니다.
+                ) : (
+                    products.map((product) => (
+                        <div key={product.id} className="product-card" onClick={() => handleProduct(product.id)}
+                        style={{ cursor: 'pointer' }}>
+                            <img src={`${process.env.PUBLIC_URL}/${product.imageUrl}`} alt={product.name}
+                                 className="product-image"/>
                             <div className="product-info">
-                                <h3 className="product-grid-name">{product.name}</h3>
-                                <p className="product-grid-price">{product.price.toLocaleString()} 원</p>
-                                {/*{product.salePrice ? (*/}
-                                {/*    <p className="product-price">*/}
-                                {/*        <span className="original-price">${product.price}</span>*/}
-                                {/*        <span className="sale-price">${product.salePrice}</span>*/}
-                                {/*    </p>*/}
-                                {/*) : (*/}
-                                {/*    <p className="product-price">${product.price}</p>*/}
-                                {/*)}*/}
-                                <p className="product-grid-description">{product.description}</p>
-                                {/*<button className="product-grid-button">상세 보기</button>*/}
+                                <h3>{product.name}</h3>
+                                <span>{product.price.toLocaleString()} 원</span>
+                                <p>{product.description}</p>
                             </div>
                         </div>
-                    </Link>
-
-                ))}
+                    ))
+                )}
             </div>
-            <div style={{display: 'flex', justifyContent: 'center', marginTop: '20px'}}>
+            <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '20px'}}>
                 <Pagination
                     current={currentPage}
                     total={total}
                     pageSize={pageSize}
                     onChange={handlePageChange}
-                    style={{textAlign: 'center', marginTop: '20px'}}
                 />
             </div>
         </div>

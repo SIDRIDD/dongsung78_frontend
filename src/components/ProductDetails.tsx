@@ -49,17 +49,19 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({productId, name, descrip
 
     return (
         <div className="product-details-info">
-            <h1 className="product-details-title">{name}</h1>
-            <div className="product-details-price">
-                <span className="details-price">{price.toLocaleString()} 원</span>
-            </div>
-            <div className="product-details-shipping">
-                <span>무료 배송</span>
+            <div className="product-details-title-info">
+                <h1 className="product-details-title">{name}</h1>
+                <span>상품 요약 정보: {description}</span>
+                <span>판매가: {price.toLocaleString()} 원</span>
+                <span>배송비: 무료 배송</span>
             </div>
             <div className="product-details-quantity">
                 <button className="quantity-details-button" onClick={handleDecrease}>-</button>
                 <span className="details-quantity">{quantity}</span>
                 <button className="quantity-details-button" onClick={handleIncrease}>+</button>
+                <div className="product-details-price">
+                    <span className="details-price">{price.toLocaleString()} 원</span>
+                </div>
             </div>
             <div className="product-details-buttons">
                 <button className="add-to-cart" onClick={handleAddToCart}>장바구니 담기</button>
