@@ -2,8 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {Link, useNavigate, useParams} from 'react-router-dom';
 import './css/ProductGrid.css';
 import axios from 'axios';
-import {Pagination} from "antd";
-import Choice from "../components/Choice";
+import {Button, Col, Divider, Grid, Pagination, Row, Space} from "antd";
 
 interface Product {
 
@@ -62,54 +61,42 @@ const ProductGrid: React.FC = () => {
         window.scrollTo(0, 0); // 페이지 상단으로 스크롤
     };
 
-//     return (
-//         <div className="product-grid" style={{marginTop: '100px'}}>
-//             {/*<h2>{categoryName}</h2>*/}
-//             {/*<Choice/>*/}
-//             <div className="product-list">
-//                 {products.map(product => (
-//                     <Link key={product.id} to={`/product-detail/${product.id}`} style={{textDecoration: 'none'}}>
-//                         <div key={product.id} className="product-grid-card">
-//                             <img src={`${process.env.PUBLIC_URL}/${product.imageUrl}`}
-//                                  alt={product.name} className="product-image"/>
-//                             <div className="product-info">
-//                                 <h3 className="product-grid-name">{product.name}</h3>
-//                                 <p className="product-grid-price">{product.price.toLocaleString()} 원</p>
-//                                 {/*{product.salePrice ? (*/}
-//                                 {/*    <p className="product-price">*/}
-//                                 {/*        <span className="original-price">${product.price}</span>*/}
-//                                 {/*        <span className="sale-price">${product.salePrice}</span>*/}
-//                                 {/*    </p>*/}
-//                                 {/*) : (*/}
-//                                 {/*    <p className="product-price">${product.price}</p>*/}
-//                                 {/*)}*/}
-//                                 <p className="product-grid-description">{product.description}</p>
-//                                 {/*<button className="product-grid-button">상세 보기</button>*/}
-//                             </div>
-//                         </div>
-//                     </Link>
-//
-//                 ))}
-//             </div>
-//             <div style={{display: 'flex', justifyContent: 'center', marginTop: '20px'}}>
-//                 <Pagination
-//                     current={currentPage}
-//                     total={total}
-//                     pageSize={pageSize}
-//                     onChange={handlePageChange}
-//                     style={{textAlign: 'center', marginTop: '20px'}}
-//                 />
-//             </div>
-//         </div>
-//     );
     function handleProduct(productId: number) {
         navigate(`/product-grid/${category}/${productId}`);
     }
+    const categoryMenus = [
+        "분필칠판",
+        "화이트 보드",
+        "물백묵 칠판",
+        "스탠드 칠판",
+        "게시판",
+        "오선 칠판",
+        "계획표",
+        "책걸상",
+        "분필",
+        "지우개",
+        "지우개 털이",
+        "강의대",
+        "교체 상판",
 
-// };
+        // ... 추가적인 카테고리 이름들
+    ];
+
+    const handleCategoryButton = (categoryId : number) => {
+        navigate(`/product-grid/${categoryId}`)
+    }
+
+
     return (
         <div>
             {error && <div>{error}</div>}
+            <Divider orientation="left" style={{ fontSize: '20px', fontFamily: 'PaperlogyBold' }}>{categoryName}</Divider>
+            <Space size={[8, 16]} wrap>
+                {categoryMenus.map((categoryMenu, index) => (
+                    // eslint-disable-next-line react/no-array-index-key
+                    <Button key={index} onClick={() => handleCategoryButton((index + 1))} >{categoryMenu}</Button>
+                ))}
+            </Space>
             <div className="product-grid">
                 {loading && !products.length ? (
                     <div>Loading...</div> // 첫 로드 시에만 로딩 메시지를 표시합니다.

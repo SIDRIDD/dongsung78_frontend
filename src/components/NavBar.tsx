@@ -63,7 +63,7 @@ const NavBar: React.FC = () => {
 
     return (
         <div style={{alignItems: 'center', display: 'flex', position: 'sticky', top:0, zIndex: 100}}>
-            <div style={{marginRight: '20px', width: '256px', height: '100%', display: 'flex', justifyContent: 'center', backgroundColor: 'white'}}>
+            <div style={{cursor: 'pointer', marginRight: '20px', width: '256px', height: '100%', display: 'flex', justifyContent: 'center', backgroundColor: 'white'}}>
                 <a>
                     <img onClick={() => navigate('/product-grid/1')} src={`${process.env.PUBLIC_URL}/img/logo_minisize.png`}
                          alt="Product"/>
@@ -76,7 +76,7 @@ const NavBar: React.FC = () => {
                 padding: '10px 20px',
                 backgroundColor: '#fff'
             }}>
-                <Button onClick={hadleQoute}type="link" style={{color: 'black'}}>견적 문의 게시판</Button>
+                <Button onClick={hadleQoute} type="link" style={{color: 'black'}}>견적 문의 게시판</Button>
                 <Button type="link" style={{color: 'black'}}>시공 사진</Button>
                 <Button type="link" style={{color: 'black'}}>상품 Q&A</Button>
                 <Button type="link" style={{color: 'black'}}>개인결제창</Button>

@@ -142,22 +142,22 @@ const QuoteDetail: React.FC = () => {
                 </Paragraph>
                 <div className="post-reactions">
                     <Space size="middle">
-                        <Space>
-                            <LikeOutlined/>
-                            <Text>좋아요 3</Text>
-                        </Space>
-                        <Space>
-                            <SmileOutlined/>
-                            <Text>재밌어요 0</Text>
-                        </Space>
-                        <Space>
-                            <BulbOutlined/>
-                            <Text>도움돼요 2</Text>
-                        </Space>
-                        <Space>
-                            <FrownOutlined/>
-                            <Text>힘내요 0</Text>
-                        </Space>
+                        {/*<Space>*/}
+                        {/*    <LikeOutlined/>*/}
+                        {/*    <Text>좋아요 3</Text>*/}
+                        {/*</Space>*/}
+                        {/*<Space>*/}
+                        {/*    <SmileOutlined/>*/}
+                        {/*    <Text>재밌어요 0</Text>*/}
+                        {/*</Space>*/}
+                        {/*<Space>*/}
+                        {/*    <BulbOutlined/>*/}
+                        {/*    <Text>도움돼요 2</Text>*/}
+                        {/*</Space>*/}
+                        {/*<Space>*/}
+                        {/*    <FrownOutlined/>*/}
+                        {/*    <Text>힘내요 0</Text>*/}
+                        {/*</Space>*/}
                     </Space>
                 </div>
             </Card>

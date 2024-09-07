@@ -27,6 +27,7 @@ import Sidebar from "./components/SideBar";
 import NavBar from "./components/NavBar";
 import Content from "./components/Content";
 import MainPage from "./components/MainPage";
+import Construction from "./components/Construction";
 
 
 //
@@ -79,6 +80,7 @@ function App() {
                                     {/*<Route path="/" element={<NaverCallback/>}/>*/}
                                     <Route path="/kakaoid" element={<KakaoId/>}/>
                                     <Route path="/delivery" element={<Delivery/>}/>
+                                    <Route path="/construction" element={<Construction />}/>
                                 </Route>
                             </Routes>
                         </main>

@@ -62,7 +62,7 @@ const SignUpPage: React.FC = () => {
 
 
     return (
-        <div style={{ maxWidth: 400, margin: 'auto', marginTop: '100px' }}>
+        <div style={{ maxWidth: 400, margin: 'auto'}}>
             <h2>Sign Up</h2>
             <Form name="signup" onFinish={onFinish}>
                 <Form.Item

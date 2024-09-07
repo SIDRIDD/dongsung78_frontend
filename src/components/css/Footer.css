@@ -1,8 +1,13 @@
+main {
+    flex: 1; /* 콘텐츠 영역을 확장하여 나머지 공간을 차지 */
+}
+
 .footer {
     background-color: #000;
     color: #fff;
     padding: 20px;
     text-align: center;
+    width: 100%;
 }
 
 .footer-links a {
@@ -20,9 +25,6 @@
     color: #fff;
     margin: 0 10px;
     text-decoration: none;
-}
-main{
-    flex:1;
 }
 
 .newsletter {

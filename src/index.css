@@ -11,3 +11,13 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+@font-face {
+  font-family: "PaperlogyBold";
+  font-weight: normal;
+  src: url("./font/Paperlogy-7Bold.ttf") format("truetype");
+}
+
+body {
+  font-family: "PaperlogyBold";
+}

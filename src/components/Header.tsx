@@ -63,7 +63,7 @@ const Header: React.FC = () => {
 
     return (
         <Navbar expand="lg" className="navbar-dark bg-custom w-100 py-1" style={{ fontSize: '0.7rem', justifyContent: 'center', alignItems: 'center', borderBottom: '1px solid #ddd' }}>
-            <Container style={{display: 'flex', justifyContent: 'center'}}>
+            <Container style={{display: 'flex', justifyContent: 'center', maxWidth: '1200px'}}>
                 <Nav className="me-auto">
                     <Nav.Link as={Link} to="/product-grid/1" style={{ color: '#666' }}>홈</Nav.Link>
                     <Nav.Link onClick={() => handleNavigate('100')} style={{ color: '#666' }}>견적문의</Nav.Link>
