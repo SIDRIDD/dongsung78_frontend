@@ -28,6 +28,7 @@ import NavBar from "./components/NavBar";
 import Content from "./components/Content";
 import MainPage from "./components/MainPage";
 import Construction from "./components/Construction";
+import ConstructionDetail from "./components/ConstructionDetail";
 
 
 //
@@ -81,6 +82,7 @@ function App() {
                                     <Route path="/kakaoid" element={<KakaoId/>}/>
                                     <Route path="/delivery" element={<Delivery/>}/>
                                     <Route path="/construction" element={<Construction />}/>
+                                    <Route path="/construction-detail/:id" element={<ConstructionDetail/>}/>
                                 </Route>
                             </Routes>
                         </main>

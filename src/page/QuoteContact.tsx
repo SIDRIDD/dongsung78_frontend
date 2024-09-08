@@ -99,7 +99,7 @@ const QuoteContact: React.FC = () => {
     return (
         <Space direction="vertical" size="large" style={{ display: 'flex'}}>
             <Card
-                title={<Title level={2} style={{ display: 'flex' }}>견적 문의</Title>}
+                title={<Title level={2} style={{ display: 'flex', fontFamily: 'PaperlogyBold' }}>견적 문의</Title>}
                 size="small"
                 style={{ height: '100%', border: '1px solid transparent' }}
             >

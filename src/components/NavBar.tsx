@@ -60,6 +60,9 @@ const NavBar: React.FC = () => {
     const hadleQoute = () => {
         navigate('quote-contact');
     }
+    const handleConstruction = () => {
+        navigate('/construction');
+    }
 
     return (
         <div style={{alignItems: 'center', display: 'flex', position: 'sticky', top:0, zIndex: 100}}>
@@ -77,7 +80,7 @@ const NavBar: React.FC = () => {
                 backgroundColor: '#fff'
             }}>
                 <Button onClick={hadleQoute} type="link" style={{color: 'black'}}>견적 문의 게시판</Button>
-                <Button type="link" style={{color: 'black'}}>시공 사진</Button>
+                <Button onClick={handleConstruction} type="link" style={{color: 'black'}}>시공 사진</Button>
                 <Button type="link" style={{color: 'black'}}>상품 Q&A</Button>
                 <Button type="link" style={{color: 'black'}}>개인결제창</Button>
                 <Button type="link" style={{color: 'black'}}>화물배송비조회</Button>

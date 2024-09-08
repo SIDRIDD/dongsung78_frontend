@@ -9,16 +9,27 @@ import {setSelectedItemId, setSelectedMenuKey} from "../store/MenuSlice";
 
 
 interface DataItem {
-    id: number;
+    constructionId: number;
+
     title: string;
-    description?: string;
-    status: string;
-    userId: string;
+    companyCode: number;
+    categoryName: string;
+
+    companyName: string;
 
     userName: string;
 
-    time: string;
+    details: Detail;
+
 }
+interface Detail{
+    companyDetail: string;
+
+    companyDescription: string;
+
+    img_url: string;
+}
+
 
 const { Title } = Typography;
 
@@ -32,13 +43,13 @@ const QuoteContact: React.FC = () => {
     const location = useLocation();
     const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
     const dispatch = useDispatch();
-    const contentKeyValue = 101;
+
 
     const fetchData = async (page: number) => {
         setLoading(true);
         try {
             const response = await axios.get<{ content: DataItem[], totalElements: number }>(
-                `http://localhost:8080/api/contact/getall`,
+                `http://localhost:8080/api/construction/get-list`,
                 {
                     params: {
                         page: page - 1, // API는 0부터 시작하므로 page-1
@@ -48,6 +59,7 @@ const QuoteContact: React.FC = () => {
             );
             setData(response.data.content);
             setTotalItems(response.data.totalElements);
+
         } catch (error) {
             console.error('Failed to fetch data:', error);
         }
@@ -63,25 +75,20 @@ const QuoteContact: React.FC = () => {
         window.scrollTo(0, 0); // 페이지 변경 시 상단으로 스크롤
     };
 
-    const handleShowForm = () => {
-        if (isLoggedIn) {
-            navigate('/quote-form');
-        } else {
-            navigate('/login', { state: { from: location } });
-            message.warning('문의 글 작성을 위해 로그인이 필요합니다.');
-        }
-    };
 
-    const handleItemClick = (id: number) => {
-        navigate(`/quote-detail/${id}`);
+    const handleItemClick = (item: DataItem) => {
+        navigate(`/construction-detail/${item.constructionId}`);
     };
 
     const columns = [
         {
             title: '제목',
-            dataIndex: 'title',
             key: 'title',
-            render: (text: string, item: DataItem) => <a onClick={() => handleItemClick(item.id)}>{text}</a>,
+            render: (text: string, item: DataItem) => (
+                <a onClick={() => handleItemClick(item)}>
+                    {`${item.companyName} ${item.categoryName} 시공 사진`}
+                </a>
+            ),
         },
         // 필요시 description이나 다른 데이터 필드에 대한 열을 추가할 수 있습니다.
         {
@@ -99,7 +106,7 @@ const QuoteContact: React.FC = () => {
     return (
         <Space direction="vertical" size="large" style={{ display: 'flex'}}>
             <Card
-                title={<Title level={2} style={{ display: 'flex' }}>견적 문의</Title>}
+                title={<Title level={2} style={{ display: 'flex', fontFamily: 'PaperlogyBold' }}>시공 사진</Title>}
                 size="small"
                 style={{ height: '100%', border: '1px solid transparent' }}
             >
@@ -112,13 +119,8 @@ const QuoteContact: React.FC = () => {
                     pagination={false} // 필요시 pagination 추가 가능
                     style={{ width: '100%', margin: '0 auto', textAlign: 'left' }}
                 />
-                <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '10px'}}>
-                    <Button type="primary" onClick={handleShowForm}>
-                        문의 글 작성하기
-                    </Button>
-                </div>
 
-                <div style={{ display: 'flex', justifyContent: 'center' }}>
+                <div style={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}>
                     <Pagination
                         current={currentPage}
                         total={totalItems}
