@@ -3,6 +3,7 @@ import {AppstoreOutlined, MailOutlined, SettingOutlined} from '@ant-design/icons
 import type {MenuProps} from 'antd';
 import {Button, Menu} from 'antd';
 import {Link, useNavigate} from "react-router-dom";
+import Flex from 'antd/lib/flex';
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -66,25 +67,31 @@ const NavBar: React.FC = () => {
 
     return (
         <div style={{alignItems: 'center', display: 'flex', position: 'sticky', top:0, zIndex: 100}}>
-            <div style={{cursor: 'pointer', marginRight: '20px', width: '256px', height: '100%', display: 'flex', justifyContent: 'center', backgroundColor: 'white'}}>
+            <div style={{height: '53px', alignItems: 'stretch',border: 'contain', cursor: 'pointer', marginRight: '20px', width: '256px', display: 'flex', justifyContent: 'center', backgroundColor: 'white'}}>
                 <a>
                     <img onClick={() => navigate('/product-grid/1')} src={`${process.env.PUBLIC_URL}/img/logo_minisize.png`}
                          alt="Product"/>
                 </a>
+                {/* <Button style={{ objectFit: 'contain' }}>Categories</Button>  */}
+                {/* <Flex gap="small"> */}
+   
+        {/* <Button type="primary" style={{ backgroundColor: '#66BB6A' ,border: 'contain', width: '256px', height: '45px', fontSize: '20px', fontFamily: 'PaperlogyBold', display: 'flex', justifyContent: 'flex-start'}}>카테고리</Button> */}
+        {/* <Menu style={{ backgroundColor: '#66BB6A' ,border: 'contain', width: '256px', height: '45px', fontSize: '20px', fontFamily: 'PaperlogyBold', display: 'flex', justifyContent: 'flex-start', alignItems: 'center'}}>카테고리</Menu> */}
+        {/* </Flex> */}
             </div>
             <div style={{
                 display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'flex-start',
                 padding: '10px 20px',
-                backgroundColor: '#fff'
+                backgroundColor: '#fff',
             }}>
-                <Button onClick={hadleQoute} type="link" style={{color: 'black'}}>견적 문의 게시판</Button>
-                <Button onClick={handleConstruction} type="link" style={{color: 'black'}}>시공 사진</Button>
-                <Button type="link" style={{color: 'black'}}>판교체 시공 문의</Button>
-                <Button type="link" style={{color: 'black'}}>개인결제창</Button>
-                <Button type="link" style={{color: 'black'}}>화물배송비조회</Button>
-                <Button type="link" style={{color: 'black'}}>칠판수리/원자재</Button>
+                <Button onClick={hadleQoute} type="link" style={{fontFamily: 'PaperlogyBold',color: 'black'}}>견적 문의 게시판</Button>
+                <Button onClick={handleConstruction} type="link" style={{fontFamily: 'PaperlogyBold',color: 'black'}}>시공 사진</Button>
+                <Button type="link" style={{fontFamily: 'PaperlogyBold',color: 'black'}}>판교체 시공 문의</Button>
+                {/* <Button type="link" style={{fontFamily: 'PaperlogyBold',color: 'black'}}>개인결제창</Button>
+                <Button type="link" style={{fontFamily: 'PaperlogyBold',color: 'black'}}>화물배송비조회</Button>
+                <Button type="link" style={{fontFamily: 'PaperlogyBold',color: 'black'}}>칠판수리/원자재</Button> */}
             </div>
         </div>
     );

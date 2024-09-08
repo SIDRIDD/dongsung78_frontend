@@ -65,6 +65,7 @@ const ProductGrid: React.FC = () => {
         navigate(`/product-grid/${category}/${productId}`);
     }
     const categoryMenus = [
+        "전체",
         "분필칠판",
         "화이트 보드",
         "물백묵 칠판",
@@ -86,15 +87,18 @@ const ProductGrid: React.FC = () => {
         navigate(`/product-grid/${categoryId}`)
     }
 
+    const categoryIndex = Number(category); // useParams는 string을 반환하므로 숫자로 변환
+    const categoryMenu = categoryIndex >= 0 && categoryIndex < categoryMenus.length ? categoryMenus[categoryIndex] : "전체";
 
     return (
         <div>
             {error && <div>{error}</div>}
-            <Divider orientation="left" style={{ fontSize: '20px', fontFamily: 'PaperlogyBold' }}>{categoryName}</Divider>
+            <Divider orientation="left" style={{ fontSize: '20px', fontFamily: 'PaperlogyBold' }}>{categoryMenu} ({total})</Divider>
             <Space size={[8, 16]} wrap>
                 {categoryMenus.map((categoryMenu, index) => (
-                    // eslint-disable-next-line react/no-array-index-key
-                    <Button key={index} onClick={() => handleCategoryButton((index + 1))} >{categoryMenu}</Button>
+                    <Button key={index} onClick={() => handleCategoryButton(index)}>
+                        {categoryMenu}
+                    </Button>
                 ))}
             </Space>
             <div className="product-grid">
@@ -121,6 +125,8 @@ const ProductGrid: React.FC = () => {
                     total={total}
                     pageSize={pageSize}
                     onChange={handlePageChange}
+                    showSizeChanger={false} 
+                    showLessItems={false}
                 />
             </div>
         </div>

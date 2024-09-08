@@ -1,22 +1,31 @@
 .hero-section {
     position: relative;
+    display: flex;
+    justify-content: center; /* 수평 중앙 정렬 */
+    align-items: center; /* 수직 중앙 정렬 */
     text-align: center;
-    color: white;
     width: 100%;
+    max-width: 1200px; /* 부모 요소의 최대 너비를 1200px로 제한 */
+    margin: 0 auto; /* 가운데 정렬 */
+    overflow: hidden;
     border-bottom: 1px solid #ddd;
 }
 
 .hero-image-container {
-    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 100%;
-    height: auto;
+    height: 100%;
 }
 
 .hero-image {
-    margin-top: 5px;
-    width: auto;
+    /* width: 65vw;
     height: 150px;
-    object-fit: cover;
+    object-fit: contain; */
+    max-width: 100%; /* 부모 요소의 최대 너비를 기준으로 이미지 조정 */
+    height: auto; /* 이미지 비율 유지 */
+    object-fit: cover; /* 컨테이너를 넘지 않고 채워지도록 설정 */
 }
 
 .hero-text {
@@ -52,40 +61,31 @@
 
 @media (max-width: 1200px) {
 
-    .hero-button {
-        font-size: 20px; /* 작은 화면에서 버튼 글씨 크기 조정 */
-        padding-bottom: 1px;
-        margin-bottom: 80px;
+    .hero-section {
+        width: 80%; /* 큰 화면에서는 80% */
     }
-
-    .hero-buttons {
-        gap: 20px;
+    .main-content {
+        width: 80%; /* main-content도 동일하게 80% */
     }
 }
 
 @media (max-width: 1000px) {
 
-    .hero-button {
-        font-size: 15px; /* 작은 화면에서 버튼 글씨 크기 조정 */
-        padding-bottom: 1px;
-        margin-bottom: 80px;
+    .hero-section {
+        width: 60%; /* 큰 화면에서는 80% */
     }
-
-    .hero-buttons {
-        gap: 20px;
+    .main-content {
+        width: 60%; /* main-content도 동일하게 80% */
     }
 }
 
 @media (max-width: 700px) {
 
-    .hero-button {
-        font-size: 15px; /* 작은 화면에서 버튼 글씨 크기 조정 */
-        padding-bottom: 1px;
-        margin-bottom: 80px;
+    .hero-section {
+        width: 50%; /* 큰 화면에서는 80% */
     }
-
-    .hero-buttons {
-        gap: 20px;
+    .main-content {
+        width: 50%; /* main-content도 동일하게 80% */
     }
 }
 

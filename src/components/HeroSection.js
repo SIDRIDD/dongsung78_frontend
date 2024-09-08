@@ -47,7 +47,7 @@ function HeroSection() {
     return (
         <section className="hero-section">
             <div className="hero-image-container">
-                <img src={`${process.env.PUBLIC_URL}/img/동성칠판교구 (1).png`} alt="Banner" className="hero-image" />
+                <img src={`${process.env.PUBLIC_URL}/img/동성칠판교구.png`} alt="Banner" className="hero-image" />
                 {/*<div className="hero-text">*/}
                 {/*    <div className="hero-buttons">*/}
                 {/*        <Link to="/product-grid/1" className="hero-button">지금 쇼핑하기</Link>*/}
