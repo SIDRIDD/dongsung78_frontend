@@ -81,7 +81,7 @@ const NavBar: React.FC = () => {
             }}>
                 <Button onClick={hadleQoute} type="link" style={{color: 'black'}}>견적 문의 게시판</Button>
                 <Button onClick={handleConstruction} type="link" style={{color: 'black'}}>시공 사진</Button>
-                <Button type="link" style={{color: 'black'}}>상품 Q&A</Button>
+                <Button type="link" style={{color: 'black'}}>판교체 시공 문의</Button>
                 <Button type="link" style={{color: 'black'}}>개인결제창</Button>
                 <Button type="link" style={{color: 'black'}}>화물배송비조회</Button>
                 <Button type="link" style={{color: 'black'}}>칠판수리/원자재</Button>

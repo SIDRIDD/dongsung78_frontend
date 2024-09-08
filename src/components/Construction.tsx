@@ -19,6 +19,8 @@ interface DataItem {
 
     userName: string;
 
+    insertDt: string;
+
     details: Detail;
 
 }
@@ -98,8 +100,8 @@ const QuoteContact: React.FC = () => {
         },
         {
             title: '작성일자',
-            dataIndex: 'time',
-            key: 'time',
+            dataIndex: 'insertDt',
+            key: 'insertDt',
         },
     ];
 
