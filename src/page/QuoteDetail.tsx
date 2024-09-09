@@ -169,17 +169,17 @@ const QuoteDetail: React.FC = () => {
                     autoSize={{minRows: 3, maxRows: 5}}
                 />
                 <div className="comment-footer">
-                    <Upload
-                        fileList={fileList}
-                        onChange={handleUploadChange}
-                        beforeUpload={() => false}
-                        maxCount={1}
-                        accept=".jpg,.png,.gif"
-                    >
-                        <Button icon={<UploadOutlined/>}>이미지첨부</Button>
-                    </Upload>
-                    <span className="file-info">최대 1개 (jpg, png, gif만 가능)</span>
-                    <span className="char-count">{comment.length}/1000자</span>
+                {/*    <Upload*/}
+                {/*        fileList={fileList}*/}
+                {/*        onChange={handleUploadChange}*/}
+                {/*        beforeUpload={() => false}*/}
+                {/*        maxCount={1}*/}
+                {/*        accept=".jpg,.png,.gif"*/}
+                {/*    >*/}
+                {/*        <Button icon={<UploadOutlined/>}>이미지첨부</Button>*/}
+                {/*    </Upload>*/}
+                {/*    <span className="file-info">최대 1개 (jpg, png, gif만 가능)</span>*/}
+                {/*    <span className="char-count">{comment.length}/1000자</span>*/}
                     <Button type="primary" onClick={handleSubmit}>댓글 등록</Button>
                 </div>
             </Card>

@@ -117,7 +117,7 @@ const QuoteDetail: React.FC = () => {
                         <Avatar size="large" icon={<UserOutlined/>}/>
                         <div>
                             <Text className="post-id">{data.userName}</Text>
-                            <Text className="post-date">7일 전</Text>
+                            <Text className="post-date">{data.insertDate}</Text>
                         </div>
                     </Space>
                 </Space>

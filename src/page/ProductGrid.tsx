@@ -54,7 +54,6 @@ const ProductGrid: React.FC = () => {
         fetchProducts(currentPage); // 현재 페이지의 제품을 불러옴
     }, [category, currentPage]);
 
-    const categoryName = products.length > 0 ? products[0].categoryName : '';
 
     const handlePageChange = (page: number) => {
         setCurrentPage(page); // 페이지 변경 시 현재 페이지 업데이트

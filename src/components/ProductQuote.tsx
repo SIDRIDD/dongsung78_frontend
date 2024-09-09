@@ -20,9 +20,13 @@ interface DataItem {
     time: string;
 }
 
+interface PruductQuoteProps{
+    productId: number;
+}
+
 const { Title } = Typography;
 
-const QuoteContact: React.FC = () => {
+const ProductQuote: React.FC<PruductQuoteProps> = ({ productId }) => {
     const [data, setData] = useState<DataItem[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
     const [currentPage, setCurrentPage] = useState<number>(1);
@@ -38,7 +42,7 @@ const QuoteContact: React.FC = () => {
         setLoading(true);
         try {
             const response = await axios.get<{ content: DataItem[], totalElements: number }>(
-                `http://localhost:8080/api/contact/getall?contacttype=0`,
+                `http://localhost:8080/api/contact/getall?contacttype=1&typeid=${productId}`,
                 {
                     params: {
                         page: page - 1, // API는 0부터 시작하므로 page-1
@@ -65,7 +69,7 @@ const QuoteContact: React.FC = () => {
 
     const handleShowForm = () => {
         if (isLoggedIn) {
-            navigate('/quote-form/0/null');
+            navigate(`/quote-form/1/${productId}`);
         } else {
             navigate('/login', { state: { from: location } });
             message.warning('문의 글 작성을 위해 로그인이 필요합니다.');
@@ -98,11 +102,6 @@ const QuoteContact: React.FC = () => {
 
     return (
         <Space direction="vertical" size="large" style={{ display: 'flex'}}>
-            <Card
-                title={<Title level={2} style={{ display: 'flex', fontFamily: 'PaperlogyBold' }}>견적 문의</Title>}
-                size="small"
-                style={{ height: '100%', border: '1px solid transparent' }}
-            >
                 <Table
                     columns={columns}
                     dataSource={data}
@@ -124,13 +123,10 @@ const QuoteContact: React.FC = () => {
                         total={totalItems}
                         pageSize={pageSize}
                         onChange={handlePageChange}
-                        showSizeChanger={false}
-                        showLessItems={false}
                     />
                 </div>
-            </Card>
         </Space>
     );
 };
 
-export default QuoteContact;
+export default ProductQuote;

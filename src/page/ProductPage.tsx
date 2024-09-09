@@ -4,6 +4,13 @@ import ProductDetails from "../components/ProductDetails";
 import './css/ProductPage.css';
 import {useParams} from "react-router-dom";
 import axios from "axios";
+import Tab from 'react-bootstrap/Tab';
+import Tabs from 'react-bootstrap/Tabs';
+import {Button, Card, Typography, Upload} from "antd";
+import {UploadOutlined} from "@ant-design/icons";
+import ProductQuote from "../components/ProductQuote";
+
+const {Paragraph} = Typography;
 
 interface Product {
 
@@ -57,6 +64,28 @@ const ProductPage: React.FC = () => {
                     imgUrl={product.imageUrl}
                 />
             </div>
+            <Card style={{width: '850px'}}>
+                <Tabs
+                    defaultActiveKey="description"
+                    id="fill-tab-example"
+                    className="mb-3"
+                    fill
+                >
+                    <Tab eventKey="description" title="상세 설명">
+                            <Paragraph style={{ marginTop: '30px', fontFamily: 'PaperlogyBold' }}>
+                                {product.description}
+                            </Paragraph>
+                            <img src={`${process.env.PUBLIC_URL}/${product.imageUrl}`}
+                                 style={{width: '60%', marginTop: '39px'}}/>
+                    </Tab>
+                    <Tab eventKey="profile" title="상품 문의">
+                        <ProductQuote productId={product.id}/>
+                    </Tab>
+                    {/*<Tab eventKey="longer-tab" title="Loooonger Tab">*/}
+                    {/*    Tab content for Loooonger Tab*/}
+                    {/*</Tab>*/}
+                </Tabs>
+            </Card>
         </div>
     );
 };

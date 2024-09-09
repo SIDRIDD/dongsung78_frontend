@@ -1,6 +1,7 @@
 import React, {useEffect} from 'react';
 import './css/OrderSummary.css';
 import axios from "axios";
+import {useNavigate} from "react-router-dom";
 
 interface OrderSummaryProps {
     items: { name: string; description: string; price: number; quantity: number; imgUrl: string, productId: number }[];
@@ -45,6 +46,7 @@ interface PurchaseData {
 
 const OrderSummary: React.FC<OrderSummaryProps> = ({ items, shippingCost, discount , shippingInfo}) => {
     const totalAmount = items.reduce((acc, item) => acc + (item.price * item.quantity), 0);
+    const navigate = useNavigate();
 
 
     const getPurchaseData = (shippingInfo: OrderSummaryProps['shippingInfo']): PurchaseData[] => {
@@ -116,6 +118,7 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({ items, shippingCost, discou
                     purchaseItems(purchaseData);
                     sessionStorage.setItem('cartKinds', '0');
                     alert('결제가 완료되었습니다.');
+                    navigate('/product-grid/1');
                     // 결제 성공 처리 로직
                 } else {
                     alert('결제에 실패하였습니다. 에러 내용: ' + rsp.error_msg);

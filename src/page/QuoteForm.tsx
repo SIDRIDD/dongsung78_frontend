@@ -4,13 +4,14 @@ import axios from 'axios';
 import {useSelector} from "react-redux";
 import Cookies from "js-cookie";
 import {RootState} from "../store/store";
-import {useNavigate} from "react-router-dom";
+import {useLocation, useNavigate, useParams} from "react-router-dom";
 
 const { Title } = Typography;
 
 const QuoteForm: React.FC = () => {
-    const navigate = useNavigate();
+    const {contactType, typeId} = useParams<{ contactType: string; typeId: string }>();
 
+    const navigate = useNavigate();
     const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
 
     const userCheck = async () => {
@@ -22,11 +23,14 @@ const QuoteForm: React.FC = () => {
     }
 
     const handleFormSubmit = async (values: { title: string; description: string }) => {
+
         try {
             userCheck();
-            await axios.post('http://localhost:8080/api/contact/save', {
+            await axios.post(`http://localhost:8080/api/contact/save`, {
                 title : values.title,
-                description : values.description
+                description : values.description,
+                contactType : contactType,
+                typeId : typeId
             }, {
                 withCredentials : true
             });

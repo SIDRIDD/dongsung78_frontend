@@ -6,7 +6,7 @@ import FeaturedProducts from './components/FeaturedProducts';
 import CustomerReviews from './components/CustomerReviews';
 import Footer from './components/Footer';
 import ProductGrid from './page/ProductGrid';
-import {BrowserRouter as Router, Route, Routes, useLocation} from 'react-router-dom';
+import {BrowserRouter as Router, Route, Routes, useLocation, Navigate} from 'react-router-dom';
 import QuoteContact from "./page/QuoteContact";
 import ProductPage from "./page/ProductPage";
 import {CartProvider, useCart} from './context/CartContext';
@@ -69,11 +69,12 @@ function App() {
                     <div className="main-content">
                         <main>
                             <Routes>
+                                <Route path="/" element={<Navigate to="/product-grid/0" />} />
                                 <Route path="/" element={<MainPage/>}>
                                     <Route path="/product-grid/:category" element={<ProductGrid/>}/>
                                     <Route path="/product-grid/:category/:productId" element={<ProductPage/>}/>
                                     <Route path="/quote-contact" element={<QuoteContact/>}/>
-                                    <Route path="/quote-form" element={<QuoteForm/>}/>
+                                    <Route path="/quote-form/:contactType/:typeId" element={<QuoteForm/>}/>
                                     <Route path="/quote-detail/:itemId" element={<QuoteDetail />}/>
                                     <Route path="/item-detail/:id" element={<ItemDetail/>}/>
                                     <Route path="/login" element={<Login/>}/>

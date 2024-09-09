@@ -89,6 +89,9 @@ const NavBar: React.FC = () => {
                 <Button onClick={hadleQoute} type="link" style={{fontFamily: 'PaperlogyBold',color: 'black'}}>견적 문의 게시판</Button>
                 <Button onClick={handleConstruction} type="link" style={{fontFamily: 'PaperlogyBold',color: 'black'}}>시공 사진</Button>
                 <Button type="link" style={{fontFamily: 'PaperlogyBold',color: 'black'}}>판교체 시공 문의</Button>
+                <Button disabled={true} type="link" style={{ fontFamily: 'PaperlogyBold', color: 'black', width: '150px', height: '40px' }}> </Button>
+                <Button disabled={true} type="link" style={{ fontFamily: 'PaperlogyBold', color: 'black', width: '150px', height: '40px' }}> </Button>
+                <Button disabled={true} type="link" style={{ fontFamily: 'PaperlogyBold', color: 'black', width: '150px', height: '40px' }}> </Button>
                 {/* <Button type="link" style={{fontFamily: 'PaperlogyBold',color: 'black'}}>개인결제창</Button>
                 <Button type="link" style={{fontFamily: 'PaperlogyBold',color: 'black'}}>화물배송비조회</Button>
                 <Button type="link" style={{fontFamily: 'PaperlogyBold',color: 'black'}}>칠판수리/원자재</Button> */}
