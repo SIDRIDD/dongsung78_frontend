@@ -30,7 +30,6 @@ const KakaoId: React.FC = () => {
 
     const callApi = async (data: FormValues) => {
         try {
-            // await axios.get(`http://localhost:8080/oauth/kakao/token?id=${data.username}`);
             window.location.href = `http://localhost:8080/oauth/kakao/token?id=${data.username}`;
             message.success('카카오 로그인!');
         } catch (error: any) {
@@ -40,7 +39,7 @@ const KakaoId: React.FC = () => {
 
     const onFinish = (values: FormValues) => {
         console.log('Received values:', values);
-        callApi(values); // API 호출 함수 실행
+        callApi(values);
     };
 
     return (
