@@ -6,7 +6,7 @@ import FeaturedProducts from './components/FeaturedProducts';
 import CustomerReviews from './components/CustomerReviews';
 import Footer from './components/Footer';
 import ProductGrid from './page/ProductGrid';
-import {BrowserRouter as Router, Route, Routes, useLocation, Navigate} from 'react-router-dom';
+import {BrowserRouter as Router, Route, Routes, useLocation, Navigate, useNavigate} from 'react-router-dom';
 import QuoteContact from "./page/QuoteContact";
 import ProductPage from "./page/ProductPage";
 import {CartProvider, useCart} from './context/CartContext';
@@ -29,6 +29,7 @@ import Content from "./components/Content";
 import MainPage from "./components/MainPage";
 import Construction from "./components/Construction";
 import ConstructionDetail from "./components/ConstructionDetail";
+import {message} from "antd";
 
 
 //
@@ -46,12 +47,16 @@ function App() {
     const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
     const dispatch = useDispatch();
     const [selectedMenuKey, setSelectedMenuKey] = useState<string>('');
+    const navigate = useNavigate();
 
     useEffect(() => {
-        axios.get('http://localhost:8080/api/user/check', {withCredentials: true})
+        axios.get('http://localhost:8080/api/user/refresh-check', {withCredentials: true})
             .then(response => {
+                console.log('response.status : ' + response.status);
                 if (response.status === 200) {
                     dispatch(login());
+                } else {
+                    dispatch(logout())
                 }
             })
             .catch(() => {
