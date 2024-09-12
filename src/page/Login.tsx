@@ -45,8 +45,9 @@ const LoginPage: React.FC = () => {
                     redirectUri: redirectUri
                 }
             )
+            const userName = response.data.userName;
             console.log('Login successful:', response.data);
-
+            sessionStorage.setItem('userName', userName);
             dispatch(login());
 
             // const {token} = response.data;
@@ -62,12 +63,14 @@ const LoginPage: React.FC = () => {
 
     const onFinish = async (values: LoginFormValues) => {
         try {
-            console.log('values: ', values);
             const response = await axios.post('http://localhost:8080/api/user/login', values, {withCredentials: true});
             console.log('Login successful:', response.data);
 
             dispatch(login());
             const previousPath = location.state?.from?.pathname || '/product-grid/1';
+            const userName = response.data.userName;
+            console.log('userName : ' + response.data.userName);
+            sessionStorage.setItem('userName', userName);
             navigate(previousPath);
         } catch (error) {
             message.warning('ID 혹은 비밀번호를 확인해주세요.');

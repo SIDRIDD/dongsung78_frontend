@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {List, Space, Card, Typography, Button, message, Pagination, Table} from 'antd';
+import {List, Space, Card, Typography, Button, message, Pagination, Table, Modal} from 'antd';
 import axios from 'axios';
 import {useLocation, useNavigate} from 'react-router-dom';
 import Cookies from "js-cookie";
@@ -31,6 +31,8 @@ const QuoteContact: React.FC = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [selectedItemId, setSelectedItemId] = useState<number | null>(null);
     const dispatch = useDispatch();
     const contentKeyValue = 101;
 
@@ -76,6 +78,22 @@ const QuoteContact: React.FC = () => {
         navigate(`/quote-detail/${id}`);
     };
 
+    const showModal = (id: number) => {
+        setSelectedItemId(id);  // 삭제할 항목의 ID 저장
+        setIsModalVisible(true); // 모달 창 표시
+    };
+
+    const handleOk = () => {
+        if (selectedItemId !== null) {
+            handleDelete(selectedItemId); // 선택된 아이템 삭제
+        }
+        setIsModalVisible(false); // 모달 창 닫기
+    };
+
+    const handleCancel = () => {
+        setIsModalVisible(false); // 모달 창 닫기
+    };
+
     const columns = [
         {
             title: '제목',
@@ -94,7 +112,48 @@ const QuoteContact: React.FC = () => {
             dataIndex: 'time',
             key: 'time',
         },
+        {
+            title: '',
+            key: 'action',
+            render: (text: string, item: DataItem) => (
+                item.userName === sessionStorage.getItem('userName') ? ( // 게시글 작성자와 userName 비교
+                    <>
+                        <Button
+                            type="primary"
+                            danger
+                            onClick={() => showModal(item.id)}
+                            style={{ width: '1px', height: '18px', backgroundColor: 'white', color: 'black'}}
+                        >
+                            x
+                        </Button>
+
+                        <Modal
+                            title="삭제 확인"
+                            visible={isModalVisible}
+                            onOk={handleOk} // Yes 버튼 클릭 시
+                            onCancel={handleCancel} // No 버튼 클릭 시
+                            okText="Yes"
+                            cancelText="No"
+                        >
+                            정말로 삭제하시겠습니까?
+                        </Modal>
+                    </>
+                ) : null
+            ),
+        },
     ];
+
+    const handleDelete = async (itemId: number) => {
+        setLoading(true);
+        try {
+            const response = await axios.delete(`http://localhost:8080/api/contact/delete?itemid=${itemId}`);
+            fetchData(currentPage);
+            message.success("삭제되었습니다.");
+        } catch (error) {
+            message.warning('삭제에 실패하였습니다.');
+        }
+        setLoading(false);
+    }
 
     return (
         <Space direction="vertical" size="large" style={{ display: 'flex'}}>

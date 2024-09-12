@@ -119,10 +119,21 @@ const QuoteDetail: React.FC = () => {
         fetchData();
     }, [itemId]);
 
+    const handleDeleteComment = async (commentId: number) => {
+        try {
+            await axios.delete(`http://localhost:8080/api/comment/delete/?commentid=${commentId}`);
+            setComments(comments.filter(comment => comment.id !== commentId));
+            message.success("댓글이 삭제되었습니다.");
+        } catch (error) {
+            message.error("댓글 삭제에 실패했습니다.");
+        }
+    };
+
     if (loading || !data) {
         return <div>Loading...</div>;
     }
 
+    const userName = sessionStorage.getItem('userName');
 
     return (
         <div>
@@ -190,7 +201,18 @@ const QuoteDetail: React.FC = () => {
                 dataSource={comments}
                 renderItem={comment => (
                     <List.Item
-                        // actions={[<span key="comment-list-reply-to-0">대댓글달기</span>]}
+                        actions={
+                            comment.username === userName ? [ // 댓글 작성자와 로그인한 사용자 비교
+                                <Button
+                                    type="link"
+                                    danger
+                                    style={{ color: 'black' }}
+                                    onClick={() => handleDeleteComment(comment.id)} // 삭제 버튼 클릭 시
+                                >
+                                    x
+                                </Button>
+                            ] : undefined
+                        }
                     >
                         <List.Item.Meta
                             avatar={<Avatar icon={<UserOutlined/>}/>}

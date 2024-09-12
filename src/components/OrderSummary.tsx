@@ -151,14 +151,16 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({ items, shippingCost, discou
                 buyer_tel: '010-1234-5678',  // 구매자 연락처 (필요시 수정)
                 buyer_addr: '서울특별시 강남구 역삼동',  // 구매자 주소 (필요시 수정)
                 buyer_postcode: '01181',
-                m_redirect_url: 'http://localhost:3000/',  // 결제 후 리디렉션될 페이지
+                m_redirect_url: 'http://localhost:3000/product-grid/1',  // 결제 후 리디렉션될 페이지
             };
 
             IMP.request_pay(paymentData, (rsp: any) => {
+                console.log('rsp: ' + rsp);
                 if (rsp.success) {
                     alert('결제가 완료되었습니다.');
                     // 결제 성공 처리 로직
                 } else {
+                    console.log('결제에 실패하였습니다. 확인::::' + rsp.error_msg);
                     alert('결제에 실패하였습니다. 에러 내용: ' + rsp.error_msg);
                     // 결제 실패 처리 로직
                 }
