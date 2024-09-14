@@ -3,6 +3,7 @@ import './css/ProductDetails.css';
 import { useCart } from '../context/CartContext';
 import {useSelector} from "react-redux";
 import {RootState} from "../store/store";
+import {useNavigate} from "react-router-dom";
 
 interface ProductDetailsProps {
     productId: number;
@@ -23,6 +24,8 @@ interface PurchaseData {
 const ProductDetails: React.FC<ProductDetailsProps> = ({productId, name, description, price, stock, imgUrl  }) => {
     const [quantity, setQuantity] = useState(1);
     const { addToCart, setDrawerVisible, cartItems, purchaseItems } = useCart();
+    // const items = { productId, name, description, price, stock, quantity, imgUrl };
+    const navigate = useNavigate();
 
     const handleIncrease = () => {
         setQuantity(prevQuantity => prevQuantity + 1);
@@ -39,10 +42,13 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({productId, name, descrip
     };
 
     const handleBuyNow = () => {
+        const product = { productId, name, description, price, stock, quantity, imgUrl };
+
         const purchaseData: PurchaseData[] = cartItems.map(item => ({
             productId: item.productId,
             count: item.quantity,
         }));
+        navigate('/delivery', { state: { items: [product] } });
         purchaseItems(purchaseData); // 필요한 데이터만 전송
     };
 
