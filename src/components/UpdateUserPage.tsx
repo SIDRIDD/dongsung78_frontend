@@ -1,11 +1,8 @@
-// SignUpPage.tsx
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Form, Input, message } from 'antd';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import {withAttributes} from "js-cookie";
 
-interface UpdateUser {
+interface UserInfo {
     userId: number;
     name: string;
     email: string;
@@ -17,133 +14,94 @@ interface UpdateUser {
     };
 }
 
-const UpdateUserPage: React.FC = () => {
-    const navigate = useNavigate();
-    const [username, setUsername] = useState<string>('');
-    const [usernameStatus, setUsernameStatus] = useState<'success' | 'error' | undefined>(undefined);
-    const [checkingUsername, setCheckingUsername] = useState<boolean>(false);
-    const [userInfo, setUserInfo] = useState<UpdateUser>();
-    const [form] = Form.useForm(); // 폼 인스턴스 생성
+const MyPage: React.FC = () => {
+    const [form] = Form.useForm();
+    const [userInfo, setUserInfo] = useState<UserInfo>();
 
-    const onFinish = async (values: UpdateUser) => {
+    // 사용자 정보 가져오기
+    const fetchUserInfo = async () => {
         try {
-            const response = await axios.post('http://localhost:8080/api/user/update-user', values);
-            message.success('Sign up successful');
-            navigate('/product-grid/1');
+            const response = await axios.get('http://localhost:8080/api/user/get-user', {
+                withCredentials: true,
+            });
+            setUserInfo(response.data);
         } catch (error) {
-            console.error('' +
-                'Sign up failed:', error);
-            message.error('Sign up failed');
+            console.error('Error fetching user data:', error);
+            message.error('사용자 정보를 가져오는 데 실패했습니다.');
         }
     };
 
+    // 컴포넌트 마운트 시 사용자 정보 가져오기
     useEffect(() => {
-        loadOldUserDate();
-    }, []); // 빈 배열 추가
+        fetchUserInfo();
+    }, []);
 
+    // 사용자 정보가 변경되면 폼 필드에 값 설정
     useEffect(() => {
-        console.log('userInfo 훅: ' + userInfo);
         if (userInfo) {
             form.setFieldsValue(userInfo);
         }
     }, [userInfo, form]);
-        
-    const loadOldUserDate = async () => {
-        try {
-            const response = await axios.get('http://localhost:8080/api/user/get-user', { withCredentials: true });
-            console.log('response:', response);
-            console.log('response.data:', response.data);
-            setUserInfo(response.data);
-        } catch (error) {
-            console.error('Error fetching user data:', error);
-        }
-    }
-    const checkUsernameAvailability = async () => {
-        if (!username) {
-            message.error('Please enter a username to check');
-            return;
-        }
 
-        setCheckingUsername(true);
-
+    // 폼 제출 시 수정 API 호출
+    const onFinish = async (values: UserInfo) => {
         try {
-            const response = await axios.get(`http://localhost:8080/api/user/check-signup?username=${username}`);
-            console.log(response.data)
-            if (response.data == true) {
-                setUsernameStatus('success');
-                message.success('사용가능한 ID입니다.');
-            } else{
-                setUsernameStatus('error');
-                message.error('이미 존재하는 ID입니다.');
-            }
+            const dataToSend = {
+                ...userInfo,
+                ...values,
+                address: {
+                    ...userInfo?.address,
+                    ...values.address,
+                },
+            };
+            await axios.put('http://localhost:8080/api/user/update-user', dataToSend, {
+                withCredentials: true,
+            });
+            message.success('회원정보가 성공적으로 수정되었습니다.');
+            window.location.reload();
         } catch (error) {
-            console.error('Username check failed:', error);
-            message.error('Failed to check username');
-            setUsernameStatus(undefined);
-        } finally {
-            setCheckingUsername(false);
+            console.error('Error updating user data:', error);
+            message.error('회원정보 수정에 실패했습니다.');
         }
     };
 
-
     return (
-        <div style={{ maxWidth: 400, margin: 'auto', fontFamily: 'PaperlogyBold'}}>
-            <h2>회원정보 수정</h2>
-            <Form name="signup" onFinish={onFinish}>
-                <Form.Item
-                    name="name"
-                    rules={[{ required: true, message: 'Please enter your name!' }]}
-                    validateStatus={usernameStatus}
-                    hasFeedback
-                >
-                    <Input
-                        placeholder="Username"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)} // 상태 업데이트
-                        addonAfter={
-                            <Button
-                                type="link"
-                                onClick={checkUsernameAvailability} // 현재 상태 값으로 체크
-                                loading={checkingUsername}
-                            >
-                                Check
-                            </Button>
-                        }
-                    />
-
-                </Form.Item>
-                <Form.Item
-                    name="email"
-                    rules={[{ required: true, message: 'Please enter your email!' }]}
-                >
-                    <Input placeholder="Email" />
+        <div style={{ maxWidth: 600, margin: 'auto', padding: '20px', fontFamily: 'PaperlogyBold' }}>
+            <h2>마이페이지</h2>
+            <Form form={form} layout="vertical" onFinish={onFinish}>
+                <Form.Item name="email" label="이메일" rules={[{ required: true, message: '이메일을 입력해주세요.' }]}>
+                    <Input placeholder="이메일" />
                 </Form.Item>
                 <Form.Item
                     name="phoneNumber"
-                    rules={[{ required: true, message: 'Please enter your phone number!' }]}
+                    label="전화번호"
+                    rules={[{ required: true, message: '전화번호를 입력해주세요.' }]}
                 >
-                    <Input placeholder="Phone Number" />
+                    <Input placeholder="전화번호" />
                 </Form.Item>
                 <Form.Item
-                    name={['address', 'city']}
-                    rules={[{ required: true, message: 'Please enter your city!' }]}
+                    name={['address', 'roadAddress']}
+                    label="도로명 주소"
+                    rules={[{ required: true, message: '도로명 주소를 입력해주세요.' }]}
                 >
-                    <Input placeholder="도시명" />
+                    <Input placeholder="도로명 주소" />
                 </Form.Item>
                 <Form.Item
-                    name={['address', 'street']}
-                    rules={[{ required: true, message: 'Please enter your street!' }]}
+                    name={['address', 'detailAddress']}
+                    label="상세 주소"
+                    rules={[{ required: true, message: '상세 주소를 입력해주세요.' }]}
                 >
-                    <Input placeholder="나머지 주소" />
+                    <Input placeholder="상세 주소" />
                 </Form.Item>
                 <Form.Item
                     name={['address', 'zipcode']}
-                    rules={[{ required: true, message: 'Please enter your zipcode!' }]}
+                    label="우편번호"
+                    rules={[{ required: true, message: '우편번호를 입력해주세요.' }]}
                 >
                     <Input placeholder="우편번호" />
                 </Form.Item>
                 <Form.Item>
-                    <Button type="primary" htmlType="submit" block>
+                    <Button type="primary" htmlType="submit">
                         수정하기
                     </Button>
                 </Form.Item>
@@ -152,4 +110,4 @@ const UpdateUserPage: React.FC = () => {
     );
 };
 
-export default UpdateUserPage;
+export default MyPage;

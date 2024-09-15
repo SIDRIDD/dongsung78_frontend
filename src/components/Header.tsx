@@ -71,8 +71,8 @@ const Header: React.FC = () => {
                 <Nav className="ms-auto" style={{ alignItems: 'center' }}>
                     {isLoggedIn ? (
                         <>
-                            <Nav.Link as={Link} to="/update-user" style={{ color: '#666', marginRight: '15px' }}>마이페이지</Nav.Link>
                             <Nav.Link onClick={handleLogout} style={{ color: '#666', marginRight: '15px', cursor: 'pointer' }}>로그아웃</Nav.Link>
+                            <Nav.Link as={Link} to="/update-user" style={{ color: '#666', marginRight: '15px' }}>마이페이지</Nav.Link>
                         </>
                     ) : (
                         <>
