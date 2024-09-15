@@ -179,7 +179,7 @@ const ShippingInfoForm: React.FC = () => {
                     }}
                     style={{width: '300px'}}
                 >
-                    <span style={{fontSize: '20px'}}>[배송지 정보 입력]</span>
+                    <span style={{fontSize: '20px', fontFamily: 'PaperlogyBold'}}>[배송지 정보 입력]</span>
                     <Form.Item
                         label="이름"
                         name="name"

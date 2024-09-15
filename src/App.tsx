@@ -30,6 +30,7 @@ import MainPage from "./components/MainPage";
 import Construction from "./components/Construction";
 import ConstructionDetail from "./components/ConstructionDetail";
 import {message} from "antd";
+import UpdateUserPage from "./components/UpdateUserPage";
 
 
 //
@@ -50,20 +51,32 @@ function App() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        axios.get('http://localhost:8080/api/user/refresh-check', {withCredentials: true})
-            .then(response => {
-                console.log('response.status : ' + response.status);
-                if (response.status === 200) {
-                    dispatch(login());
-                } else {
-                    dispatch(logout())
-                }
-            })
-            .catch(() => {
-                dispatch(logout());
-            })
-    }, [dispatch]);
+        const fetchData = () => {
+            axios.get('http://localhost:8080/api/user/refresh-check', { withCredentials: true })
+                .then(response => {
+                    console.log('response.status : ' + response.status);
+                    if (response.status === 200) {
+                        dispatch(login());
+                    } else {
+                        dispatch(logout());
+                    }
+                })
+                .catch(() => {
+                    dispatch(logout());
+                });
+        };
 
+        // 컴포넌트가 마운트될 때 한 번 호출
+        fetchData();
+
+        // 14분마다 fetchData 함수 호출
+        const interval = setInterval(() => {
+            fetchData();
+        }, 14 * 60 * 1000); // 14분을 밀리초로 변환
+
+        // 컴포넌트 언마운트 시 setInterval 정리
+        return () => clearInterval(interval);
+    }, [dispatch]);
     return (
         <div className="App">
             <CartProvider>
@@ -89,6 +102,7 @@ function App() {
                                     <Route path="/delivery" element={<Delivery/>}/>
                                     <Route path="/construction" element={<Construction />}/>
                                     <Route path="/construction-detail/:id" element={<ConstructionDetail/>}/>
+                                    <Route path="/update-user" element={<UpdateUserPage/>}/>
                                 </Route>
                             </Routes>
                         </main>

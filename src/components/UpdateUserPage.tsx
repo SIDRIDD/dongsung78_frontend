@@ -1,38 +1,63 @@
 // SignUpPage.tsx
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import { Button, Form, Input, message } from 'antd';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import {withAttributes} from "js-cookie";
 
-interface SignUpFormValues {
+interface UpdateUser {
+    userId: number;
     name: string;
     email: string;
-    password: string;
     phoneNumber: string;
     address: {
-        city: string;
-        street: string;
+        roadAddress: string;
+        detailAddress: string;
         zipcode: string;
     };
 }
 
-const SignUpPage: React.FC = () => {
+const UpdateUserPage: React.FC = () => {
     const navigate = useNavigate();
     const [username, setUsername] = useState<string>('');
     const [usernameStatus, setUsernameStatus] = useState<'success' | 'error' | undefined>(undefined);
     const [checkingUsername, setCheckingUsername] = useState<boolean>(false);
+    const [userInfo, setUserInfo] = useState<UpdateUser>();
+    const [form] = Form.useForm(); // 폼 인스턴스 생성
 
-    const onFinish = async (values: SignUpFormValues) => {
+    const onFinish = async (values: UpdateUser) => {
         try {
-            const response = await axios.post('http://localhost:8080/api/user/save', values);
+            const response = await axios.post('http://localhost:8080/api/user/update-user', values);
             message.success('Sign up successful');
-            navigate('/login');
+            navigate('/product-grid/1');
         } catch (error) {
             console.error('' +
                 'Sign up failed:', error);
             message.error('Sign up failed');
         }
     };
+
+    useEffect(() => {
+        loadOldUserDate();
+    }, []); // 빈 배열 추가
+
+    useEffect(() => {
+        console.log('userInfo 훅: ' + userInfo);
+        if (userInfo) {
+            form.setFieldsValue(userInfo);
+        }
+    }, [userInfo, form]);
+        
+    const loadOldUserDate = async () => {
+        try {
+            const response = await axios.get('http://localhost:8080/api/user/get-user', { withCredentials: true });
+            console.log('response:', response);
+            console.log('response.data:', response.data);
+            setUserInfo(response.data);
+        } catch (error) {
+            console.error('Error fetching user data:', error);
+        }
+    }
     const checkUsernameAvailability = async () => {
         if (!username) {
             message.error('Please enter a username to check');
@@ -63,7 +88,7 @@ const SignUpPage: React.FC = () => {
 
     return (
         <div style={{ maxWidth: 400, margin: 'auto', fontFamily: 'PaperlogyBold'}}>
-            <h2>회원가입</h2>
+            <h2>회원정보 수정</h2>
             <Form name="signup" onFinish={onFinish}>
                 <Form.Item
                     name="name"
@@ -85,18 +110,13 @@ const SignUpPage: React.FC = () => {
                             </Button>
                         }
                     />
+
                 </Form.Item>
                 <Form.Item
                     name="email"
                     rules={[{ required: true, message: 'Please enter your email!' }]}
                 >
                     <Input placeholder="Email" />
-                </Form.Item>
-                <Form.Item
-                    name="password"
-                    rules={[{ required: true, message: 'Please enter your password!' }]}
-                >
-                    <Input.Password placeholder="Password" />
                 </Form.Item>
                 <Form.Item
                     name="phoneNumber"
@@ -124,7 +144,7 @@ const SignUpPage: React.FC = () => {
                 </Form.Item>
                 <Form.Item>
                     <Button type="primary" htmlType="submit" block>
-                        Sign Up
+                        수정하기
                     </Button>
                 </Form.Item>
             </Form>
@@ -132,4 +152,4 @@ const SignUpPage: React.FC = () => {
     );
 };
 
-export default SignUpPage;
+export default UpdateUserPage;
