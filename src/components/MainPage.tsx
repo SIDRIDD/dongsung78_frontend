@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import Sidebar from './SideBar';
-import Content from './Content';
 import {useDispatch} from "react-redux";
 import { setSelectedMenuKey } from '../store/MenuSlice';
 import {Outlet} from "react-router-dom";

@@ -93,6 +93,7 @@ const QuoteDetail: React.FC = () => {
                 setComment('');
                 setFileList([]);
                 message.success("등록되었습니다.");
+                window.location.reload();
             } catch (error) {
                 console.error('Failed to submit comment:', error);
                 message.error("등록에 실패했습니다.");
@@ -120,8 +121,9 @@ const QuoteDetail: React.FC = () => {
     }, [itemId]);
 
     const handleDeleteComment = async (commentId: number) => {
+        console.log('commentID = ' + commentId);
         try {
-            await axios.delete(`http://localhost:8080/api/comment/delete/?commentid=${commentId}`);
+            await axios.delete(`http://localhost:8080/api/contact/comment/delete?commentid=${commentId}`);
             setComments(comments.filter(comment => comment.id !== commentId));
             message.success("댓글이 삭제되었습니다.");
         } catch (error) {

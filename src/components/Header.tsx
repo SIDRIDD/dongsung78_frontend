@@ -4,7 +4,7 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {Button, Input} from 'antd';
+import {Button, Input, message} from 'antd';
 import {Link, useNavigate} from 'react-router-dom';
 import DrawerComponent from './DrawerComponent';
 import {useCart} from '../context/CartContext';
@@ -44,7 +44,24 @@ const Header: React.FC = () => {
 
     const handleLogout = () => {
         sessionStorage.clear();
+        localStorage.clear();
         sessionStorage.setItem('cartKinds', '0');
+
+        axios.post('http://localhost:8080/api/user/logout', {}, {
+            withCredentials: true // 쿠키를 전송하기 위해 설정
+        })
+            .then(response => {
+                // 성공 시 로그아웃 처리 후 페이지 이동
+                console.log("Logout successful", response);
+                message.success("로그아웃 되었습니다.");
+                dispatch(logout());
+                navigate('/product-grid/1');
+            })
+            .catch(error => {
+                // 오류 처리
+                console.error("Logout failed", error);
+            });
+
         dispatch(logout());
         navigate('/product-grid/1');
     };

@@ -216,6 +216,7 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({ items, shippingCost, discou
                 </div>
                 <button className="order-summary-button" onClick={handlePayment} style={{ backgroundColor: 'black', fontFamily: 'PaperlogyBold' }}> 카카오 페이로 결제하기</button>
                 <button className="order-summary-button-general" onClick={handleGeneralPayment} style={{ backgroundColor: 'black', fontFamily: 'PaperlogyBold' }}>카드로 결제하기</button>
+                <span> ** 실제 결제 연동 준비중입니다. ** 테스트용 결제만 가능합니다. 결제를 원할 시에 견적/문의 연락처로 연락주시기 바랍니다. </span>
             </div>
         </div>
     );

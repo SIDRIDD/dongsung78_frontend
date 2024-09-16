@@ -57,8 +57,8 @@ const MyPage: React.FC = () => {
             await axios.put('http://localhost:8080/api/user/update-user', dataToSend, {
                 withCredentials: true,
             });
-            message.success('회원정보가 성공적으로 수정되었습니다.');
             window.location.reload();
+            message.success('회원정보가 성공적으로 수정되었습니다.');
         } catch (error) {
             console.error('Error updating user data:', error);
             message.error('회원정보 수정에 실패했습니다.');

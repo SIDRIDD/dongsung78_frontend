@@ -14,7 +14,7 @@ import QuoteForm from "./page/QuoteForm";
 import ItemDetail from "./page/ItemDetail";
 import QuoteDetail from "./page/QuoteDetail";
 import Login from "./page/Login";
-import NaverCallback from "./callback/NaverCallback";
+import OauthCallback from "./callback/OauthCallback";
 import SignUpPage from "./page/SignUpPage";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "./store/store";
@@ -25,7 +25,6 @@ import Delivery from "./components/Delivery";
 import NavBar_old from "./components/NavBar_old";
 import Sidebar from "./components/SideBar";
 import NavBar from "./components/NavBar";
-import Content from "./components/Content";
 import MainPage from "./components/MainPage";
 import Construction from "./components/Construction";
 import ConstructionDetail from "./components/ConstructionDetail";
@@ -97,7 +96,7 @@ function App() {
                                     <Route path="/item-detail/:id" element={<ItemDetail/>}/>
                                     <Route path="/login" element={<Login/>}/>
                                     <Route path="/signup" element={<SignUpPage/>}/>
-                                    {/*<Route path="/" element={<NaverCallback/>}/>*/}
+                                    <Route path="/oauth-login-success/:userName" element={<OauthCallback/>}/>
                                     <Route path="/kakaoid" element={<KakaoId/>}/>
                                     <Route path="/delivery" element={<Delivery/>}/>
                                     <Route path="/construction" element={<Construction />}/>
