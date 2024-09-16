@@ -27,7 +27,7 @@ const MyPage: React.FC = () => {
             setUserInfo(response.data);
         } catch (error) {
             console.error('Error fetching user data:', error);
-            message.error('사용자 정보를 가져오는 데 실패했습니다.');
+            message.error('사용자 정보를 가져오는 데 실패했습니다. 새로고침 후 다시 시도해주세요.');
         }
     };
 

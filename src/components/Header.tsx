@@ -62,44 +62,58 @@ const Header: React.FC = () => {
     console.log('Is Logged In:', isLoggedIn); // 디버깅을 위한 로그 추가
 
     return (
-        <Navbar expand="lg" className="navbar-dark bg-custom w-100 py-1" style={{ fontSize: '0.7rem', justifyContent: 'center', alignItems: 'center', borderBottom: '1px solid #ddd' }}>
-            <Container style={{ display: 'flex', justifyContent: 'center', maxWidth: '1200px' }}>
-                <Nav className="me-auto">
-                    <Nav.Link as={Link} to="/product-grid/1" style={{ color: '#666' }}>홈</Nav.Link>
-                    <Nav.Link onClick={() => handleNavigate('100')} style={{ color: '#666' }}>견적문의</Nav.Link>
-                </Nav>
-                <Nav className="ms-auto" style={{ alignItems: 'center' }}>
-                    {isLoggedIn ? (
-                        <>
-                            <Nav.Link onClick={handleLogout} style={{ color: '#666', marginRight: '15px', cursor: 'pointer' }}>로그아웃</Nav.Link>
-                            <Nav.Link as={Link} to="/update-user" style={{ color: '#666', marginRight: '15px' }}>마이페이지</Nav.Link>
-                        </>
-                    ) : (
-                        <>
-                            <Nav.Link as={Link} to="/login" style={{ color: '#666', marginRight: '15px' }}>로그인</Nav.Link>
-                            <Nav.Link as={Link} to="/signup" style={{ color: '#666', marginRight: '15px' }}>회원가입</Nav.Link>
-                        </>
-                    )}
-                    <span
-                        style={{
-                            color: '#666',
-                            marginRight: '15px',
-                            cursor: 'pointer',
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            height: '100%',
-                            lineHeight: 'inherit',
-                            padding: '0.5rem 1rem',
-                            textDecoration: 'none'
-                        }}
-                        onClick={toggleDrawer}
-                    >
+        <div className="header">
+            <Navbar expand="lg" className="navbar-dark bg-custom w-100 py-1" style={{
+                fontSize: '0.7rem',
+                justifyContent: 'center',
+                alignItems: 'center',
+                borderBottom: '1px solid #ddd'
+            }}>
+                <Container style={{display: 'flex', justifyContent: 'center', maxWidth: '1200px'}}>
+                    <Nav className="me-auto">
+                        <Nav.Link as={Link} to="/product-grid/1" style={{color: '#666'}}>홈</Nav.Link>
+                        <Nav.Link onClick={() => handleNavigate('100')} style={{color: '#666'}}>견적문의</Nav.Link>
+                    </Nav>
+                    <Nav className="ms-auto" style={{alignItems: 'center'}}>
+                        {isLoggedIn ? (
+                            <>
+                                <Nav.Link onClick={handleLogout} style={{
+                                    color: '#666',
+                                    marginRight: '15px',
+                                    cursor: 'pointer'
+                                }}>로그아웃</Nav.Link>
+                                <Nav.Link as={Link} to="/update-user"
+                                          style={{color: '#666', marginRight: '15px'}}>마이페이지</Nav.Link>
+                            </>
+                        ) : (
+                            <>
+                                <Nav.Link as={Link} to="/login"
+                                          style={{color: '#666', marginRight: '15px'}}>로그인</Nav.Link>
+                                <Nav.Link as={Link} to="/signup"
+                                          style={{color: '#666', marginRight: '15px'}}>회원가입</Nav.Link>
+                            </>
+                        )}
+                        <span
+                            style={{
+                                color: '#666',
+                                marginRight: '15px',
+                                cursor: 'pointer',
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                height: '100%',
+                                lineHeight: 'inherit',
+                                padding: '0.5rem 1rem',
+                                textDecoration: 'none'
+                            }}
+                            onClick={toggleDrawer}
+                        >
                         장바구니
                     </span>
-                </Nav>
-            </Container>
-            <DrawerComponent visible={drawerVisible} onClose={onClose} items={cartItems} />
-        </Navbar>
+                    </Nav>
+                </Container>
+                <DrawerComponent visible={drawerVisible} onClose={onClose} items={cartItems}/>
+            </Navbar>
+        </div>
 
         // <Navbar expand="lg" className="navbar-dark bg-custom w-100">
         //     <Container style={{padding: 0, width: '100%'}}>
