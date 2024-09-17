@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import {Space, Card, Typography, Pagination, Table} from 'antd';
 import axios from 'axios';
-import {useLocation, useNavigate} from 'react-router-dom';
-import {useDispatch, useSelector} from "react-redux";
-import { RootState } from "../store/store";
+import { useNavigate} from 'react-router-dom';
+
 
 
 interface DataItem {
