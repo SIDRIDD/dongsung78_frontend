@@ -20,11 +20,15 @@ const MyPage: React.FC = () => {
     const [userInfo, setUserInfo] = useState<UserInfo>();
     const [isModalVisible, setIsModalVisible] = useState(false);
     const navigate = useNavigate();
+    const apiUrl = process.env.REACT_APP_API_BASE_URL;
+    const getUserUrl = process.env.REACT_APP_GET_USER_URL;
+    const updateUserUrl = process.env.REACT_APP_UPDATE_USER_URL;
+    const deleteUserUrl = process.env.REACT_APP_DELETE_USER_URL;
 
-    // 사용자 정보 가져오기
+
     const fetchUserInfo = async () => {
         try {
-            const response = await axios.get('http://localhost:8080/api/user/get-user', {
+            const response = await axios.get(`${apiUrl}${getUserUrl}`, {
                 withCredentials: true,
             });
             setUserInfo(response.data);
@@ -57,7 +61,7 @@ const MyPage: React.FC = () => {
                     ...values.address,
                 },
             };
-            await axios.put('http://localhost:8080/api/user/update-user', dataToSend, {
+            await axios.put(`${apiUrl}${updateUserUrl}`, dataToSend, {
                 withCredentials: true,
             });
             window.location.reload();
@@ -74,10 +78,9 @@ const MyPage: React.FC = () => {
 
     const handleOk = async () => {
         try {
-            const response = await axios.delete('http://localhost:8080/api/user/delete', {
+            const response = await axios.delete(`${apiUrl}${deleteUserUrl}`, {
                 withCredentials: true,
             });
-            console.log('response.data' + response.data);
             if (response.status == 200) {
                 message.success('정상적으로 회원탈퇴되었습니다.');
                 navigate('/product-grid/0');
@@ -142,8 +145,8 @@ const MyPage: React.FC = () => {
                         <Modal
                             title="삭제 확인"
                             visible={isModalVisible}
-                            onOk={handleOk} // Yes 버튼 클릭 시
-                            onCancel={handleCancel} // No 버튼 클릭 시
+                            onOk={handleOk}
+                            onCancel={handleCancel}
                             okText="Yes"
                             cancelText="No"
                         >

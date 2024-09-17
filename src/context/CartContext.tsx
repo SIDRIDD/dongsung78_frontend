@@ -1,18 +1,13 @@
 import React, {createContext, useState, useContext, ReactNode} from 'react';
 import axios from "axios";
 
-
 interface Product {
     productId: number;
-
     name: string;
-
     description: string;
     price: number;
     stock: number;
-
     quantity: number;
-
     imgUrl: string;
 }
 
@@ -27,14 +22,10 @@ interface CartContextProps {
     drawerVisible: boolean;
     setDrawerVisible: React.Dispatch<React.SetStateAction<boolean>>;
     removeFromCart: (name: string) => void;
-
     updateQuantity: (name: string, quantity: number) => void;
-
     addToCart: (product: Product) => void;
-
     purchaseItems: (purchaseData: PurchaseData[]) => void;
 }
-
 
 const CartContext = createContext<CartContextProps | undefined>(undefined);
 
@@ -53,10 +44,13 @@ interface CartProviderProps {
 export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
     const [cartItems, setCartItems] = useState<Product[]>([]);
     const [drawerVisible, setDrawerVisible] = useState<boolean>(false);
+    const apiUrl = process.env.REACT_APP_API_BASE_URL;
+    const orderSaveUrl = process.env.REACT_APP_API_ORDER_SAVE;
 
     const removeFromCart = (name: string) => {
         setCartItems(prevItems => prevItems.filter(item => item.name !== name));
     };
+
     const updateQuantity = (name: string, quantity: number) => {
         setCartItems(prevItems =>
             prevItems.map(item =>
@@ -64,7 +58,6 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
             )
         );
     };
-
 
     const addToCart = (product: Product) => {
         setCartItems(prevItems => {
@@ -79,7 +72,6 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
                 const currentCartKinds = parseInt(sessionStorage.getItem('cartKinds') || '0', 10);
                 sessionStorage.setItem('cartKinds', JSON.stringify(currentCartKinds + 1));
                 return [...prevItems, product];
-
             }
         });
         setDrawerVisible(true);
@@ -87,16 +79,15 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
 
     const purchaseItems = async (purchaseData: PurchaseData[]) => {
         try {
-            const apiUrl = process.env.REACT_APP_API_BASE_URL;
-            const response = await axios.post(`${apiUrl}/api/order/save`, purchaseData
-            , {withCredentials: true});
-            // 성공적으로 구매가 완료된 후 장바구니를 비웁니다.
+            const response = await axios.post(`${apiUrl}${orderSaveUrl}`, purchaseData, {
+                withCredentials: true
+            });
+            //장바구니 비우기
             setCartItems([]);
         } catch (error) {
             console.error('Error purchasing items:', error);
         }
     };
-
 
     return (
         <CartContext.Provider value={{ cartItems, setCartItems, drawerVisible, setDrawerVisible, removeFromCart, updateQuantity, addToCart, purchaseItems }}>

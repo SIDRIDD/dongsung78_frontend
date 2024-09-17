@@ -1,6 +1,5 @@
 import React from 'react';
-import {Button, Card, Form, Input, message, Select} from 'antd';
-import axios from "axios";
+import {Button, Card, Form, Input, message} from 'antd';
 
 const layout = {
     labelCol: {span: 8},
@@ -14,13 +13,17 @@ const tailLayout = {
 interface FormValues {
     username: string;
 }
+
 const KakaoId: React.FC = () => {
     const [form] = Form.useForm();
     const titleText = "*카카오 계정으로 사용할 이름을 입력 후 적어주세요*." +
-        "기존에 카카오 로그인을 하셨던 회원분께서는 기존 아이디를 입력해주시기 바랍니다."+
+        "기존에 카카오 로그인을 하셨던 회원분께서는 기존 아이디를 입력해주시기 바랍니다." +
         " 사이트 내에서 문의 글 게시, 댓글 등록 등에 사용됩니다." +
         "실제 사용은 입력하신 name_kakao 로 사용됩니다." +
         "예시) 입력: aa, 사용하는 name: aa_kakao";
+    const apiUrl = process.env.REACT_APP_API_BASE_URL;
+    const kakaoOauthUrl = process.env.REACT_APP_KAKAO_OAUTH_URL;
+
     const titleWithLineBreaks = titleText.split('.').map((text, index) => (
         <React.Fragment key={index}>
             {text.trim()}
@@ -30,7 +33,7 @@ const KakaoId: React.FC = () => {
 
     const callApi = async (data: FormValues) => {
         try {
-            window.location.href = `http://localhost:8080/oauth/kakao/token?id=${data.username}`;
+            window.location.href = `${apiUrl}${kakaoOauthUrl}?id=${data.username}`;
             message.success('카카오 로그인!');
         } catch (error: any) {
             message.error('카카오 로그인 실패..');
@@ -38,7 +41,6 @@ const KakaoId: React.FC = () => {
     };
 
     const onFinish = (values: FormValues) => {
-        console.log('Received values:', values);
         callApi(values);
     };
 
@@ -72,9 +74,7 @@ const KakaoId: React.FC = () => {
                     </Button>
                 </Form.Item>
             </Form>
-
         </div>
-
     );
 };
 

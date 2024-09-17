@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import {List, Space, Card, Typography, Button, message, Pagination, Table, Modal} from 'antd';
+import {Space, Card, Typography, Button, message, Pagination, Table, Modal} from 'antd';
 import axios from 'axios';
 import {useLocation, useNavigate} from 'react-router-dom';
-import Cookies from "js-cookie";
 import {useDispatch, useSelector} from "react-redux";
 import { RootState } from "../store/store";
-import {setSelectedItemId, setSelectedMenuKey} from "../store/MenuSlice";
 
 
 interface DataItem {
@@ -33,14 +31,15 @@ const QuoteContact: React.FC = () => {
     const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [selectedItemId, setSelectedItemId] = useState<number | null>(null);
-    const dispatch = useDispatch();
-    const contentKeyValue = 101;
+    const apiUrl = process.env.REACT_APP_API_BASE_URL;
+    const contactGetAllUrl = process.env.REACT_APP_CONTACT_GETALL_URL;
+    const contactDeleteUrl = process.env.REACT_APP_CONTACT_DELETE_URL;
 
     const fetchData = async (page: number) => {
         setLoading(true);
         try {
             const response = await axios.get<{ content: DataItem[], totalElements: number }>(
-                `http://localhost:8080/api/contact/getall?contacttype=0`,
+                `${apiUrl}${contactGetAllUrl}?contacttype=0`,
                 {
                     params: {
                         page: page - 1, // API는 0부터 시작하므로 page-1
@@ -62,7 +61,7 @@ const QuoteContact: React.FC = () => {
 
     const handlePageChange = (page: number) => {
         setCurrentPage(page);
-        window.scrollTo(0, 0); // 페이지 변경 시 상단으로 스크롤
+        window.scrollTo(0, 0);
     };
 
     const handleShowForm = () => {
@@ -80,18 +79,18 @@ const QuoteContact: React.FC = () => {
 
     const showModal = (id: number) => {
         setSelectedItemId(id);  // 삭제할 항목의 ID 저장
-        setIsModalVisible(true); // 모달 창 표시
+        setIsModalVisible(true);
     };
 
     const handleOk = () => {
         if (selectedItemId !== null) {
             handleDelete(selectedItemId); // 선택된 아이템 삭제
         }
-        setIsModalVisible(false); // 모달 창 닫기
+        setIsModalVisible(false);
     };
 
     const handleCancel = () => {
-        setIsModalVisible(false); // 모달 창 닫기
+        setIsModalVisible(false);
     };
 
     const columns = [
@@ -101,7 +100,6 @@ const QuoteContact: React.FC = () => {
             key: 'title',
             render: (text: string, item: DataItem) => <a onClick={() => handleItemClick(item.id)}>{text}</a>,
         },
-        // 필요시 description이나 다른 데이터 필드에 대한 열을 추가할 수 있습니다.
         {
             title: '작성자',
             dataIndex: 'userName',
@@ -116,7 +114,7 @@ const QuoteContact: React.FC = () => {
             title: '',
             key: 'action',
             render: (text: string, item: DataItem) => (
-                item.userName === sessionStorage.getItem('userName') ? ( // 게시글 작성자와 userName 비교
+                item.userName === sessionStorage.getItem('userName') ? (
                     <>
                         <Button
                             type="primary"
@@ -130,8 +128,8 @@ const QuoteContact: React.FC = () => {
                         <Modal
                             title="삭제 확인"
                             visible={isModalVisible}
-                            onOk={handleOk} // Yes 버튼 클릭 시
-                            onCancel={handleCancel} // No 버튼 클릭 시
+                            onOk={handleOk}
+                            onCancel={handleCancel}
                             okText="Yes"
                             cancelText="No"
                         >
@@ -146,7 +144,7 @@ const QuoteContact: React.FC = () => {
     const handleDelete = async (itemId: number) => {
         setLoading(true);
         try {
-            const response = await axios.delete(`http://localhost:8080/api/contact/delete?itemid=${itemId}`);
+            const response = await axios.delete(`${apiUrl}${contactDeleteUrl}?itemid=${itemId}`);
             fetchData(currentPage);
             message.success("삭제되었습니다.");
         } catch (error) {

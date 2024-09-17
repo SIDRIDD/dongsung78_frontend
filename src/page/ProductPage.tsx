@@ -1,13 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import ProductImage from "../components/ProductImage";
-import ProductDetails from "../components/ProductDetails";
+import ProductDetails from "./ProductDetails";
 import './css/ProductPage.css';
 import {useParams} from "react-router-dom";
 import axios from "axios";
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
-import {Button, Card, Typography, Upload} from "antd";
-import {UploadOutlined} from "@ant-design/icons";
+import {Card, Typography} from "antd";
 import ProductQuote from "../components/ProductQuote";
 
 const {Paragraph} = Typography;
@@ -33,11 +32,14 @@ interface Product {
 const ProductPage: React.FC = () => {
     const {productId} = useParams<{ productId: string }>();
     const [product, setProduct] = useState<Product | null>(null);
+    const apiUrl = process.env.REACT_APP_API_BASE_URL;
+    const productGetOneUrl = process.env.REACT_APP_PRODUCT_GET_ONE_URL;
+
 
     useEffect(() => {
         const fetchProduct = async () => {
             try {
-                const response = await axios.get(`http://localhost:8080/api/product/getone/${productId}`)
+                const response = await axios.get(`${apiUrl}${productGetOneUrl}/${productId}`);
                 setProduct(response.data);
             } catch (error) {
                 console.error('Error fetching product', error);
@@ -81,9 +83,6 @@ const ProductPage: React.FC = () => {
                     <Tab eventKey="profile" title="상품 문의">
                         <ProductQuote productId={product.id}/>
                     </Tab>
-                    {/*<Tab eventKey="longer-tab" title="Loooonger Tab">*/}
-                    {/*    Tab content for Loooonger Tab*/}
-                    {/*</Tab>*/}
                 </Tabs>
             </Card>
         </div>

@@ -25,7 +25,6 @@ interface PurchaseData {
 const ProductDetails: React.FC<ProductDetailsProps> = ({productId, name, description, price, stock, imgUrl  }) => {
     const [quantity, setQuantity] = useState(1);
     const { addToCart, setDrawerVisible, cartItems, purchaseItems } = useCart();
-    // const items = { productId, name, description, price, stock, quantity, imgUrl };
     const navigate = useNavigate();
     const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
     const location = useLocation();
@@ -58,7 +57,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({productId, name, descrip
             count: item.quantity,
         }));
         navigate('/delivery', { state: { items: [product] } });
-        purchaseItems(purchaseData); // 필요한 데이터만 전송
+        purchaseItems(purchaseData);
     };
 
 

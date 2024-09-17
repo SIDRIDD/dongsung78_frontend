@@ -23,6 +23,6 @@ const menuSlice = createSlice({
     },
 });
 
-export const { setSelectedMenuKey, setSelectedItemId } = menuSlice.actions;
+export const { setSelectedMenuKey } = menuSlice.actions;
 
 export default menuSlice.reducer;

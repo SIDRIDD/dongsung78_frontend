@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import {List, Space, Card, Typography, Button, message, Pagination, Table} from 'antd';
+import {Space, Card, Typography, Pagination, Table} from 'antd';
 import axios from 'axios';
 import {useLocation, useNavigate} from 'react-router-dom';
-import Cookies from "js-cookie";
 import {useDispatch, useSelector} from "react-redux";
 import { RootState } from "../store/store";
-import {setSelectedItemId, setSelectedMenuKey} from "../store/MenuSlice";
 
 
 interface DataItem {
@@ -42,16 +40,15 @@ const QuoteContact: React.FC = () => {
     const [totalItems, setTotalItems] = useState<number>(0);
     const pageSize = 10; // 한 페이지당 표시할 항목 수
     const navigate = useNavigate();
-    const location = useLocation();
-    const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
-    const dispatch = useDispatch();
+    const apiUrl = process.env.REACT_APP_API_BASE_URL;
+    const constructionListUrl = process.env.REACT_APP_API_CONSTRUCTION_LIST;
 
 
     const fetchData = async (page: number) => {
         setLoading(true);
         try {
             const response = await axios.get<{ content: DataItem[], totalElements: number }>(
-                `http://localhost:8080/api/construction/get-list`,
+                `${apiUrl}${constructionListUrl}`,
                 {
                     params: {
                         page: page - 1, // API는 0부터 시작하므로 page-1
@@ -92,7 +89,6 @@ const QuoteContact: React.FC = () => {
                 </a>
             ),
         },
-        // 필요시 description이나 다른 데이터 필드에 대한 열을 추가할 수 있습니다.
         {
             title: '작성자',
             dataIndex: 'userName',
@@ -118,7 +114,7 @@ const QuoteContact: React.FC = () => {
                     size="small"
                     loading={loading}
                     rowKey="id"
-                    pagination={false} // 필요시 pagination 추가 가능
+                    pagination={false}
                     style={{ width: '100%', margin: '0 auto', textAlign: 'left' }}
                 />
 

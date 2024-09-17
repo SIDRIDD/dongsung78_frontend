@@ -2,21 +2,23 @@ import { message } from 'antd';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-// Axios 인스턴스 생성
 const api = axios.create({
-    withCredentials: true, // 쿠키를 전송하기 위해 필요
+    withCredentials: true,
 });
 
 let isChecking = false; // /check 요청 중인지 확인하는 플래그
 let failedRequestsQueue: any[] = []; // /check 요청 동안 대기할 요청 큐
 
 const naviage = useNavigate();
+const apiUrl = process.env.REACT_APP_API_BASE_URL;
+const checkUrl = process.env.REACT_APP_USER_CHECK_URL;
+const refreshTokenUrl = process.env.REACT_APP_REFRESH_TOKEN_URL;
 
 // /check API를 통해 토큰 유효성을 검사하는 함수
 const checkToken = async () => {
     try {
         // /check API 호출하여 토큰 유효성 검사
-        const response = await api.post('http://localhost:8080/api/user/check', {}, { withCredentials: true });
+        const response = await api.post(`${apiUrl}${checkUrl}`, {}, { withCredentials: true });
         return response.data; // 응답 데이터 반환 (유효한 경우)
     } catch (error) {
         throw new Error('Token check failed');
@@ -26,7 +28,7 @@ const checkToken = async () => {
 // refreshToken을 사용하여 새로운 accessToken을 발급받는 함수
 const refreshAccessToken = async () => {
     try {
-        const { data } = await api.post('http://localhost:8080/api/user/refresh-token', {}, { withCredentials: true });
+        const { data } = await api.post(`${apiUrl}${refreshTokenUrl}`, {}, { withCredentials: true });
         return data.accessToken; // 새로운 accessToken 반환
     } catch (error) {
         naviage('/login');

@@ -1,14 +1,11 @@
-import React, {CSSProperties, useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {LockOutlined, UserOutlined} from '@ant-design/icons';
-import {LoginForm, ProConfigProvider, ProFormCheckbox, ProFormText, setAlpha} from '@ant-design/pro-components';
+import {LoginForm, ProConfigProvider, ProFormCheckbox, ProFormText} from '@ant-design/pro-components';
 import {Space, Tabs, message, theme, Button} from 'antd';
-import {GoogleLogin, CredentialResponse} from '@react-oauth/google';
-import KakaoLogin from 'react-kakao-login';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import {login} from '../store/authSlice';
 import {useLocation, useNavigate} from 'react-router-dom';
 import axios from 'axios';
-import {RootState} from "../store/store";
 
 type LoginType = 'oauth' | 'account';
 
@@ -29,41 +26,12 @@ const LoginPage: React.FC = () => {
     const naverRedirectUri = process.env.REACT_APP_NAVER_CALLBACK_URL || '';
     const stateString = process.env.REACT_APP_NAVER_STATE || '';
     const kakaoRedirectUri = process.env.REACT_APP_KAKAO_REDIRECT_URL || '';
-
-    const handleOAuthLogin = async (provider: string, code: string) => {
-        let redirectUri = '';
-        if (provider === 'naver') {
-            redirectUri = naverRedirectUri;
-        } else if (provider === 'kakao') {
-            redirectUri = kakaoRedirectUri;  // Kakao용 redirect URI를 설정
-        }
-        try {
-            console.log('Login.tsx 의 provider');
-            const response = await axios.post(`http://localhost:8080/api/oauth/${provider}`, {
-                    code: code,
-                    provider: provider,
-                    redirectUri: redirectUri
-                }
-            )
-            const userName = response.data.userName;
-            console.log('Login successful:', response.data);
-            sessionStorage.setItem('userName', userName);
-            dispatch(login());
-
-            // const {token} = response.data;
-            // dispatch(login(token));
-            //
-            // message.success('Login Successful');
-            // navigate('/');
-        } catch (error) {
-            console.error('OAuth Login Failed:', error);
-            message.error('OAuth Login Failed');
-        }
-    };
+    const apiUrl = process.env.REACT_APP_API_BASE_URL;
+    const userLoginUrl = process.env.REACT_APP_USER_LOGIN_URL;
 
     const onFinish = async (values: LoginFormValues) => {
         try {
-            const response = await axios.post('http://localhost:8080/api/user/login', values, {withCredentials: true});
+            const response = await axios.post(`${apiUrl}${userLoginUrl}`, values, {withCredentials: true});
             console.log('Login successful:', response.data);
 
             dispatch(login());
@@ -78,39 +46,6 @@ const LoginPage: React.FC = () => {
         }
     };
 
-    const handleKakaoSuccess = (response: any) => {
-        const accessToken = response.response.access_token;
-        // if (accessToken) {
-        //     handleOAuthLogin('kakao', accessToken);
-        // }
-    };
-
-    const handleKakaoFailure = (error: any) => {
-        console.log('Kakao Login Failed:', error);
-        message.error('Kakao Login Failed');
-    };
-
-    // useEffect(() => {
-    //     const urlParams = new URLSearchParams(window.location.search);
-    //     const code = urlParams.get('code');
-    //     const state = urlParams.get('state');
-    //
-    //     // 로그 추가
-    //     console.log(`code: ${code}, state: ${state}`);
-    //
-    //     if (code && state === stateString) {
-    //         handleOAuthLogin('naver', code);
-    //     }
-    // }, [navigate]);
-
-    const iconStyles: CSSProperties = {
-        marginInlineStart: '16px',
-        color: setAlpha(token.colorTextBase, 0.2),
-        fontSize: '24px',
-        verticalAlign: 'middle',
-        cursor: 'pointer',
-    };
-
     const handleNaverLogin = () => {
         window.location.href = `https://nid.naver.com/oauth2.0/authorize?client_id=${naverClientId}&response_type=code&redirect_uri=${naverRedirectUri}&state=${stateString}&scope=email`;
     };
@@ -122,15 +57,6 @@ const LoginPage: React.FC = () => {
     return (
         <ProConfigProvider hashed={false}>
             <div style={{backgroundColor: token.colorBgContainer}}>
-                {/*<LoginForm*/}
-                {/*    onFinish={onFinish}*/}
-                {/*    submitter={loginType === 'oauth' ? false : {*/}
-                {/*        searchConfig: {*/}
-                {/*            submitText: '로그인',*/}
-                {/*        },*/}
-                {/*    }}*/}
-                {/*    actions={<Space></Space>}*/}
-                {/*>*/}
                 <LoginForm
                     onFinish={onFinish}
                     submitter={loginType === 'oauth' ? false : {
@@ -145,7 +71,7 @@ const LoginPage: React.FC = () => {
                                     회원가입
                                 </Button>
                             </Space>
-                        ) : null  // OAuth 로그인 타입일 때 회원가입 버튼을 숨깁니다.
+                        ) : null
                     }
                 >
                     <Tabs
@@ -186,44 +112,13 @@ const LoginPage: React.FC = () => {
                                 alignItems: 'center',
                                 marginBlock: 24
                             }}>
-                                {/*<KakaoLogin*/}
-                                {/*    token={kakaoResttKey}*/}
-                                {/*    onSuccess={handleKakaoSuccess}*/}
-                                {/*    onFail={handleKakaoFailure}*/}
-                                {/*    onLogout={() => console.log('Kakao Logout')}*/}
-                                {/*    render={({onClick}) => (*/}
-                                {/*        <button*/}
-                                {/*            type="button"*/}
-                                {/*            onClick={onClick}*/}
-                                {/*            style={{*/}
-                                {/*                borderStyle: 'none',*/}
-                                {/*                backgroundColor: 'white',*/}
-                                {/*                width: '190px',  // 구글, 카카오와 비슷한 너비*/}
-                                {/*                height: '40px',  // 구글, 카카오와 비슷한 높이*/}
-                                {/*                display: 'flex',*/}
-                                {/*                alignItems: 'center',*/}
-                                {/*                justifyContent: 'center',*/}
-                                {/*                marginBottom: '10px',  // 버튼 간격 추가*/}
-                                {/*                marginTop: '10px',*/}
-                                {/*                marginLeft: '20px'*/}
-                                {/*            }}*/}
-                                {/*        >*/}
-                                {/*            <img*/}
-                                {/*                src={`${process.env.PUBLIC_URL}/img/kakao_login.png`}*/}
-                                {/*                alt="Kakao Login"*/}
-                                {/*                style={{height: '100%',*/}
-                                {/*                    objectFit: 'contain'}}  // 이미지 높이를 버튼 높이에 맞춤*/}
-                                {/*            />*/}
-                                {/*        </button>*/}
-                                {/*    )}*/}
-                                {/*/>*/}
                                 <button
                                     onClick={handleKakaoLogin}
                                     style={{
                                         borderStyle: 'none',
                                         backgroundColor: 'white',
-                                        width: '190px',  // 구글, 카카오와 비슷한 너비
-                                        height: '40px',  // 구글, 카카오와 비슷한 높이
+                                        width: '190px',
+                                        height: '40px',
                                         display: 'flex',
                                         alignItems: 'center',
                                         justifyContent: 'center',
@@ -235,7 +130,7 @@ const LoginPage: React.FC = () => {
                                         style={{
                                             height: '100%',
                                             objectFit: 'contain'
-                                        }}  // 이미지 높이를 버튼 높이에 맞춤
+                                        }}
                                     />
                                 </button>
                                 <button
@@ -243,8 +138,8 @@ const LoginPage: React.FC = () => {
                                     style={{
                                         borderStyle: 'none',
                                         backgroundColor: 'white',
-                                        width: '190px',  // 구글, 카카오와 비슷한 너비
-                                        height: '40px',  // 구글, 카카오와 비슷한 높이
+                                        width: '190px',
+                                        height: '40px',
                                         display: 'flex',
                                         alignItems: 'center',
                                         justifyContent: 'center',
@@ -256,7 +151,7 @@ const LoginPage: React.FC = () => {
                                         style={{
                                             height: '100%',
                                             objectFit: 'contain'
-                                        }}  // 이미지 높이를 버튼 높이에 맞춤
+                                        }}
                                     />
                                 </button>
                             </Space>

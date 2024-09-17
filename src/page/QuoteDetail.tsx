@@ -1,23 +1,12 @@
 import React, {useState, useEffect} from 'react';
-import Cookies from 'js-cookie';
 import {useParams} from 'react-router-dom';
-import {Card, Typography, Space, Button, Layout, Breadcrumb, theme, Avatar, Input, Upload, List, message} from 'antd';
+import {Card, Typography, Space, Button, theme, Avatar, Input, List, message} from 'antd';
 import axios from 'axios';
-import {Modal} from 'react-bootstrap';
-import {
-    BulbOutlined,
-    FrownOutlined,
-    LikeOutlined,
-    SmileOutlined,
-    UploadOutlined,
-    UserOutlined
-} from "@ant-design/icons";
+import {UserOutlined} from "@ant-design/icons";
 import './css/QuoteDetail.css'
 import {useSelector} from "react-redux";
 import {RootState} from "../store/store";
-import {sensitiveHeaders} from "http2";
-import {Cookie} from "@mui/icons-material";
-import {warning} from "@ant-design/icons/es/utils";
+
 
 const {Title, Text, Paragraph} = Typography;
 
@@ -36,38 +25,20 @@ interface Comment {
     content: string;
 }
 
-interface RefreshComment {
-    id: number;
-    username: string;
-    content: string;
-}
-
-interface QuoteDetailProps {
-    itemId: number;
-}
-
 const QuoteDetail: React.FC = () => {
     const {itemId} = useParams();
     const [data, setData] = useState<DataItem | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
     const {TextArea} = Input;
     const [comment, setComment] = useState<string>('');
-    const [fileList, setFileList] = useState<any[]>([]);
     const [comments, setComments] = useState<Comment[]>([]);
-    const {token} = theme.useToken();
     const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
-
-    const {
-        token: {colorBgContainer, borderRadiusLG},
-    } = theme.useToken();
-
-
+    const apiUrl = process.env.REACT_APP_API_BASE_URL;
+    const commentPostUrl = process.env.REACT_APP_COMMENT_POST_URL;
+    const commentGetUrl = process.env.REACT_APP_COMMENT_GET_URL;
+    const commentDeleteUrl = process.env.REACT_APP_COMMENT_DELETE_URL;
     const handleCommentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         setComment(e.target.value);
-    };
-
-    const handleUploadChange = ({fileList}: any) => {
-        setFileList(fileList);
     };
 
     const handleSubmit = async () => {
@@ -76,9 +47,7 @@ const QuoteDetail: React.FC = () => {
                     message.warning('로그인이 필요합니다.');
                     return;
                 }
-
-                console.log('JWT Token: ', isLoggedIn)
-                const response = await axios.post(`http://localhost:8080/api/contact/get/${itemId}/comments`, {
+                const response = await axios.post(`${apiUrl}${commentPostUrl}${itemId}/comments`, {
                         content: comment,
                     }, {
                         withCredentials: true
@@ -87,11 +56,10 @@ const QuoteDetail: React.FC = () => {
                 const newComment = response.data;
                 setComments([...comments, {
                     id: newComment.id,
-                    username: newComment.username, // newComment.user.username에서 수정
+                    username: newComment.username,
                     content: newComment.content
                 }]);
                 setComment('');
-                setFileList([]);
                 message.success("등록되었습니다.");
                 window.location.reload();
             } catch (error) {
@@ -105,7 +73,7 @@ const QuoteDetail: React.FC = () => {
         const fetchData = async () => {
             setLoading(true);
             try {
-                const response = await axios.get<DataItem>(`http://localhost:8080/api/contact/get?contact_id=${itemId}`);
+                const response = await axios.get<DataItem>(`${apiUrl}${commentGetUrl}?contact_id=${itemId}`);
                 setData(response.data);
                 setComments(response.data.comments.map((comment: any) => ({
                     id: comment.id,
@@ -121,9 +89,8 @@ const QuoteDetail: React.FC = () => {
     }, [itemId]);
 
     const handleDeleteComment = async (commentId: number) => {
-        console.log('commentID = ' + commentId);
         try {
-            await axios.delete(`http://localhost:8080/api/contact/comment/delete?commentid=${commentId}`);
+            await axios.delete(`${apiUrl}${commentDeleteUrl}?commentid=${commentId}`);
             setComments(comments.filter(comment => comment.id !== commentId));
             message.success("댓글이 삭제되었습니다.");
         } catch (error) {
@@ -155,22 +122,6 @@ const QuoteDetail: React.FC = () => {
                 </Paragraph>
                 <div className="post-reactions">
                     <Space size="middle">
-                        {/*<Space>*/}
-                        {/*    <LikeOutlined/>*/}
-                        {/*    <Text>좋아요 3</Text>*/}
-                        {/*</Space>*/}
-                        {/*<Space>*/}
-                        {/*    <SmileOutlined/>*/}
-                        {/*    <Text>재밌어요 0</Text>*/}
-                        {/*</Space>*/}
-                        {/*<Space>*/}
-                        {/*    <BulbOutlined/>*/}
-                        {/*    <Text>도움돼요 2</Text>*/}
-                        {/*</Space>*/}
-                        {/*<Space>*/}
-                        {/*    <FrownOutlined/>*/}
-                        {/*    <Text>힘내요 0</Text>*/}
-                        {/*</Space>*/}
                     </Space>
                 </div>
             </Card>
@@ -182,17 +133,6 @@ const QuoteDetail: React.FC = () => {
                     autoSize={{minRows: 3, maxRows: 5}}
                 />
                 <div className="comment-footer">
-                {/*    <Upload*/}
-                {/*        fileList={fileList}*/}
-                {/*        onChange={handleUploadChange}*/}
-                {/*        beforeUpload={() => false}*/}
-                {/*        maxCount={1}*/}
-                {/*        accept=".jpg,.png,.gif"*/}
-                {/*    >*/}
-                {/*        <Button icon={<UploadOutlined/>}>이미지첨부</Button>*/}
-                {/*    </Upload>*/}
-                {/*    <span className="file-info">최대 1개 (jpg, png, gif만 가능)</span>*/}
-                {/*    <span className="char-count">{comment.length}/1000자</span>*/}
                     <Button type="primary" onClick={handleSubmit}>댓글 등록</Button>
                 </div>
             </Card>
@@ -204,12 +144,12 @@ const QuoteDetail: React.FC = () => {
                 renderItem={comment => (
                     <List.Item
                         actions={
-                            comment.username === userName ? [ // 댓글 작성자와 로그인한 사용자 비교
+                            comment.username === userName ? [
                                 <Button
                                     type="link"
                                     danger
                                     style={{ color: 'black' }}
-                                    onClick={() => handleDeleteComment(comment.id)} // 삭제 버튼 클릭 시
+                                    onClick={() => handleDeleteComment(comment.id)}
                                 >
                                     x
                                 </Button>

@@ -47,12 +47,14 @@ interface PurchaseData {
 const OrderSummary: React.FC<OrderSummaryProps> = ({ items, shippingCost, discount , shippingInfo}) => {
     const totalAmount = items.reduce((acc, item) => acc + (item.price * item.quantity), 0);
     const navigate = useNavigate();
-
+    const apiUrl = process.env.REACT_APP_API_BASE_URL;
+    const orderSaveUrl = process.env.REACT_APP_ORDER_SAVE_URL;
+    const impStoreId = process.env.REACT_APP_IMP_STROE_ID;
 
     const getPurchaseData = (shippingInfo: OrderSummaryProps['shippingInfo']): PurchaseData[] => {
         console.log('getPurchaseData 부분에서 shippingInfo: ', shippingInfo);
         return items.map(item => ({
-            productId: item.productId, // Assuming items have an id field. Replace with the actual field if different
+            productId: item.productId,
             count: item.quantity,
             userName: shippingInfo.name,
             phoneNumber: shippingInfo.phone,
@@ -64,18 +66,14 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({ items, shippingCost, discou
     };
     const purchaseItems = async (purchaseData: PurchaseData[]) => {
         try {
-            console.log('purchaseData : ', purchaseData);
-            const response = await axios.post('http://localhost:8080/api/order/save', purchaseData
+            const response = await axios.post(`${apiUrl}${orderSaveUrl}`, purchaseData
                 , {withCredentials: true});
-            console.log(response.data); // 성공 메시지 출력
-            // 성공적으로 구매가 완료된 후 장바구니를 비웁니다.
         } catch (error) {
             console.error('Error purchasing items:', error);
         }
     };
 
     useEffect(() => {
-        // 포트원 SDK 스크립트를 동적으로 로드
         const script = document.createElement('script');
         script.src = 'https://cdn.iamport.kr/v1/iamport.js';
         script.async = true;
@@ -96,7 +94,7 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({ items, shippingCost, discou
         // 포트원 SDK 로드 확인
         if (window.IMP) {
             const { IMP } = window;
-            IMP.init('imp77836246');  // 포트원 상점 아이디로 초기화
+            IMP.init(impStoreId);  // 포트원 상점 아이디로 초기화
 
             const paymentData = {
                 pg: 'kakaopay',  // 사용할 PG사
@@ -104,10 +102,10 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({ items, shippingCost, discou
                 merchant_uid: `mid_${new Date().getTime()}`,  // 상점에서 생성한 고유 주문번호
                 name: '주문명: 결제 테스트',
                 amount: totalAmount,  // 최종 결제 금액
-                buyer_email: 'customer@example.com',  // 구매자 이메일 (필요시 수정)
-                // buyer_name: '홍길동',  // 구매자 이름 (필요시 수정)
-                // buyer_tel: '010-1234-5678',  // 구매자 연락처 (필요시 수정)
-                // buyer_addr: '서울특별시 강남구 역삼동',  // 구매자 주소 (필요시 수정)
+                buyer_email: 'customer@example.com',  // 구매자 이메일
+                // buyer_name: '홍길동',  // 구매자 이름
+                // buyer_tel: '010-1234-5678',  // 구매자 연락처
+                // buyer_addr: '서울특별시 강남구 역삼동',  // 구매자 주소
                 buyer_postcode: '01181',
                 m_redirect_url: 'http://localhost:3000/',  // 결제 후 리디렉션될 페이지
             }
@@ -119,10 +117,8 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({ items, shippingCost, discou
                     sessionStorage.setItem('cartKinds', '0');
                     alert('결제가 완료되었습니다.');
                     navigate('/product-grid/1');
-                    // 결제 성공 처리 로직
                 } else {
                     alert('결제에 실패하였습니다. 에러 내용: ' + rsp.error_msg);
-                    // 결제 실패 처리 로직
                 }
             });
         } else {
@@ -138,22 +134,9 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({ items, shippingCost, discou
 
         if (window.IMP) {
             const { IMP } = window;
-            IMP.init('imp77836246');  // 실제 가맹점 식별코드로 변경
-
-            // const paymentData = {
-            //     pg: 'tosspayments',  // PG사 설정
-            //     pay_method: 'card',   // 결제수단 ('card', 'trans', 'vbank' 등)
-            //     merchant_uid: `mid_${new Date().getTime()}`,  // 고유한 주문번호
-            //     name: '주문명: 상품 결제',
-            //     amount: totalAmount,  // 결제 금액
-            //     buyer_email: 'customer@example.com',  // 실제 데이터로 변경
-            //     buyer_name: shippingInfo.name,
-            //     buyer_tel: shippingInfo.phone,
-            //     buyer_addr: `${shippingInfo.address.roadAddress} ${shippingInfo.address.detailAddress}`,
-            //     buyer_postcode: shippingInfo.address.zipCode,
-            // };
+            IMP.init(impStoreId);  // 실제 가맹점 식별코드
             const paymentData = {
-                pg: "html5_inicis", // PG사 : https://developers.portone.io/docs/ko/tip/pg-2 참고
+                pg: "html5_inicis", // PG사
                 pay_method: "card", // 결제수단
                 merchant_uid: `mid_${new Date().getTime()}`, // 주문번호
                 amount: 1000, // 결제금액
@@ -167,7 +150,6 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({ items, shippingCost, discou
 
 
             IMP.request_pay(paymentData, (rsp: any) => {
-                console.log('Payment Response:', rsp);
                 if (rsp.success) {
                     const purchaseData = getPurchaseData(shippingInfo);
                     purchaseItems(purchaseData);
@@ -175,8 +157,6 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({ items, shippingCost, discou
                     alert('결제가 완료되었습니다.');
                     navigate('/product-grid/1');
                 } else {
-                    console.log('실패 rsp 전체: ' + rsp);
-                    console.log('실패 메시지: ' + rsp.error_msg);
                     alert('결제에 실패하였습니다. 에러 내용: ' + rsp.error_msg);
                 }
             });

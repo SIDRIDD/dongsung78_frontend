@@ -2,17 +2,17 @@ import React from 'react';
 import {Button, Input, Form, Card, Typography, Space, message} from 'antd';
 import axios from 'axios';
 import {useSelector} from "react-redux";
-import Cookies from "js-cookie";
 import {RootState} from "../store/store";
-import {useLocation, useNavigate, useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 
 const { Title } = Typography;
 
 const QuoteForm: React.FC = () => {
     const {contactType, typeId} = useParams<{ contactType: string; typeId: string }>();
-
     const navigate = useNavigate();
     const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
+    const apiUrl = process.env.REACT_APP_API_BASE_URL;
+    const contactSaveUrl = process.env.REACT_APP_CONTACT_SAVE_URL;
 
     const userCheck = async () => {
         if(!isLoggedIn){
@@ -26,7 +26,7 @@ const QuoteForm: React.FC = () => {
 
         try {
             userCheck();
-            await axios.post(`http://localhost:8080/api/contact/save`, {
+            await axios.post(`${apiUrl}${contactSaveUrl}`, {
                 title : values.title,
                 description : values.description,
                 contactType : contactType,
@@ -34,7 +34,7 @@ const QuoteForm: React.FC = () => {
             }, {
                 withCredentials : true
             });
-            // 성공적으로 제출된 후 목록 페이지로 이동
+            // 0: 견적문의, else: 상품문의
             if(contactType == '0'){
                 navigate('/quote-contact');
             } else {
@@ -43,7 +43,6 @@ const QuoteForm: React.FC = () => {
             }
             message.success('등록되었습니다.');
         } catch (error) {
-            console.error('Failed to submit data:', error);
             message.error('등록에 실패하였습니다.');
         }
     };

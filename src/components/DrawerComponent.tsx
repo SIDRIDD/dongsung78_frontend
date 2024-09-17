@@ -4,7 +4,6 @@ import {useCart} from "../context/CartContext";
 import "./css/DrawerComponent.css";
 import {useSelector} from "react-redux";
 import {useLocation, useNavigate} from 'react-router-dom';
-import Cookies from "js-cookie";
 import {RootState} from "../store/store";
 
 interface DrawerComponentProps {
@@ -15,11 +14,10 @@ interface DrawerComponentProps {
 }
 
 const DrawerComponent: React.FC<DrawerComponentProps> = ({visible, onClose, items}) => {
-    const {removeFromCart, updateQuantity, purchaseItems} = useCart();
+    const {removeFromCart, updateQuantity} = useCart();
     const navigate = useNavigate();
     const location = useLocation();
     const totalAmount = items.reduce((acc, item) => acc + (item.price * item.quantity), 0);
-    // const userId = "admin";
     const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
 
     const handlePurchase = () => {
@@ -34,12 +32,6 @@ const DrawerComponent: React.FC<DrawerComponentProps> = ({visible, onClose, item
         onClose();
         navigate('/delivery', {state: { items }});
 
-        // const purchaseData = items.map(item => ({
-        //     productId: item.productId,
-        //     count: item.quantity,
-        // }));
-        // purchaseItems(purchaseData);
-        // sessionStorage.setItem('cartKinds', '0');
     };
 
     useEffect(() => {
@@ -50,7 +42,7 @@ const DrawerComponent: React.FC<DrawerComponentProps> = ({visible, onClose, item
         <Drawer style={{fontFamily: 'PaperlogyBold'}} title="장바구니" onClose={onClose} open={visible}>
             {items.map((item, index) => (
                 <div key={index} className="drawer-item">
-                    <img src={`${process.env.PUBLIC_URL}/${item.imgUrl}`} className="drawer-item-img"/> {/* 이미지 추가 */}
+                    <img src={`${process.env.PUBLIC_URL}/${item.imgUrl}`} className="drawer-item-img"/>
                     <div className="drawer-item-content">
                         <div className="drawer-item-header">
                             <h2 className="drawer-item-name">{item.name}</h2>
@@ -69,10 +61,10 @@ const DrawerComponent: React.FC<DrawerComponentProps> = ({visible, onClose, item
                     </div>
                 </div>
             ))}
-            <div className="total-amount"> {/* 총 금액 표시 추가 */}
+            <div className="total-amount">
                 <h3 style={{ font: 'PaperlogyBold' }}>총 금액: {totalAmount.toLocaleString()} 원</h3>
             </div>
-            <div className="drawer-footer"> {/* 구매하기 버튼 추가 */}
+            <div className="drawer-footer">
                 <button className="purchase-button" onClick={handlePurchase} style={{ font: 'PaperlogyBold' }}>구매하기</button>
             </div>
         </Drawer>

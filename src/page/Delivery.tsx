@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {Form, Input, Button, Select, Modal} from 'antd';
-import OrderSummary from "./OrderSummary";
+import OrderSummary from "../components/OrderSummary";
 import {useLocation} from 'react-router-dom';
 import DaumPostcode from 'react-daum-postcode';
 import {Checkbox} from 'antd';
@@ -15,6 +15,10 @@ const ShippingInfoForm: React.FC = () => {
     const {items} = location.state || {items: []};
     const [isCustom, setIsCustom] = useState(false);
     const [requestValue, setRequestValue] = useState('');
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [postcodeKey, setPostcodeKey] = useState(0);
+    const apiUrl = process.env.REACT_APP_API_BASE_URL;
+    const deliveryInfoUrl = process.env.REACT_APP_USER_DELIVERY_INFO_URL;
 
     const [shippingInfo, setShippingInfo] = useState({
         name: '',
@@ -26,9 +30,6 @@ const ShippingInfoForm: React.FC = () => {
         },
         request: ''
     });
-
-    const [isModalVisible, setIsModalVisible] = useState(false);
-    const [postcodeKey, setPostcodeKey] = useState(0);
 
     useEffect(() => {
         form.setFieldsValue({
@@ -47,7 +48,7 @@ const ShippingInfoForm: React.FC = () => {
         console.log(`checked = ${e.target.checked}`);
         if (e.target.checked === true) {
             if (shippingInfo == null) {
-                const response = await axios.get(`http://localhost:8080/api/user/delivery-info`, {
+                const response = await axios.get(`${apiUrl}${deliveryInfoUrl}`, {
                     withCredentials: true
                 })
 
@@ -122,7 +123,7 @@ const ShippingInfoForm: React.FC = () => {
 
         if (data.addressType === 'R') {
             roadAddress = data.roadAddress;
-            zipcode = data.zonecode; // zonecode를 사용해 우편번호를 설정합니다.
+            zipcode = data.zonecode;
         }
 
         setShippingInfo(prevState => ({
@@ -138,11 +139,10 @@ const ShippingInfoForm: React.FC = () => {
     };
 
     const handleOpenModal = () => {
-        setPostcodeKey(prevKey => prevKey + 1); // key 증가
+        setPostcodeKey(prevKey => prevKey + 1);
         setIsModalVisible(true);
     };
 
-    // 모달이 닫힐 때 key를 초기화
     const handleCloseModal = () => {
         form.setFieldsValue({
             address: {
@@ -152,7 +152,7 @@ const ShippingInfoForm: React.FC = () => {
             }
         });
         setIsModalVisible(false);
-        setPostcodeKey(0); // key 초기화
+        setPostcodeKey(0);
     };
 
     return (
@@ -184,7 +184,7 @@ const ShippingInfoForm: React.FC = () => {
                         label="이름"
                         name="name"
                         rules={[{required: true, message: '이름을 입력해 주세요.'}]}
-                        style={{ marginTop: '10px' }}
+                        style={{marginTop: '10px'}}
                     >
                         <Input
                             placeholder="이름을 입력해 주세요."
@@ -207,7 +207,8 @@ const ShippingInfoForm: React.FC = () => {
 
                         <Checkbox onChange={onChange} style={{alignItems: 'left', justifyItems: 'left'}}>이전 배송지 정보
                             불러오기</Checkbox>
-                        <Button type="primary" onClick={handleOpenModal} style={{marginLeft: '10px', marginBottom: '10px'}}>
+                        <Button type="primary" onClick={handleOpenModal}
+                                style={{marginLeft: '10px', marginBottom: '10px'}}>
                             주소 검색
                         </Button>
 
@@ -280,12 +281,10 @@ const ShippingInfoForm: React.FC = () => {
 
                 <OrderSummary items={items} shippingCost={0} discount={126000} shippingInfo={shippingInfo}/>
             </div>
-
-            {/* Daum Postcode 모달 */}
             <Modal
                 title="주소 검색"
                 visible={isModalVisible}
-                onCancel={handleCloseModal} // 모달이 닫힐 때 key 초기화
+                onCancel={handleCloseModal}
                 footer={null}
                 destroyOnClose={true}
             >

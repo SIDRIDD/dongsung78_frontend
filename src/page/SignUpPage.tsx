@@ -1,8 +1,8 @@
 // SignUpPage.tsx
 import React, {useState} from 'react';
-import { Button, Form, Input, message } from 'antd';
+import {Button, Form, Input, message} from 'antd';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 
 interface SignUpFormValues {
     name: string;
@@ -21,10 +21,12 @@ const SignUpPage: React.FC = () => {
     const [username, setUsername] = useState<string>('');
     const [usernameStatus, setUsernameStatus] = useState<'success' | 'error' | undefined>(undefined);
     const [checkingUsername, setCheckingUsername] = useState<boolean>(false);
-
+    const apiUrl = process.env.REACT_APP_API_BASE_URL;
+    const userSaveUrl = process.env.REACT_APP_USER_SAVE_URL;
+    const checkSignupUrl = process.env.REACT_APP_CHECK_SIGNUP_URL;
     const onFinish = async (values: SignUpFormValues) => {
         try {
-            const response = await axios.post('http://localhost:8080/api/user/save', values);
+            const response = await axios.post(`${apiUrl}${userSaveUrl}`, values);
             message.success('Sign up successful');
             navigate('/login');
         } catch (error) {
@@ -42,12 +44,11 @@ const SignUpPage: React.FC = () => {
         setCheckingUsername(true);
 
         try {
-            const response = await axios.get(`http://localhost:8080/api/user/check-signup?username=${username}`);
-            console.log(response.data)
+            const response = await axios.get(`${apiUrl}${checkSignupUrl}?username=${username}`);
             if (response.data == true) {
                 setUsernameStatus('success');
                 message.success('사용가능한 ID입니다.');
-            } else{
+            } else {
                 setUsernameStatus('error');
                 message.error('이미 존재하는 ID입니다.');
             }
@@ -62,23 +63,23 @@ const SignUpPage: React.FC = () => {
 
 
     return (
-        <div style={{ maxWidth: 400, margin: 'auto', fontFamily: 'PaperlogyBold'}}>
+        <div style={{maxWidth: 400, margin: 'auto', fontFamily: 'PaperlogyBold'}}>
             <h2>회원가입</h2>
             <Form name="signup" onFinish={onFinish}>
                 <Form.Item
                     name="name"
-                    rules={[{ required: true, message: 'Please enter your name!' }]}
+                    rules={[{required: true, message: 'Please enter your name!'}]}
                     validateStatus={usernameStatus}
                     hasFeedback
                 >
                     <Input
                         placeholder="Username"
                         value={username}
-                        onChange={(e) => setUsername(e.target.value)} // 상태 업데이트
+                        onChange={(e) => setUsername(e.target.value)}
                         addonAfter={
                             <Button
                                 type="link"
-                                onClick={checkUsernameAvailability} // 현재 상태 값으로 체크
+                                onClick={checkUsernameAvailability}
                                 loading={checkingUsername}
                             >
                                 Check
@@ -88,39 +89,39 @@ const SignUpPage: React.FC = () => {
                 </Form.Item>
                 <Form.Item
                     name="email"
-                    rules={[{ required: true, message: 'Please enter your email!' }]}
+                    rules={[{required: true, message: 'Please enter your email!'}]}
                 >
-                    <Input placeholder="Email" />
+                    <Input placeholder="Email"/>
                 </Form.Item>
                 <Form.Item
                     name="password"
-                    rules={[{ required: true, message: 'Please enter your password!' }]}
+                    rules={[{required: true, message: 'Please enter your password!'}]}
                 >
-                    <Input.Password placeholder="Password" />
+                    <Input.Password placeholder="Password"/>
                 </Form.Item>
                 <Form.Item
                     name="phoneNumber"
-                    rules={[{ required: true, message: 'Please enter your phone number!' }]}
+                    rules={[{required: true, message: 'Please enter your phone number!'}]}
                 >
-                    <Input placeholder="Phone Number" />
+                    <Input placeholder="Phone Number"/>
                 </Form.Item>
                 <Form.Item
                     name={['address', 'city']}
-                    rules={[{ required: true, message: 'Please enter your city!' }]}
+                    rules={[{required: true, message: 'Please enter your city!'}]}
                 >
-                    <Input placeholder="도시명" />
+                    <Input placeholder="도시명"/>
                 </Form.Item>
                 <Form.Item
                     name={['address', 'street']}
-                    rules={[{ required: true, message: 'Please enter your street!' }]}
+                    rules={[{required: true, message: 'Please enter your street!'}]}
                 >
-                    <Input placeholder="나머지 주소" />
+                    <Input placeholder="나머지 주소"/>
                 </Form.Item>
                 <Form.Item
                     name={['address', 'zipcode']}
-                    rules={[{ required: true, message: 'Please enter your zipcode!' }]}
+                    rules={[{required: true, message: 'Please enter your zipcode!'}]}
                 >
-                    <Input placeholder="우편번호" />
+                    <Input placeholder="우편번호"/>
                 </Form.Item>
                 <Form.Item>
                     <Button type="primary" htmlType="submit" block>

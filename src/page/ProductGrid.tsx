@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import {Link, useNavigate, useParams} from 'react-router-dom';
+import {useNavigate, useParams} from 'react-router-dom';
 import './css/ProductGrid.css';
 import axios from 'axios';
-import {Button, Col, Divider, Grid, Pagination, Row, Space} from "antd";
+import {Button, Divider, Pagination, Space} from "antd";
 
 interface Product {
 
@@ -29,29 +29,31 @@ const ProductGrid: React.FC = () => {
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
     const [products, setProducts] = useState<Product[]>([]);
-    const [total, setTotal] = useState(0); // 총 제품 수를 저장할 상태
-    const [currentPage, setCurrentPage] = useState(1); // 현재 페이지를 저장할 상태
-    const pageSize = 16; // 한 페이지당 표시할 제품 수
+    const [total, setTotal] = useState(0);
+    const [currentPage, setCurrentPage] = useState(1);
+    const pageSize = 16;
     const navigate = useNavigate();
-
-
+    const apiUrl = process.env.REACT_APP_API_BASE_URL;
+    const productGetUrl = process.env.REACT_APP_PRODUCT_GET_URL;
     const fetchProducts = async (page: number) => {
         try {
-            const response = await axios.get(`http://localhost:8080/api/product/get?categoryId=${category}&page=${page - 1}&size=${pageSize}`);
+            const response = await axios.get(`${apiUrl}${productGetUrl}?categoryId=${category}&page=${page - 1}&size=${pageSize}`);
             setProducts(response.data.content);
-            setTotal(response.data.totalElements); // 총 제품 수 설정
+            setTotal(response.data.totalElements);
 
         } catch (error) {
             console.error('Error fetching products:', error);
         }
     };
 
+    // 카테고리가 변경될 때 현재 페이지를 1로 설정
     useEffect(() => {
-        setCurrentPage(1); // 카테고리가 변경될 때 현재 페이지를 1로 설정
+        setCurrentPage(1);
     }, [category]);
 
+    // 현재 페이지의 제품을 불러옴
     useEffect(() => {
-        fetchProducts(currentPage); // 현재 페이지의 제품을 불러옴
+        fetchProducts(currentPage);
     }, [category, currentPage]);
 
 
@@ -78,15 +80,13 @@ const ProductGrid: React.FC = () => {
         "지우개 털이",
         "강의대",
         "교체 상판",
-
-        // ... 추가적인 카테고리 이름들
     ];
 
     const handleCategoryButton = (categoryId : number) => {
         navigate(`/product-grid/${categoryId}`)
     }
 
-    const categoryIndex = Number(category); // useParams는 string을 반환하므로 숫자로 변환
+    const categoryIndex = Number(category);
     const categoryMenu = categoryIndex >= 0 && categoryIndex < categoryMenus.length ? categoryMenus[categoryIndex] : "전체";
 
     return (
@@ -102,7 +102,7 @@ const ProductGrid: React.FC = () => {
             </Space>
             <div className="product-grid">
                 {loading && !products.length ? (
-                    <div>Loading...</div> // 첫 로드 시에만 로딩 메시지를 표시합니다.
+                    <div>Loading...</div>
                 ) : (
                     products.map((product) => (
                         <div key={product.id} className="product-card" onClick={() => handleProduct(product.id)}

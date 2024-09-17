@@ -19,6 +19,8 @@ const Header: React.FC = () => {
     const navigate = useNavigate();
     const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
     const dispatch = useDispatch();
+    const apiUrl = process.env.REACT_APP_API_BASE_URL;
+    const logoutUrl = process.env.REACT_APP_API_LOGOUT;
 
     const toggleDrawer = () => {
         console.log('토클');
@@ -33,18 +35,15 @@ const Header: React.FC = () => {
         sessionStorage.clear();
         localStorage.clear();
         sessionStorage.setItem('cartKinds', '0');
-        const apiUrl = process.env.REACT_APP_API_BASE_URL;
-        axios.post(`${apiUrl}/api/user/logout`, {}, {
-            withCredentials: true // 쿠키를 전송하기 위해 설정
+        axios.post(`${apiUrl}${logoutUrl}`, {}, {
+            withCredentials: true
         })
             .then(response => {
-                // 성공 시 로그아웃 처리 후 페이지 이동
                 message.success("로그아웃 되었습니다.");
                 dispatch(logout());
                 navigate('/product-grid/1');
             })
             .catch(error => {
-                // 오류 처리
                 console.error("Logout failed", error);
             });
 
@@ -59,9 +58,8 @@ const Header: React.FC = () => {
 
     const handleNavigate = (key: string) => {
         dispatch(setSelectedMenuKey(key)); // Redux 상태 업데이트
-        navigate('/quote-contact'); // 페이지 이동
+        navigate('/quote-contact');
     };
-
 
     return (
         <div className="header">
