@@ -35,7 +35,12 @@ const QuoteForm: React.FC = () => {
                 withCredentials : true
             });
             // 성공적으로 제출된 후 목록 페이지로 이동
-            navigate('/quote-contact') ;
+            if(contactType == '0'){
+                navigate('/quote-contact');
+            } else {
+                navigate(`/product-grid/0`) ;
+
+            }
             message.success('등록되었습니다.');
         } catch (error) {
             console.error('Failed to submit data:', error);

@@ -3,7 +3,8 @@ import './css/ProductDetails.css';
 import { useCart } from '../context/CartContext';
 import {useSelector} from "react-redux";
 import {RootState} from "../store/store";
-import {useNavigate} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
+import {message} from "antd";
 
 interface ProductDetailsProps {
     productId: number;
@@ -26,6 +27,8 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({productId, name, descrip
     const { addToCart, setDrawerVisible, cartItems, purchaseItems } = useCart();
     // const items = { productId, name, description, price, stock, quantity, imgUrl };
     const navigate = useNavigate();
+    const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
+    const location = useLocation();
 
     const handleIncrease = () => {
         setQuantity(prevQuantity => prevQuantity + 1);
@@ -42,6 +45,12 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({productId, name, descrip
     };
 
     const handleBuyNow = () => {
+
+        if(!isLoggedIn){
+            message.warning('상품 구매를 위해 로그인이 필요합니다.');
+            navigate('/login', { state: { from: location } });
+            return;
+        }
         const product = { productId, name, description, price, stock, quantity, imgUrl };
 
         const purchaseData: PurchaseData[] = cartItems.map(item => ({

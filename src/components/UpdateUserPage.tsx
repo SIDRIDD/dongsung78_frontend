@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { Button, Form, Input, message } from 'antd';
+import React, {useEffect, useState} from 'react';
+import {Button, Form, Input, message, Modal} from 'antd';
 import axios from 'axios';
+import {useNavigate} from "react-router-dom";
 
 interface UserInfo {
     userId: number;
@@ -17,6 +18,8 @@ interface UserInfo {
 const MyPage: React.FC = () => {
     const [form] = Form.useForm();
     const [userInfo, setUserInfo] = useState<UserInfo>();
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const navigate = useNavigate();
 
     // 사용자 정보 가져오기
     const fetchUserInfo = async () => {
@@ -65,46 +68,89 @@ const MyPage: React.FC = () => {
         }
     };
 
+    const showModal = () => {
+        setIsModalVisible(true); // 모달 창 표시
+    };
+
+    const handleOk = async () => {
+        try {
+            const response = await axios.delete('http://localhost:8080/api/user/delete', {
+                withCredentials: true,
+            });
+            console.log('response.data' + response.data);
+            if (response.status == 200) {
+                message.success('정상적으로 회원탈퇴되었습니다.');
+                navigate('/product-grid/0');
+                window.location.reload();
+            }
+        } catch (error) {
+            message.error('회원탈퇴에 실패하였습니다.');
+        }
+        setIsModalVisible(false); // 모달 창 닫기
+    };
+
+    const handleCancel = () => {
+        setIsModalVisible(false); // 모달 창 닫기
+    };
+
     return (
-        <div style={{ maxWidth: 600, margin: 'auto', padding: '20px', fontFamily: 'PaperlogyBold' }}>
+        <div style={{maxWidth: 600, margin: 'auto', padding: '20px', fontFamily: 'PaperlogyBold'}}>
             <h2>마이페이지</h2>
             <Form form={form} layout="vertical" onFinish={onFinish}>
-                <Form.Item name="email" label="이메일" rules={[{ required: true, message: '이메일을 입력해주세요.' }]}>
-                    <Input placeholder="이메일" />
+                <Form.Item name="email" label="이메일" rules={[{required: true, message: '이메일을 입력해주세요.'}]}>
+                    <Input placeholder="이메일"/>
                 </Form.Item>
                 <Form.Item
                     name="phoneNumber"
                     label="전화번호"
-                    rules={[{ required: true, message: '전화번호를 입력해주세요.' }]}
+                    rules={[{required: true, message: '전화번호를 입력해주세요.'}]}
                 >
-                    <Input placeholder="전화번호" />
+                    <Input placeholder="전화번호"/>
                 </Form.Item>
                 <Form.Item
                     name={['address', 'roadAddress']}
                     label="도로명 주소"
-                    rules={[{ required: true, message: '도로명 주소를 입력해주세요.' }]}
+                    rules={[{required: true, message: '도로명 주소를 입력해주세요.'}]}
                 >
-                    <Input placeholder="도로명 주소" />
+                    <Input placeholder="도로명 주소"/>
                 </Form.Item>
                 <Form.Item
                     name={['address', 'detailAddress']}
                     label="상세 주소"
-                    rules={[{ required: true, message: '상세 주소를 입력해주세요.' }]}
+                    rules={[{required: true, message: '상세 주소를 입력해주세요.'}]}
                 >
-                    <Input placeholder="상세 주소" />
+                    <Input placeholder="상세 주소"/>
                 </Form.Item>
                 <Form.Item
                     name={['address', 'zipcode']}
                     label="우편번호"
-                    rules={[{ required: true, message: '우편번호를 입력해주세요.' }]}
+                    rules={[{required: true, message: '우편번호를 입력해주세요.'}]}
                 >
-                    <Input placeholder="우편번호" />
+                    <Input placeholder="우편번호"/>
                 </Form.Item>
-                <Form.Item>
-                    <Button type="primary" htmlType="submit">
-                        수정하기
-                    </Button>
-                </Form.Item>
+                <div style={{display: 'flex', justifyContent: 'space-between'}}>
+                    <Form.Item>
+                        <Button type="primary" htmlType="submit">
+                            수정하기
+                        </Button>
+                    </Form.Item>
+                    <Form.Item>
+                        <Button type="primary" onClick={showModal}>
+                            회원탈퇴
+                        </Button>
+
+                        <Modal
+                            title="삭제 확인"
+                            visible={isModalVisible}
+                            onOk={handleOk} // Yes 버튼 클릭 시
+                            onCancel={handleCancel} // No 버튼 클릭 시
+                            okText="Yes"
+                            cancelText="No"
+                        >
+                            정말로 회원 탈퇴하시겠습니까?
+                        </Modal>
+                    </Form.Item>
+                </div>
             </Form>
         </div>
     );

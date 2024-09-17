@@ -47,7 +47,7 @@ const DrawerComponent: React.FC<DrawerComponentProps> = ({visible, onClose, item
     })
 
     return (
-        <Drawer title="장바구니" onClose={onClose} open={visible}>
+        <Drawer style={{fontFamily: 'PaperlogyBold'}} title="장바구니" onClose={onClose} open={visible}>
             {items.map((item, index) => (
                 <div key={index} className="drawer-item">
                     <img src={`${process.env.PUBLIC_URL}/${item.imgUrl}`} className="drawer-item-img"/> {/* 이미지 추가 */}
@@ -70,10 +70,10 @@ const DrawerComponent: React.FC<DrawerComponentProps> = ({visible, onClose, item
                 </div>
             ))}
             <div className="total-amount"> {/* 총 금액 표시 추가 */}
-                <h3>총 금액: {totalAmount.toLocaleString()} 원</h3>
+                <h3 style={{ font: 'PaperlogyBold' }}>총 금액: {totalAmount.toLocaleString()} 원</h3>
             </div>
             <div className="drawer-footer"> {/* 구매하기 버튼 추가 */}
-                <button className="purchase-button" onClick={handlePurchase}>구매하기</button>
+                <button className="purchase-button" onClick={handlePurchase} style={{ font: 'PaperlogyBold' }}>구매하기</button>
             </div>
         </Drawer>
     );

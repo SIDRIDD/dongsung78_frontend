@@ -10,8 +10,8 @@ interface SignUpFormValues {
     password: string;
     phoneNumber: string;
     address: {
-        city: string;
-        street: string;
+        roadAddress: string;
+        detailAddress: string;
         zipcode: string;
     };
 }
