@@ -65,7 +65,7 @@ const QuoteContact: React.FC = () => {
         };
 
         fetchData(currentPage);
-    }, [currentPage]);
+    }, [currentPage, apiUrl, constructionListUrl]);
 
 
     const handlePageChange = (page: number) => {
