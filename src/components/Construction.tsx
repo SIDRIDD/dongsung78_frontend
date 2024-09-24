@@ -43,30 +43,30 @@ const QuoteContact: React.FC = () => {
     const constructionListUrl = process.env.REACT_APP_API_CONSTRUCTION_LIST;
 
 
-    const fetchData = async (page: number) => {
-        setLoading(true);
-        try {
-            const response = await axios.get<{ content: DataItem[], totalElements: number }>(
-                `${apiUrl}${constructionListUrl}`,
-                {
-                    params: {
-                        page: page - 1, // API는 0부터 시작하므로 page-1
-                        size: pageSize
-                    }
-                }
-            );
-            setData(response.data.content);
-            setTotalItems(response.data.totalElements);
-
-        } catch (error) {
-            console.error('Failed to fetch data:', error);
-        }
-        setLoading(false);
-    };
-
     useEffect(() => {
+        const fetchData = async (page: number) => {
+            setLoading(true);
+            try {
+                const response = await axios.get<{ content: DataItem[], totalElements: number }>(
+                    `${apiUrl}${constructionListUrl}`,
+                    {
+                        params: {
+                            page: page - 1, // API는 0부터 시작하므로 page-1
+                            size: pageSize
+                        }
+                    }
+                );
+                setData(response.data.content);
+                setTotalItems(response.data.totalElements);
+            } catch (error) {
+                console.error('Failed to fetch data:', error);
+            }
+            setLoading(false);
+        };
+
         fetchData(currentPage);
-    }, [currentPage, fetchData]);
+    }, [currentPage]);
+
 
     const handlePageChange = (page: number) => {
         setCurrentPage(page);

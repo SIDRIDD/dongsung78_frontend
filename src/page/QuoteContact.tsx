@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import {Space, Card, Typography, Button, message, Pagination, Table, Modal} from 'antd';
 import axios from 'axios';
 import {useLocation, useNavigate} from 'react-router-dom';
@@ -35,7 +35,7 @@ const QuoteContact: React.FC = () => {
     const contactGetAllUrl = process.env.REACT_APP_CONTACT_GETALL_URL;
     const contactDeleteUrl = process.env.REACT_APP_CONTACT_DELETE_URL;
 
-    const fetchData = async (page: number) => {
+    const fetchData = useCallback(async (page: number) => {
         setLoading(true);
         try {
             const response = await axios.get<{ content: DataItem[], totalElements: number }>(
@@ -53,7 +53,7 @@ const QuoteContact: React.FC = () => {
             console.error('Failed to fetch data:', error);
         }
         setLoading(false);
-    };
+    }, [apiUrl, contactGetAllUrl, pageSize]);
 
     useEffect(() => {
         fetchData(currentPage);

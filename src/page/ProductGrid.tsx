@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {useNavigate, useParams} from 'react-router-dom';
 import './css/ProductGrid.css';
 import axios from 'axios';
@@ -35,26 +35,29 @@ const ProductGrid: React.FC = () => {
     const navigate = useNavigate();
     const apiUrl = process.env.REACT_APP_API_BASE_URL;
     const productGetUrl = process.env.REACT_APP_PRODUCT_GET_URL;
-    const fetchProducts = async (page: number) => {
+
+    const fetchProducts = useCallback(async (page: number) => {
         try {
             const response = await axios.get(`${apiUrl}${productGetUrl}?categoryId=${category}&page=${page - 1}&size=${pageSize}`);
             setProducts(response.data.content);
             setTotal(response.data.totalElements);
-
         } catch (error) {
             console.error('Error fetching products:', error);
         }
-    };
+    }, [apiUrl, productGetUrl, category, pageSize]);
+
+// 현재 페이지의 제품을 불러옴
+    useEffect(() => {
+        fetchProducts(currentPage);
+    }, [category, currentPage, fetchProducts]);
+
 
     // 카테고리가 변경될 때 현재 페이지를 1로 설정
     useEffect(() => {
         setCurrentPage(1);
     }, [category]);
 
-    // 현재 페이지의 제품을 불러옴
-    useEffect(() => {
-        fetchProducts(currentPage);
-    }, [category, currentPage, fetchProducts]);
+
 
 
     const handlePageChange = (page: number) => {

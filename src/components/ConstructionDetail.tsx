@@ -48,7 +48,7 @@ const QuoteDetail: React.FC = () => {
             setLoading(false);
         };
         fetchData();
-    }, [id, apiUrl]);
+    }, [id, apiUrl, constructionDetailUrl]);
 
     if (loading || !data) {
         return <div>Loading...</div>;

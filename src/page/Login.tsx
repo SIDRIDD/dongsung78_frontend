@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {LockOutlined, UserOutlined} from '@ant-design/icons';
-import {LoginForm, ProConfigProvider, ProFormCheckbox, ProFormText} from '@ant-design/pro-components';
+import {LoginForm, ProConfigProvider, ProFormText} from '@ant-design/pro-components';
 import {Space, Tabs, message, theme, Button} from 'antd';
 import {useDispatch} from 'react-redux';
 import {login} from '../store/authSlice';
