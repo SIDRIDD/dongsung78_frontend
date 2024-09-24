@@ -26,20 +26,19 @@ const MyPage: React.FC = () => {
     const deleteUserUrl = process.env.REACT_APP_DELETE_USER_URL;
 
 
-    const fetchUserInfo = async () => {
-        try {
-            const response = await axios.get(`${apiUrl}${getUserUrl}`, {
-                withCredentials: true,
-            });
-            setUserInfo(response.data);
-        } catch (error) {
-            console.error('Error fetching user data:', error);
-            message.error('사용자 정보를 가져오는 데 실패했습니다. 새로고침 후 다시 시도해주세요.');
-        }
-    };
-
-    // 컴포넌트 마운트 시 사용자 정보 가져오기
     useEffect(() => {
+        const fetchUserInfo = async () => {
+            try {
+                const response = await axios.get(`${apiUrl}${getUserUrl}`, {
+                    withCredentials: true,
+                });
+                setUserInfo(response.data);
+            } catch (error) {
+                console.error('Error fetching user data:', error);
+                message.error('사용자 정보를 가져오는 데 실패했습니다. 새로고침 후 다시 시도해주세요.');
+            }
+        };
+
         fetchUserInfo();
     }, []);
 
