@@ -47,7 +47,7 @@ const ProductPage: React.FC = () => {
         };
 
         fetchProduct();
-    }, [productId]);
+    }, [productId, apiUrl, productGetOneUrl]);
 
     if (!product) {
         return <div>Loading...</div>;
@@ -74,11 +74,13 @@ const ProductPage: React.FC = () => {
                     fill
                 >
                     <Tab eventKey="description" title="상세 설명">
-                            <Paragraph style={{ marginTop: '30px', fontFamily: 'PaperlogyBold' }}>
-                                {product.description}
-                            </Paragraph>
-                            <img src={`${process.env.PUBLIC_URL}/${product.imageUrl}`}
-                                 style={{width: '60%', marginTop: '39px'}}/>
+                        <Paragraph style={{marginTop: '30px', fontFamily: 'PaperlogyBold'}}>
+                            {product.description}
+                        </Paragraph>
+                        <img src={`${process.env.PUBLIC_URL}/${product.imageUrl}`}
+                             alt=""
+                             style={{width: '60%', marginTop: '39px'}}/>
+
                     </Tab>
                     <Tab eventKey="profile" title="상품 문의">
                         <ProductQuote productId={product.id}/>

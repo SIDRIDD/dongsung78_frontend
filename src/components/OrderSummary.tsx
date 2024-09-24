@@ -66,12 +66,12 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({ items, shippingCost, discou
     };
     const purchaseItems = async (purchaseData: PurchaseData[]) => {
         try {
-            const response = await axios.post(`${apiUrl}${orderSaveUrl}`, purchaseData
-                , {withCredentials: true});
+            await axios.post(`${apiUrl}${orderSaveUrl}`, purchaseData, { withCredentials: true });
         } catch (error) {
             console.error('Error purchasing items:', error);
         }
     };
+
 
     useEffect(() => {
         const script = document.createElement('script');

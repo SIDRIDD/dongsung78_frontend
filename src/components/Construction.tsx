@@ -66,7 +66,7 @@ const QuoteContact: React.FC = () => {
 
     useEffect(() => {
         fetchData(currentPage);
-    }, [currentPage]);
+    }, [currentPage, fetchData]);
 
     const handlePageChange = (page: number) => {
         setCurrentPage(page);
@@ -83,9 +83,12 @@ const QuoteContact: React.FC = () => {
             title: '제목',
             key: 'title',
             render: (text: string, item: DataItem) => (
-                <a onClick={() => handleItemClick(item)}>
+                // <a onClick={() => handleItemClick(item)}>
+                //     {`${item.companyName} ${item.categoryName} 시공 사진`}
+                // </a>
+                <button onClick={() => handleItemClick(item)} style={{ background: 'none', border: 'none', color: 'blue', textDecoration: 'underline', cursor: 'pointer' }}>
                     {`${item.companyName} ${item.categoryName} 시공 사진`}
-                </a>
+                </button>
             ),
         },
         {

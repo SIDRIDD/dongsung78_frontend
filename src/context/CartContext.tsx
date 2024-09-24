@@ -79,7 +79,7 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
 
     const purchaseItems = async (purchaseData: PurchaseData[]) => {
         try {
-            const response = await axios.post(`${apiUrl}${orderSaveUrl}`, purchaseData, {
+            await axios.post(`${apiUrl}${orderSaveUrl}`, purchaseData, {
                 withCredentials: true
             });
             //장바구니 비우기

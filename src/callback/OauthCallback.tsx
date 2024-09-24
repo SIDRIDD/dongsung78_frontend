@@ -12,7 +12,7 @@ const OauthCallback: React.FC = () => {
         } else {
             console.error('userName 를 저장하지 못했습니다.');
         }
-    }, [userName]);
+    }, [userName, navigate]);
 
     return (
         <div>

@@ -42,7 +42,7 @@ const DrawerComponent: React.FC<DrawerComponentProps> = ({visible, onClose, item
         <Drawer style={{fontFamily: 'PaperlogyBold'}} title="장바구니" onClose={onClose} open={visible}>
             {items.map((item, index) => (
                 <div key={index} className="drawer-item">
-                    <img src={`${process.env.PUBLIC_URL}/${item.imgUrl}`} className="drawer-item-img"/>
+                    <img src={`${process.env.PUBLIC_URL}/${item.imgUrl}`} className="drawer-item-img" alt="" />
                     <div className="drawer-item-content">
                         <div className="drawer-item-header">
                             <h2 className="drawer-item-name">{item.name}</h2>

@@ -60,7 +60,7 @@ const ProductQuote: React.FC<PruductQuoteProps> = ({productId}) => {
 
     useEffect(() => {
         fetchData(currentPage);
-    }, [currentPage]);
+    }, [currentPage, fetchData]);
 
     const handlePageChange = (page: number) => {
         setCurrentPage(page);
@@ -99,22 +99,26 @@ const ProductQuote: React.FC<PruductQuoteProps> = ({productId}) => {
     const handleDelete = async (itemId: number) => {
         setLoading(true);
         try {
-            const response = await axios.delete(`${apiUrl}${contactDeleteUrl}?itemid=${itemId}`);
+            await axios.delete(`${apiUrl}${contactDeleteUrl}?itemid=${itemId}`);
             fetchData(currentPage);
             message.success("삭제되었습니다.");
         } catch (error) {
             message.warning('삭제에 실패하였습니다.');
         }
         setLoading(false);
-    }
-
+    };
 
     const columns = [
         {
             title: '제목',
             dataIndex: 'title',
             key: 'title',
-            render: (text: string, item: DataItem) => <a onClick={() => handleItemClick(item.id)}>{text}</a>,
+            // render: (text: string, item: DataItem) => <a onClick={() => handleItemClick(item.id)}>{text}</a>,
+            render: (text: string, item: DataItem) => (
+                <button onClick={() => handleItemClick(item.id)} style={{ background: 'none', border: 'none', padding: 0, color: 'blue', textDecoration: 'underline', cursor: 'pointer' }}>
+                    {text}
+                </button>
+            ),
         },
         {
             title: '작성자',

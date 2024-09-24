@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {useParams} from 'react-router-dom';
-import {Card, Typography, Space, Button, theme, Avatar, Input, List, message} from 'antd';
+import {Card, Typography, Space, Button, Avatar, Input, List, message} from 'antd';
 import axios from 'axios';
 import {UserOutlined} from "@ant-design/icons";
 import './css/QuoteDetail.css'
@@ -86,7 +86,7 @@ const QuoteDetail: React.FC = () => {
             setLoading(false);
         };
         fetchData();
-    }, [itemId]);
+    }, [itemId, apiUrl, commentGetUrl]);
 
     const handleDeleteComment = async (commentId: number) => {
         try {

@@ -57,7 +57,7 @@ function App() {
 
         // 컴포넌트 언마운트 시 setInterval 정리
         return () => clearInterval(interval);
-    }, [dispatch]);
+    }, [apiUrl, refreshCheckUrl, dispatch]);
 
     return (
         <div className="App">

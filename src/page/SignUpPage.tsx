@@ -26,7 +26,7 @@ const SignUpPage: React.FC = () => {
     const checkSignupUrl = process.env.REACT_APP_CHECK_SIGNUP_URL;
     const onFinish = async (values: SignUpFormValues) => {
         try {
-            const response = await axios.post(`${apiUrl}${userSaveUrl}`, values);
+            await axios.post(`${apiUrl}${userSaveUrl}`, values);
             message.success('Sign up successful');
             navigate('/login');
         } catch (error) {

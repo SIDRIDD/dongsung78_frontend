@@ -31,10 +31,8 @@ const NavBar: React.FC = () => {
                 justifyContent: 'center',
                 backgroundColor: 'white'
             }}>
-                <a>
-                    <img onClick={() => navigate('/product-grid/1')}
-                         src={`${process.env.PUBLIC_URL}${minisizeLogo}`}
-                         alt="Product"/>
+                <a href="/product-grid/1">
+                    <img src={`${process.env.PUBLIC_URL}${minisizeLogo}`} alt="Product" />
                 </a>
             </div>
             <div style={{

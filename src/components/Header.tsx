@@ -4,7 +4,7 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {Input, message} from 'antd';
+import {message} from 'antd';
 import {Link, useNavigate} from 'react-router-dom';
 import DrawerComponent from './DrawerComponent';
 import {useCart} from '../context/CartContext';
@@ -50,11 +50,6 @@ const Header: React.FC = () => {
         dispatch(logout());
         navigate('/product-grid/1');
     };
-
-    const handleLogin = () => {
-        sessionStorage.setItem('cartKinds', '0');
-        navigate('/login');
-    }
 
     const handleNavigate = (key: string) => {
         dispatch(setSelectedMenuKey(key)); // Redux 상태 업데이트

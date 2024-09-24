@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import {Space, Card, Typography, Button, message, Pagination, Table, Modal} from 'antd';
 import axios from 'axios';
 import {useLocation, useNavigate} from 'react-router-dom';
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 import { RootState } from "../store/store";
 
 
@@ -57,7 +57,7 @@ const QuoteContact: React.FC = () => {
 
     useEffect(() => {
         fetchData(currentPage);
-    }, [currentPage]);
+    }, [currentPage, fetchData]);
 
     const handlePageChange = (page: number) => {
         setCurrentPage(page);
@@ -98,7 +98,13 @@ const QuoteContact: React.FC = () => {
             title: '제목',
             dataIndex: 'title',
             key: 'title',
-            render: (text: string, item: DataItem) => <a onClick={() => handleItemClick(item.id)}>{text}</a>,
+            // render: (text: string, item: DataItem) => <a onClick={() => handleItemClick(item.id)}>{text}</a>,
+            render: (text: string, item: DataItem) => (
+                <button onClick={() => handleItemClick(item.id)} style={{ background: 'none', border: 'none', padding: 0, color: 'blue', textDecoration: 'underline', cursor: 'pointer' }}>
+                    {text}
+                </button>
+            ),
+
         },
         {
             title: '작성자',
@@ -144,7 +150,7 @@ const QuoteContact: React.FC = () => {
     const handleDelete = async (itemId: number) => {
         setLoading(true);
         try {
-            const response = await axios.delete(`${apiUrl}${contactDeleteUrl}?itemid=${itemId}`);
+            await axios.delete(`${apiUrl}${contactDeleteUrl}?itemid=${itemId}`);
             fetchData(currentPage);
             message.success("삭제되었습니다.");
         } catch (error) {

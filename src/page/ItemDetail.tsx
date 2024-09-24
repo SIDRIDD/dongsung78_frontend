@@ -32,7 +32,7 @@ const ItemDetail: React.FC = () => {
             setLoading(false);
         };
         fetchItem();
-    }, [id]);
+    }, [id, apiUrl, contactGetUrl]);
 
     if (loading) {
         return <Spin />;

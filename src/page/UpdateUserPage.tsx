@@ -40,7 +40,7 @@ const MyPage: React.FC = () => {
         };
 
         fetchUserInfo();
-    }, []);
+    }, [apiUrl, getUserUrl]);
 
     // 사용자 정보가 변경되면 폼 필드에 값 설정
     useEffect(() => {

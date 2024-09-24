@@ -26,8 +26,8 @@ interface Product {
 
 const ProductGrid: React.FC = () => {
     const {category} = useParams<{ category: string }>();
-    const [loading, setLoading] = useState<boolean>(true);
-    const [error, setError] = useState<string | null>(null);
+    const [loading] = useState<boolean>(true);
+    const [error] = useState<string | null>(null);
     const [products, setProducts] = useState<Product[]>([]);
     const [total, setTotal] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
@@ -54,7 +54,7 @@ const ProductGrid: React.FC = () => {
     // 현재 페이지의 제품을 불러옴
     useEffect(() => {
         fetchProducts(currentPage);
-    }, [category, currentPage]);
+    }, [category, currentPage, fetchProducts]);
 
 
     const handlePageChange = (page: number) => {

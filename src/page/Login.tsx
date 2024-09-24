@@ -157,14 +157,14 @@ const LoginPage: React.FC = () => {
                             </Space>
                         </>
                     )}
-                    {loginType !== 'oauth' && (
-                        <div style={{marginBlockEnd: 24}}>
-                            <ProFormCheckbox noStyle name="autoLogin">
-                                자동 로그인
-                            </ProFormCheckbox>
-                            <a style={{float: 'right'}}>비밀번호 찾기</a>
-                        </div>
-                    )}
+                    {/*{loginType !== 'oauth' && (*/}
+                    {/*    <div style={{marginBlockEnd: 24}}>*/}
+                    {/*        <ProFormCheckbox noStyle name="autoLogin">*/}
+                    {/*            자동 로그인*/}
+                    {/*        </ProFormCheckbox>*/}
+                    {/*        <a style={{float: 'right'}}>비밀번호 찾기</a>*/}
+                    {/*    </div>*/}
+                    {/*)}*/}
                 </LoginForm>
             </div>
         </ProConfigProvider>
