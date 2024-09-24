@@ -35,7 +35,7 @@ const QuoteForm: React.FC = () => {
                 withCredentials : true
             });
             // 0: 견적문의, else: 상품문의
-            if(contactType == '0'){
+            if(contactType === '0'){
                 navigate('/quote-contact');
             } else {
                 navigate(`/product-grid/0`) ;

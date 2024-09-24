@@ -45,7 +45,7 @@ const SignUpPage: React.FC = () => {
 
         try {
             const response = await axios.get(`${apiUrl}${checkSignupUrl}?username=${username}`);
-            if (response.data == true) {
+            if (response.data === true) {
                 setUsernameStatus('success');
                 message.success('사용가능한 ID입니다.');
             } else {

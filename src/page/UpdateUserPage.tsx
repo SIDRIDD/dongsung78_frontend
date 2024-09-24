@@ -81,7 +81,7 @@ const MyPage: React.FC = () => {
             const response = await axios.delete(`${apiUrl}${deleteUserUrl}`, {
                 withCredentials: true,
             });
-            if (response.status == 200) {
+            if (response.status === 200) {
                 message.success('정상적으로 회원탈퇴되었습니다.');
                 navigate('/product-grid/0');
                 window.location.reload();

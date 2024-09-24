@@ -47,7 +47,7 @@ const ShippingInfoForm: React.FC = () => {
     const onChange: CheckboxProps['onChange'] = async (e) => {
         console.log(`checked = ${e.target.checked}`);
         if (e.target.checked === true) {
-            if (shippingInfo == null) {
+            if (shippingInfo === null) {
                 const response = await axios.get(`${apiUrl}${deliveryInfoUrl}`, {
                     withCredentials: true
                 })
